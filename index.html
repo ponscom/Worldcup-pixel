@@ -1,0 +1,1153 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Back to World Cup - Legends Edition</title>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;image-rendering:pixelated}
+:root{
+  --px:#00ff41;--red:#ff3333;--yel:#ffff00;--cya:#00bfff;--wht:#e8e8e8;
+  --bg:#0d0d1a;--card:#111122;--surface:#1a1a2e;--border:#2a2a4a;--dim:#666688;
+  --fs:10px;
+}
+html{background:var(--bg)}
+body{background:var(--bg);color:var(--wht);font-family:'Press Start 2P',monospace;font-size:var(--fs);line-height:1.7;min-height:100vh}
+.hidden{display:none!important}
+body::before{content:"";position:fixed;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,0.14) 2px,rgba(0,0,0,0.14) 4px);pointer-events:none;z-index:9000}
+.app{padding:14px;max-width:980px;margin:0 auto}
+
+/* HEADER */
+.header{text-align:center;padding:20px 0 16px;border-bottom:2px solid var(--px);margin-bottom:18px}
+.header-title{font-size:15px;color:var(--yel);text-shadow:0 0 10px var(--yel),2px 2px 0 #000;letter-spacing:2px;line-height:1.8}
+.header-sub{font-size:9px;color:var(--cya);margin-top:8px;letter-spacing:1px}
+.header-edition{font-size:8px;color:var(--dim);margin-top:4px;letter-spacing:2px}
+
+/* CARD */
+.card{background:var(--card);border:2px solid var(--border);padding:14px;margin-bottom:12px;position:relative}
+.card::before{content:"";position:absolute;top:-2px;left:-2px;right:-2px;bottom:-2px;border:1px solid var(--dim);pointer-events:none}
+.section-label{font-size:8px;color:var(--cya);text-transform:uppercase;letter-spacing:2px;margin-bottom:10px;border-bottom:1px solid var(--border);padding-bottom:5px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:680px){.grid2{grid-template-columns:1fr}}
+
+/* FORM */
+.form-row{margin-bottom:12px}
+.form-row label{display:block;font-size:8px;color:var(--cya);margin-bottom:5px;letter-spacing:1px}
+.form-row input,.form-row select{
+  width:100%;padding:7px 10px;font-size:8px;font-family:'Press Start 2P',monospace;
+  border:2px solid var(--border);background:var(--bg);color:var(--wht);outline:none;cursor:pointer
+}
+.form-row input:focus,.form-row select:focus{border-color:var(--px);box-shadow:0 0 6px var(--px)}
+
+/* PALETTE */
+.palette{display:flex;gap:7px;flex-wrap:wrap;margin-top:5px}
+.swatch{width:22px;height:22px;cursor:pointer;border:2px solid transparent;transition:transform .1s;flex-shrink:0}
+.swatch:hover,.swatch.on{border-color:var(--wht);transform:scale(1.2)}
+.flag-box{width:108px;height:68px;border:2px solid var(--border);margin-top:7px;position:relative;overflow:hidden}
+
+/* PITCH */
+.pitch-wrap{position:relative;width:100%;padding-top:126%;background:#0a3d0a;border:2px solid #00aa00;margin-bottom:10px;overflow:hidden}
+.pitch-inner{position:absolute;inset:0}
+.pitch-inner::before{content:"";position:absolute;inset:0;background:
+  linear-gradient(#00aa00 0 1px,transparent 1px 50%,#00aa00 50% calc(50%+1px),transparent calc(50%+1px)) 0 0/100% 100%;
+  opacity:0.4;pointer-events:none}
+.pitch-inner::after{content:"";position:absolute;top:50%;left:50%;width:20%;padding-top:20%;border:1px solid rgba(0,170,0,0.5);border-radius:50%;transform:translate(-50%,-50%)}
+.pen-top{position:absolute;top:0;left:30%;width:40%;height:12%;border:1px solid rgba(0,170,0,0.4);border-top:none}
+.pen-bot{position:absolute;bottom:0;left:30%;width:40%;height:12%;border:1px solid rgba(0,170,0,0.4);border-bottom:none}
+.pslot{position:absolute;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;gap:3px;z-index:5;cursor:pointer}
+.pdot{
+  width:26px;height:26px;display:flex;align-items:center;justify-content:center;
+  font-size:8px;font-weight:400;color:var(--bg);cursor:pointer;
+  clip-path:polygon(3px 0,calc(100% - 3px) 0,100% 3px,100% calc(100% - 3px),calc(100% - 3px) 100%,3px 100%,0 calc(100% - 3px),0 3px);
+  transition:box-shadow .1s
+}
+.pdot:hover,.pdot.sel{box-shadow:0 0 0 2px var(--yel),0 0 10px var(--yel)}
+.pdot.filled{box-shadow:0 0 0 2px var(--px)}
+.pname{font-size:7px;color:var(--wht);text-shadow:1px 1px 0 #000,-1px -1px 0 #000;text-align:center;max-width:52px;line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pstar{font-size:7px;color:var(--yel)}
+
+/* BUDGET */
+.budget-bar-wrap{background:var(--bg);border:2px solid var(--border);padding:10px;margin-bottom:12px}
+.budget-bar-track{height:10px;background:#111;border:1px solid var(--border);overflow:hidden;margin-top:5px;position:relative}
+.budget-bar-fill{height:100%;transition:width .3s,background .3s}
+.budget-nums{display:flex;justify-content:space-between;font-size:7px;color:var(--dim);margin-top:4px}
+
+/* CANDIDATI */
+.cand-panel{margin-top:12px;background:var(--bg);border:2px solid var(--border);padding:12px;max-height:300px;overflow-y:auto}
+.cand-title{font-size:8px;color:var(--yel);margin-bottom:10px}
+.cand-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(118px,1fr));gap:8px}
+.cand-card{background:var(--card);border:2px solid var(--border);padding:10px;cursor:pointer;transition:border-color .1s}
+.cand-card:hover{border-color:var(--px);background:var(--surface)}
+.cand-name{font-size:8px;color:var(--wht);margin-bottom:4px}
+.cand-role{font-size:7px;color:var(--dim);margin-bottom:3px}
+.cand-power{font-size:8px}
+
+/* BTN */
+.btn{display:block;width:100%;padding:11px 10px;font-size:8px;font-family:'Press Start 2P',monospace;
+  border:2px solid var(--border);background:var(--card);color:var(--wht);cursor:pointer;
+  text-align:center;letter-spacing:1px;text-transform:uppercase;position:relative;
+  transition:color .1s,background .1s,border-color .1s}
+.btn::after{content:"▶";position:absolute;right:10px;top:50%;transform:translateY(-50%);font-size:7px;opacity:0.5}
+.btn:hover:not(:disabled){border-color:var(--px);color:var(--px)}
+.btn:active:not(:disabled){transform:translateY(1px)}
+.btn:disabled{opacity:0.3;cursor:not-allowed}
+.btn-primary{border-color:var(--cya);color:var(--cya)}
+.btn-primary:hover:not(:disabled){background:var(--surface);box-shadow:0 0 8px var(--cya)}
+.btn-gold{border-color:var(--yel);color:var(--yel)}
+.btn-gold:hover:not(:disabled){background:var(--surface);box-shadow:0 0 8px var(--yel)}
+.btn-sm{padding:7px 12px;font-size:7px;width:auto;display:inline-block}
+.btn-row{display:flex;gap:10px;margin-bottom:12px}
+
+/* SCOREBOARD */
+.scoreboard{background:#050508;border:3px solid var(--border);padding:16px;margin-bottom:12px;position:relative;overflow:hidden}
+.scoreboard::before{content:"LIVE";position:absolute;top:5px;right:8px;font-size:7px;color:var(--red);animation:blink 1s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+.sb-timer{font-size:13px;text-align:center;color:var(--cya);margin-bottom:8px;text-shadow:0 0 8px var(--cya)}
+.sb-score{font-size:44px;text-align:center;color:var(--yel);line-height:1;text-shadow:0 0 14px var(--yel),2px 2px 0 rgba(0,0,0,0.9);letter-spacing:6px}
+.sb-teams{display:flex;justify-content:space-between;font-size:8px;color:var(--dim);margin-top:8px;padding-top:5px;border-top:1px solid var(--border)}
+.sb-scorers{display:flex;justify-content:space-between;font-size:7px;margin-top:8px;gap:8px}
+.sb-sc-col{flex:1;line-height:2}
+.sb-sc-col.right{text-align:right}
+.sc-user{color:var(--px)}
+.sc-opp{color:var(--red)}
+
+/* MATCH LOG */
+.match-log{
+  background:#030305;font-family:'Press Start 2P',monospace;font-size:8px;
+  border:2px solid var(--border);padding:12px;height:260px;overflow-y:auto;line-height:2.2
+}
+.log-norm{color:var(--dim)}
+.log-user{color:var(--px);padding:2px 0}
+.log-opp{color:var(--red);padding:2px 0}
+.log-goal-user{color:var(--px);font-size:9px;background:#001a00;padding:5px 8px;margin:4px 0;border-left:3px solid var(--px)}
+.log-goal-opp{color:var(--red);font-size:9px;background:#1a0000;padding:5px 8px;margin:4px 0;border-left:3px solid var(--red)}
+.log-pause{color:var(--cya);padding:3px 0}
+.log-var{color:var(--yel);background:#0f0a00;padding:4px 8px;margin:4px 0}
+.log-pen-user{color:var(--px);padding:2px 0;font-size:9px}
+.log-pen-opp{color:var(--red);padding:2px 0;font-size:9px}
+.log-miss{color:var(--dim);padding:2px 0;font-size:8px}
+.log-end{color:var(--wht);text-align:center;border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:5px 0;margin:5px 0;font-size:9px}
+
+/* TABLE */
+.standings-table{width:100%;font-size:8px;border-collapse:collapse;margin-top:10px}
+.standings-table th{background:var(--surface);padding:8px 10px;text-align:left;color:var(--cya);border-bottom:2px solid var(--border)}
+.standings-table td{padding:7px 10px;border-bottom:1px solid var(--border);color:var(--wht)}
+.standings-table tr.user-row td{color:var(--px)}
+.standings-table .num{text-align:right}
+
+/* KO */
+.ko-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px;margin-top:12px}
+.ko-match{background:var(--card);border:2px solid var(--border);padding:12px;font-size:8px}
+.ko-match.played{border-color:var(--px)}
+.ko-match.user-match{border-color:var(--yel)}
+.ko-teams{color:var(--wht);margin-bottom:5px;line-height:2}
+.ko-result{color:var(--yel);font-size:10px;margin-bottom:4px}
+.ko-winner{color:var(--px);font-size:7px}
+.ko-pending{color:var(--dim);font-size:7px}
+
+/* PREVIEW / CONTROLLI */
+.match-preview{background:var(--bg);border:2px solid var(--border);padding:14px;text-align:center;margin-bottom:12px}
+.preview-teams{font-size:10px;color:var(--yel);margin-bottom:6px;line-height:2.2}
+.preview-phase{font-size:8px;color:var(--dim)}
+.phase-badge{display:inline-block;font-size:7px;padding:5px 10px;background:var(--surface);border:1px solid var(--border);color:var(--cya);margin-bottom:12px;letter-spacing:1px}
+.speed-row{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.speed-row label{font-size:8px;color:var(--cya);white-space:nowrap;flex-shrink:0}
+.speed-row select{flex:1;padding:6px 8px;font-size:8px;font-family:'Press Start 2P',monospace;border:2px solid var(--border);background:var(--bg);color:var(--wht)}
+
+/* OTHER RESULTS */
+#other-results{font-size:8px;color:var(--dim);margin-top:10px;border-top:1px solid var(--border);padding-top:8px;line-height:2.2}
+
+/* REPORT */
+.report-wrap{text-align:center;padding:18px 0}
+.report-stage{font-size:11px;color:var(--yel);margin-bottom:16px;line-height:2;text-shadow:0 0 10px var(--yel)}
+.report-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:14px 0}
+.stat-box{background:var(--bg);border:2px solid var(--border);padding:12px}
+.stat-num{font-size:20px;color:var(--px)}
+.stat-lbl{font-size:7px;color:var(--dim);margin-top:5px}
+.champion-note{background:var(--surface);border:2px solid var(--yel);padding:12px;margin:12px 0;font-size:8px;color:var(--dim);text-align:left;line-height:2.2}
+.champion-note strong{color:var(--yel);display:block;margin-bottom:5px}
+
+/* FLASH */
+.flash-overlay{position:fixed;inset:0;pointer-events:none;opacity:0;z-index:9010}
+@keyframes fG{0%,100%{background:rgba(0,255,65,0)}40%,60%{background:rgba(0,255,65,0.25)}}
+@keyframes fR{0%,100%{background:rgba(255,51,51,0)}40%,60%{background:rgba(255,51,51,0.25)}}
+.fl-green{animation:fG 0.5s 3;opacity:1}
+.fl-red{animation:fR 0.5s 3;opacity:1}
+
+/* GOAL ANNOUNCE */
+.goal-announce{
+  position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);
+  background:#050508;border:3px solid var(--px);padding:16px 24px;
+  color:var(--px);font-size:11px;font-family:'Press Start 2P',monospace;
+  z-index:9020;text-align:center;max-width:300px;
+  display:none;pointer-events:none;line-height:2.2;
+  box-shadow:0 0 24px var(--px),0 0 48px rgba(0,255,65,0.3);
+  text-shadow:0 0 10px var(--px)
+}
+.goal-announce.opp{border-color:var(--red);color:var(--red);box-shadow:0 0 24px var(--red),0 0 48px rgba(255,51,51,0.3);text-shadow:0 0 10px var(--red)}
+
+/* RESULT OVERLAY */
+.result-overlay{
+  position:fixed;inset:0;background:rgba(0,0,0,0.92);z-index:9030;
+  display:none;align-items:center;justify-content:center;flex-direction:column;
+  font-family:'Press Start 2P',monospace;text-align:center;
+}
+.result-overlay.show{display:flex}
+.result-svg{margin-bottom:20px}
+.result-title{font-size:14px;color:var(--yel);text-shadow:0 0 12px var(--yel);margin-bottom:10px;line-height:2;animation:pulse 1.5s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.65}}
+.result-score{font-size:24px;color:var(--wht);margin-bottom:8px}
+.result-sub{font-size:8px;color:var(--dim);margin-bottom:20px;line-height:2}
+.result-close{font-size:8px;color:var(--cya);border:2px solid var(--cya);background:transparent;font-family:'Press Start 2P',monospace;padding:10px 18px;cursor:pointer;letter-spacing:1px}
+.result-close:hover{background:var(--surface)}
+</style>
+</head>
+<body>
+<div id="flash" class="flash-overlay"></div>
+<div id="goal-announce" class="goal-announce"></div>
+<div id="result-overlay" class="result-overlay">
+  <div id="result-svg" class="result-svg"></div>
+  <div id="result-title" class="result-title"></div>
+  <div id="result-score" class="result-score"></div>
+  <div id="result-sub" class="result-sub"></div>
+  <button class="result-close" onclick="closeResultOverlay()">▶ CONTINUA</button>
+</div>
+
+<div class="app">
+  <div class="header">
+    <div class="header-title">⚽ BACK TO WORLD CUP</div>
+    <div class="header-sub">LEGENDS EDITION</div>
+    <div class="header-edition">★ INSERT COIN TO PLAY ★</div>
+  </div>
+
+  <!-- CREAZIONE -->
+  <div id="screen-create">
+    <div class="grid2">
+      <div class="card">
+        <div class="section-label">▸ SELECT TEAM</div>
+        <div class="form-row"><label>NOME NAZIONALE</label><input id="inp-name" type="text" value="LA MIA NAZIONALE" maxlength="20"></div>
+        <div class="form-row"><label>COLORE PRIMARIO</label><div class="palette" id="pal-primary"></div></div>
+        <div class="form-row"><label>COLORE SECONDARIO</label><div class="palette" id="pal-secondary"></div></div>
+        <div class="form-row">
+          <label>BANDIERA</label>
+          <select id="sel-flag">
+            <option value="horiz">3 BANDE ORIZZONTALI</option><option value="vert">3 BANDE VERTICALI</option>
+            <option value="cross">CROCE NORDICA</option><option value="swiss">CROCE SVIZZERA</option>
+            <option value="diag">DIAGONALE</option><option value="circle">CERCHIO</option>
+            <option value="checker">SCACCHIERA</option><option value="half">META E META</option>
+          </select>
+          <div class="flag-box" id="flag-preview"></div>
+        </div>
+        <div class="form-row"><label>MODULO</label>
+          <select id="sel-formation">
+            <option value="4-3-3">4-3-3</option><option value="4-4-2">4-4-2</option>
+            <option value="3-5-2">3-5-2</option><option value="4-2-3-1">4-2-3-1</option>
+            <option value="5-3-2">5-3-2</option><option value="3-4-3">3-4-3</option>
+          </select>
+        </div>
+        <div class="form-row"><label>STILE DI GIOCO</label>
+          <select id="sel-style">
+            <option value="medio">EQUILIBRATO</option>
+            <option value="difesa">DIFESA (-5% ATT)</option>
+            <option value="attacco">ATTACCO (+5% ATT)</option>
+          </select>
+        </div>
+      </div>
+      <div class="card">
+        <div class="section-label">▸ SELECT PLAYERS</div>
+        <div class="budget-bar-wrap">
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <span style="font-size:8px;color:var(--cya)">FORZA TOTALE</span>
+            <span id="budget-txt" style="font-size:8px;color:var(--yel)">0.0 / 97.0</span>
+          </div>
+          <div class="budget-bar-track"><div class="budget-bar-fill" id="budget-fill" style="width:0%;background:var(--px)"></div></div>
+          <div class="budget-nums"><span id="budget-slots">0/11</span><span id="budget-warn" style="color:var(--red)"></span></div>
+        </div>
+        <div class="btn-row">
+          <button class="btn btn-sm btn-primary" onclick="generateRandom()">RANDOM</button>
+          <button class="btn btn-sm" onclick="clearSquad()">RESET</button>
+        </div>
+        <div class="pitch-wrap" id="pitch">
+          <div class="pitch-inner"><div class="pen-top"></div><div class="pen-bot"></div></div>
+        </div>
+        <div class="cand-panel hidden" id="cand-panel">
+          <div class="cand-title" id="cand-title">SELECT PLAYER:</div>
+          <div class="cand-grid" id="cand-grid"></div>
+        </div>
+      </div>
+    </div>
+    <div style="margin-top:14px"><button class="btn btn-gold" id="btn-start" disabled onclick="startTournament()">▶ START TOURNAMENT</button></div>
+  </div>
+
+  <!-- TORNEO -->
+  <div id="screen-tournament" class="hidden">
+    <div class="grid2">
+      <div>
+        <div id="phase-badge" class="phase-badge">FASE A GIRONI</div>
+        <div id="live-box" class="hidden" style="margin-bottom:14px">
+          <div style="font-size:8px;color:var(--dim);margin-bottom:8px;letter-spacing:1px" id="live-header"></div>
+          <div class="scoreboard">
+            <div class="sb-timer" id="sb-timer">00'</div>
+            <div class="sb-score" id="sb-score">0 - 0</div>
+            <div class="sb-teams"><span id="sb-home-name"></span><span id="sb-away-name"></span></div>
+            <div class="sb-scorers">
+              <div class="sb-sc-col sc-user" id="sb-sc-home"></div>
+              <div class="sb-sc-col sc-opp right" id="sb-sc-away"></div>
+            </div>
+          </div>
+          <div class="match-log" id="match-log"></div>
+        </div>
+        <div id="view-group">
+          <div style="font-size:9px;color:var(--yel);margin-bottom:10px">▸ CLASSIFICA GIRONE</div>
+          <table class="standings-table">
+            <thead><tr><th>SQUADRA</th><th class="num">P</th><th class="num">PT</th><th class="num">GF</th><th class="num">GS</th></tr></thead>
+            <tbody id="group-tbody"></tbody>
+          </table>
+          <div id="other-results"></div>
+        </div>
+        <div id="view-ko" class="hidden">
+          <div id="ko-round-name" style="font-size:9px;color:var(--yel);margin-bottom:8px">TABELLONE</div>
+          <div class="ko-grid" id="ko-grid"></div>
+        </div>
+        <div id="view-report" class="hidden"></div>
+      </div>
+      <div id="control-panel">
+        <div class="card">
+          <div class="section-label">▸ NEXT MATCH</div>
+          <div class="match-preview">
+            <div class="preview-teams" id="preview-teams">—</div>
+            <div class="preview-phase" id="preview-phase">—</div>
+          </div>
+          <div class="speed-row">
+            <label>SPEED:</label>
+            <select id="sel-speed">
+              <option value="fast">FAST</option>
+              <option value="normal" selected>NORMAL</option>
+              <option value="slow">SLOW</option>
+            </select>
+          </div>
+          <button class="btn btn-primary" id="btn-play" onclick="handlePlayBtn()">▶ PLAY</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── SVG PIXEL ART ──
+// Fuochi d'artificio animati (vittoria)
+const SVG_WIN=`<svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+<style>
+.f1{animation:burst1 1.2s infinite 0s}
+.f2{animation:burst1 1.2s infinite 0.4s}
+.f3{animation:burst1 1.2s infinite 0.8s}
+@keyframes burst1{0%,100%{opacity:0;transform:scale(0.5)}40%{opacity:1;transform:scale(1)}70%{opacity:0.6}90%{opacity:0}}
+</style>
+<!-- fuoco 1 - sinistra - giallo -->
+<g class="f1" transform-origin="22 40">
+  <rect x="20" y="28" width="4" height="12" fill="#ffff00"/>
+  <rect x="10" y="36" width="12" height="4" fill="#ffff00"/>
+  <rect x="24" y="36" width="12" height="4" fill="#ffff00"/>
+  <rect x="12" y="28" width="4" height="4" fill="#ffdd00"/>
+  <rect x="26" y="28" width="4" height="4" fill="#ffdd00"/>
+  <rect x="12" y="44" width="4" height="4" fill="#ffdd00"/>
+  <rect x="26" y="44" width="4" height="4" fill="#ffdd00"/>
+  <rect x="20" y="48" width="4" height="6" fill="#ff8800"/>
+  <rect x="18" y="54" width="8" height="4" fill="#ff4400"/>
+  <!-- base stelo -->
+  <rect x="21" y="55" width="2" height="18" fill="#666644"/>
+  <rect x="19" y="70" width="6" height="2" fill="#555533"/>
+</g>
+<!-- fuoco 2 - centro - ciano -->
+<g class="f2" transform-origin="50 35">
+  <rect x="48" y="20" width="4" height="15" fill="#00ffff"/>
+  <rect x="36" y="30" width="14" height="4" fill="#00ffff"/>
+  <rect x="50" y="30" width="14" height="4" fill="#00ffff"/>
+  <rect x="38" y="22" width="4" height="4" fill="#00cccc"/>
+  <rect x="58" y="22" width="4" height="4" fill="#00cccc"/>
+  <rect x="38" y="38" width="4" height="4" fill="#00cccc"/>
+  <rect x="58" y="38" width="4" height="4" fill="#00cccc"/>
+  <rect x="48" y="42" width="4" height="6" fill="#0088ff"/>
+  <rect x="46" y="48" width="8" height="4" fill="#0055cc"/>
+  <rect x="49" y="52" width="2" height="20" fill="#666644"/>
+  <rect x="47" y="70" width="6" height="2" fill="#555533"/>
+</g>
+<!-- fuoco 3 - destra - verde -->
+<g class="f3" transform-origin="78 40">
+  <rect x="76" y="28" width="4" height="12" fill="#00ff41"/>
+  <rect x="64" y="36" width="12" height="4" fill="#00ff41"/>
+  <rect x="80" y="36" width="12" height="4" fill="#00ff41"/>
+  <rect x="66" y="28" width="4" height="4" fill="#00cc33"/>
+  <rect x="82" y="28" width="4" height="4" fill="#00cc33"/>
+  <rect x="66" y="44" width="4" height="4" fill="#00cc33"/>
+  <rect x="82" y="44" width="4" height="4" fill="#00cc33"/>
+  <rect x="76" y="48" width="4" height="6" fill="#008800"/>
+  <rect x="74" y="54" width="8" height="4" fill="#005500"/>
+  <rect x="77" y="58" width="2" height="14" fill="#666644"/>
+  <rect x="75" y="70" width="6" height="2" fill="#555533"/>
+</g>
+<!-- stelle decorative -->
+<rect x="4" y="10" width="4" height="4" fill="#ffff00" opacity="0.8"/>
+<rect x="90" y="14" width="4" height="4" fill="#00ffff" opacity="0.8"/>
+<rect x="46" y="4" width="4" height="4" fill="#ff88ff" opacity="0.8"/>
+<rect x="2" y="60" width="2" height="2" fill="#ffdd00"/>
+<rect x="94" y="55" width="2" height="2" fill="#00ff41"/>
+<!-- prato -->
+<rect x="0" y="72" width="100" height="4" fill="#1a3d1a"/>
+<rect x="0" y="76" width="100" height="4" fill="#0a2a0a"/>
+</svg>`;
+
+// Stretta di mano pixel (pareggio)
+const SVG_DRAW=`<svg width="100" height="80" viewBox="0 0 100 80" xmlns="http://www.w3.org/2000/svg">
+<!-- mano sinistra (blu) -->
+<rect x="0" y="34" width="30" height="12" fill="#00bfff"/>
+<rect x="6" y="28" width="8" height="6" fill="#00bfff"/>
+<rect x="14" y="24" width="8" height="4" fill="#00bfff"/>
+<rect x="14" y="28" width="8" height="6" fill="#00bfff"/>
+<rect x="6" y="46" width="6" height="6" fill="#0088aa"/>
+<rect x="0" y="52" width="14" height="4" fill="#006688"/>
+<!-- mano destra (rossa) -->
+<rect x="70" y="34" width="30" height="12" fill="#ff3333"/>
+<rect x="86" y="28" width="8" height="6" fill="#ff3333"/>
+<rect x="78" y="24" width="8" height="4" fill="#ff3333"/>
+<rect x="78" y="28" width="8" height="6" fill="#ff3333"/>
+<rect x="88" y="46" width="6" height="6" fill="#cc2222"/>
+<rect x="86" y="52" width="14" height="4" fill="#aa1111"/>
+<!-- parte centrale - stretta -->
+<rect x="30" y="32" width="40" height="16" fill="#ccaa44"/>
+<rect x="34" y="28" width="8" height="4" fill="#ddbb55"/>
+<rect x="42" y="26" width="8" height="6" fill="#ddbb55"/>
+<rect x="58" y="28" width="8" height="4" fill="#ddbb55"/>
+<rect x="34" y="48" width="8" height="4" fill="#aa8833"/>
+<rect x="58" y="48" width="8" height="4" fill="#aa8833"/>
+<!-- bordi neri per pixel feel -->
+<rect x="30" y="32" width="2" height="16" fill="#333"/>
+<rect x="68" y="32" width="2" height="16" fill="#333"/>
+<!-- testo VS sotto -->
+<rect x="40" y="62" width="4" height="4" fill="#ffff00"/>
+<rect x="40" y="66" width="2" height="4" fill="#ffff00"/>
+<rect x="42" y="70" width="4" height="4" fill="#ffff00"/>
+<rect x="46" y="66" width="2" height="4" fill="#ffff00"/>
+<rect x="48" y="62" width="4" height="4" fill="#ffff00"/>
+<rect x="56" y="62" width="4" height="8" fill="#ffff00"/>
+<rect x="60" y="62" width="4" height="8" fill="#ffff00"/>
+<rect x="56" y="66" width="8" height="4" fill="#ffff00"/>
+</svg>`;
+
+// X rossa pixel (sconfitta)
+const SVG_LOSS=`<svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+<!-- X grande rossa pixel art -->
+<rect x="10" y="10" width="16" height="16" fill="#ff3333"/>
+<rect x="26" y="26" width="16" height="16" fill="#ff3333"/>
+<rect x="42" y="42" width="16" height="16" fill="#ff4444"/>
+<rect x="58" y="58" width="16" height="16" fill="#ff3333"/>
+<rect x="74" y="74" width="16" height="16" fill="#ff3333"/>
+<rect x="58" y="10" width="16" height="16" fill="#ff3333"/>
+<rect x="42" y="26" width="16" height="16" fill="#ff3333"/>
+<rect x="26" y="58" width="16" height="16" fill="#ff3333"/>
+<rect x="10" y="74" width="16" height="16" fill="#ff3333"/>
+<!-- ombre scure per profondita' -->
+<rect x="12" y="12" width="12" height="6" fill="#cc1111"/>
+<rect x="60" y="12" width="12" height="6" fill="#cc1111"/>
+<rect x="44" y="44" width="12" height="6" fill="#dd2222"/>
+<!-- glow interno -->
+<rect x="16" y="16" width="6" height="6" fill="#ff8888"/>
+<rect x="62" y="16" width="6" height="6" fill="#ff8888"/>
+<rect x="44" y="44" width="8" height="8" fill="#ff6666"/>
+<!-- cornice -->
+<rect x="0" y="0" width="100" height="4" fill="#880000"/>
+<rect x="0" y="96" width="100" height="4" fill="#880000"/>
+<rect x="0" y="0" width="4" height="100" fill="#880000"/>
+<rect x="96" y="0" width="4" height="100" fill="#880000"/>
+</svg>`;
+
+// Coppa (campione)
+const SVG_CUP=`<svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+<style>.shine{animation:sh 2s infinite}.sh2{animation:sh 2s infinite 0.7s}
+@keyframes sh{0%,100%{opacity:0.3}50%{opacity:1}}</style>
+<rect x="35" y="2" width="30" height="4" fill="#ffff00"/>
+<rect x="31" y="6" width="38" height="4" fill="#ffdd00"/>
+<rect x="27" y="10" width="46" height="6" fill="#ffcc00"/>
+<rect x="23" y="16" width="54" height="10" fill="#ffaa00"/>
+<rect x="25" y="26" width="12" height="4" fill="#ffcc00"/>
+<rect x="63" y="26" width="12" height="4" fill="#ffcc00"/>
+<!-- manici -->
+<rect x="8" y="12" width="14" height="4" fill="#cc8800"/>
+<rect x="4" y="16" width="14" height="8" fill="#cc8800"/>
+<rect x="6" y="24" width="14" height="4" fill="#cc8800"/>
+<rect x="78" y="12" width="14" height="4" fill="#cc8800"/>
+<rect x="82" y="16" width="14" height="8" fill="#cc8800"/>
+<rect x="80" y="24" width="14" height="4" fill="#cc8800"/>
+<rect x="27" y="30" width="46" height="4" fill="#cc8800"/>
+<rect x="29" y="34" width="42" height="4" fill="#bb7700"/>
+<rect x="31" y="38" width="38" height="4" fill="#cc8800"/>
+<rect x="33" y="42" width="34" height="4" fill="#bb7700"/>
+<rect x="35" y="46" width="30" height="4" fill="#cc8800"/>
+<rect x="37" y="50" width="26" height="4" fill="#bb7700"/>
+<rect x="37" y="54" width="26" height="4" fill="#444400"/>
+<rect x="33" y="58" width="34" height="4" fill="#555500"/>
+<rect x="27" y="62" width="46" height="6" fill="#888833"/>
+<rect x="23" y="68" width="54" height="6" fill="#777722"/>
+<rect x="21" y="74" width="58" height="4" fill="#666611"/>
+<rect x="19" y="78" width="62" height="4" fill="#888844"/>
+<rect x="19" y="82" width="62" height="4" fill="#666633"/>
+<rect x="23" y="86" width="54" height="4" fill="#444422"/>
+<!-- shine -->
+<rect x="37" y="10" class="shine" width="6" height="14" fill="#ffffcc" opacity="0.5"/>
+<rect x="33" y="10" class="sh2" width="3" height="8" fill="#ffffff" opacity="0.4"/>
+<!-- stelle -->
+<rect x="44" y="94" width="4" height="4" fill="#ffff00"/>
+<rect x="38" y="96" width="4" height="2" fill="#ffdd00"/>
+<rect x="54" y="96" width="4" height="2" fill="#ffdd00"/>
+</svg>`;
+
+// Medaglia argento
+const SVG_SILVER=`<svg width="80" height="80" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+<rect x="30" y="2" width="20" height="4" fill="#cccccc"/>
+<rect x="26" y="6" width="28" height="4" fill="#bbbbbb"/>
+<rect x="22" y="10" width="36" height="6" fill="#aaaaaa"/>
+<rect x="20" y="16" width="40" height="8" fill="#999999"/>
+<rect x="18" y="24" width="44" height="8" fill="#aaaaaa"/>
+<rect x="20" y="32" width="40" height="6" fill="#bbbbbb"/>
+<rect x="22" y="38" width="36" height="6" fill="#cccccc"/>
+<rect x="26" y="44" width="28" height="4" fill="#bbbbbb"/>
+<rect x="30" y="48" width="20" height="4" fill="#aaaaaa"/>
+<!-- nastro -->
+<rect x="34" y="52" width="12" height="4" fill="#8888ff"/>
+<rect x="32" y="56" width="16" height="4" fill="#6666cc"/>
+<rect x="28" y="60" width="24" height="4" fill="#8888ff"/>
+<rect x="26" y="64" width="28" height="6" fill="#6666cc"/>
+<!-- shine -->
+<rect x="28" y="12" width="6" height="12" fill="#eeeeee" opacity="0.7"/>
+<rect x="26" y="10" width="3" height="6" fill="#ffffff" opacity="0.5"/>
+<!-- 2 -->
+<rect x="34" y="20" width="12" height="2" fill="#555"/>
+<rect x="44" y="22" width="2" height="6" fill="#555"/>
+<rect x="34" y="28" width="12" height="2" fill="#555"/>
+<rect x="34" y="30" width="2" height="6" fill="#555"/>
+<rect x="34" y="36" width="12" height="2" fill="#555"/>
+</svg>`;
+
+// Medaglia bronzo
+const SVG_BRONZE=`<svg width="80" height="80" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+<rect x="30" y="2" width="20" height="4" fill="#cd7f32"/>
+<rect x="26" y="6" width="28" height="4" fill="#bb6622"/>
+<rect x="22" y="10" width="36" height="6" fill="#aa5511"/>
+<rect x="20" y="16" width="40" height="8" fill="#994400"/>
+<rect x="18" y="24" width="44" height="8" fill="#aa5511"/>
+<rect x="20" y="32" width="40" height="6" fill="#bb6622"/>
+<rect x="22" y="38" width="36" height="6" fill="#cd7f32"/>
+<rect x="26" y="44" width="28" height="4" fill="#bb6622"/>
+<rect x="30" y="48" width="20" height="4" fill="#994400"/>
+<!-- nastro -->
+<rect x="34" y="52" width="12" height="4" fill="#ff8844"/>
+<rect x="32" y="56" width="16" height="4" fill="#cc5522"/>
+<rect x="28" y="60" width="24" height="4" fill="#ff8844"/>
+<rect x="26" y="64" width="28" height="6" fill="#cc5522"/>
+<!-- shine -->
+<rect x="28" y="12" width="6" height="12" fill="#ffcc88" opacity="0.6"/>
+<!-- 3 -->
+<rect x="34" y="20" width="12" height="2" fill="#553300"/>
+<rect x="44" y="22" width="2" height="4" fill="#553300"/>
+<rect x="34" y="26" width="12" height="2" fill="#553300"/>
+<rect x="44" y="28" width="2" height="4" fill="#553300"/>
+<rect x="34" y="32" width="12" height="2" fill="#553300"/>
+</svg>`;
+
+const COLORS=["#1a3d6e","#d50000","#eeeeee","#111111","#006600","#ccaa00","#cc4400","#550088","#004488","#663300","#006655","#666688"];
+const FORMATIONS={
+  "4-3-3":[[50,92,"P"],[14,74,"TS"],[37,76,"DC"],[63,76,"DC"],[86,74,"TD"],[30,52,"CC"],[50,57,"CC"],[70,52,"CC"],[18,25,"AS"],[50,18,"PC"],[82,25,"AD"]],
+  "4-4-2":[[50,92,"P"],[14,74,"TS"],[37,76,"DC"],[63,76,"DC"],[86,74,"TD"],[14,48,"CS"],[38,50,"CC"],[62,50,"CC"],[86,48,"CD"],[35,20,"PC"],[65,20,"PC"]],
+  "3-5-2":[[50,92,"P"],[24,76,"DC"],[50,79,"DC"],[76,76,"DC"],[14,46,"CS"],[36,49,"CC"],[50,55,"CC"],[64,49,"CC"],[86,46,"CD"],[35,20,"PC"],[65,20,"PC"]],
+  "4-2-3-1":[[50,92,"P"],[14,74,"TS"],[37,76,"DC"],[63,76,"DC"],[86,74,"TD"],[34,57,"MD"],[66,57,"MD"],[18,38,"CS"],[50,36,"TQ"],[82,38,"CD"],[50,16,"PC"]],
+  "5-3-2":[[50,92,"P"],[10,70,"TS"],[30,76,"DC"],[50,79,"DC"],[70,76,"DC"],[90,70,"TD"],[28,49,"CC"],[50,54,"CC"],[72,49,"CC"],[35,20,"PC"],[65,20,"PC"]],
+  "3-4-3":[[50,92,"P"],[24,76,"DC"],[50,79,"DC"],[76,76,"DC"],[14,48,"CS"],[38,51,"CC"],[62,51,"CC"],[86,48,"CD"],[20,22,"AS"],[50,17,"PC"],[80,22,"AD"]]
+};
+const PLAYERS=[
+  {n:"Buffon",r:["P"],pw:9.7},{n:"Zoff",r:["P"],pw:9.5},{n:"Neuer",r:["P"],pw:9.6},
+  {n:"Casillas",r:["P"],pw:9.4},{n:"Schmeichel",r:["P"],pw:9.3},{n:"Kahn",r:["P"],pw:9.3},
+  {n:"Courtois",r:["P"],pw:9.0},{n:"Navas",r:["P"],pw:8.6},{n:"N'Kono",r:["P"],pw:8.2},
+  {n:"Ochoa",r:["P"],pw:8.2},{n:"Rustu",r:["P"],pw:8.5},{n:"Akinfeev",r:["P"],pw:8.1},
+  {n:"Rufai",r:["P"],pw:7.8},{n:"Kingson",r:["P"],pw:7.8},{n:"Friedel",r:["P"],pw:7.9},
+  {n:"Baresi",r:["DC"],pw:9.8},{n:"Beckenbauer",r:["DC"],pw:9.9},{n:"Maldini",r:["DC"],pw:9.8},
+  {n:"Scirea",r:["DC"],pw:9.6},{n:"Cannavaro",r:["DC"],pw:9.5},{n:"Puyol",r:["DC"],pw:9.0},
+  {n:"Ramos",r:["DC"],pw:9.0},{n:"Pique",r:["DC"],pw:8.8},{n:"Moore",r:["DC"],pw:8.7},
+  {n:"Thuram",r:["DC"],pw:9.1},{n:"Desailly",r:["DC"],pw:8.7},{n:"Blanc",r:["DC"],pw:8.6},
+  {n:"Alderweireld",r:["DC"],pw:8.8},{n:"Kompany",r:["DC"],pw:8.7},{n:"Vertonghen",r:["DC"],pw:8.7},
+  {n:"Lovren",r:["DC"],pw:8.2},{n:"Vida",r:["DC"],pw:8.0},{n:"Otamendi",r:["DC"],pw:8.6},
+  {n:"Romero C.",r:["DC"],pw:8.7},{n:"Lalas",r:["DC"],pw:7.6},{n:"Brito",r:["DC"],pw:8.1},
+  {n:"Cafu",r:["TD"],pw:9.5},{n:"Lahm",r:["TD"],pw:9.3},{n:"Zanetti",r:["TD"],pw:9.0},
+  {n:"Hakimi",r:["TD"],pw:8.8},{n:"Vrsaljko",r:["TD"],pw:8.1},{n:"Molina",r:["TD"],pw:8.4},
+  {n:"Zambrotta",r:["TD"],pw:8.5},{n:"Seitaridis",r:["TD"],pw:7.9},{n:"Thuram T.",r:["TD"],pw:8.8},
+  {n:"R. Carlos",r:["TS"],pw:9.4},{n:"Maldini P.",r:["TS"],pw:9.6},{n:"Lizarazu",r:["TS"],pw:8.6},
+  {n:"Tagliafico",r:["TS"],pw:8.3},{n:"Capdevila",r:["TS"],pw:8.2},{n:"Strinic",r:["TS"],pw:7.9},
+  {n:"Grosso",r:["TS"],pw:8.3},{n:"Cabrini",r:["TS"],pw:8.5},
+  {n:"Maradona",r:["TQ"],pw:10.0},{n:"Messi",r:["TQ"],pw:10.0},{n:"Zidane",r:["TQ"],pw:9.8},
+  {n:"Platini",r:["TQ"],pw:9.6},{n:"De Bruyne",r:["TQ"],pw:9.3},{n:"Baggio",r:["TQ"],pw:9.5},
+  {n:"Valderrama",r:["TQ"],pw:8.6},{n:"Okocha",r:["TQ"],pw:8.7},{n:"Ozil",r:["TQ"],pw:8.8},
+  {n:"Rivellino",r:["TQ"],pw:9.0},{n:"Antognoni",r:["TQ"],pw:8.6},{n:"Golovin",r:["TQ"],pw:8.3},
+  {n:"Muller T.",r:["TQ"],pw:9.0},{n:"Ziyech",r:["TQ"],pw:8.5},
+  {n:"Matthaus",r:["CC"],pw:9.6},{n:"Iniesta",r:["CC"],pw:9.6},{n:"Xavi",r:["CC"],pw:9.5},
+  {n:"Modric",r:["CC"],pw:9.4},{n:"Pirlo",r:["CC"],pw:9.4},{n:"Kroos",r:["CC"],pw:9.1},
+  {n:"Busquets",r:["CC"],pw:9.0},{n:"Alonso",r:["CC"],pw:8.8},{n:"Schweinsteiger",r:["CC"],pw:8.9},
+  {n:"Rakitic",r:["CC"],pw:8.5},{n:"De Paul",r:["CC"],pw:8.4},{n:"Mac Allister",r:["CC"],pw:8.3},
+  {n:"Enzo F.",r:["CC"],pw:8.5},{n:"Asamoah",r:["CC"],pw:8.2},{n:"Reyna",r:["CC"],pw:8.0},
+  {n:"Deschamps",r:["MD"],pw:8.6},{n:"Gattuso",r:["MD"],pw:8.8},{n:"Kante",r:["MD"],pw:9.0},
+  {n:"Witsel",r:["MD"],pw:8.4},{n:"Brozovic",r:["MD"],pw:8.3},{n:"Amrabat",r:["MD"],pw:8.4},
+  {n:"Oliseh",r:["MD"],pw:8.2},{n:"Clodoaldo",r:["MD"],pw:8.2},{n:"Tardelli",r:["MD"],pw:8.4},
+  {n:"Neeskens",r:["MD"],pw:9.0},{n:"Gerson",r:["MD"],pw:8.6},
+  {n:"Vidal",r:["CS"],pw:8.6},{n:"Aranguiz",r:["CS"],pw:8.3},
+  {n:"Conti",r:["CD"],pw:8.2},{n:"Camoranesi",r:["CD"],pw:8.0},
+  {n:"Pele",r:["PC"],pw:10.0},{n:"Ronaldo R.",r:["PC"],pw:9.9},{n:"Cruyff",r:["PC"],pw:9.9},
+  {n:"C. Ronaldo",r:["PC"],pw:9.7},{n:"Muller G.",r:["PC"],pw:9.7},{n:"Romario",r:["PC"],pw:9.4},
+  {n:"Mbappe",r:["PC"],pw:9.5},{n:"Rossi",r:["PC"],pw:9.3},{n:"Klose",r:["PC"],pw:9.2},
+  {n:"Torres",r:["PC"],pw:8.5},{n:"Villa",r:["PC"],pw:8.8},{n:"Schillaci",r:["PC"],pw:8.6},
+  {n:"Milla",r:["PC"],pw:8.4},{n:"Chicharito",r:["PC"],pw:8.3},{n:"Gyan",r:["PC"],pw:8.2},
+  {n:"Tevez",r:["PC"],pw:8.7},{n:"Alvarez",r:["PC"],pw:8.5},{n:"En-Nesyri",r:["PC"],pw:8.0},
+  {n:"Hurst",r:["PC"],pw:8.5},{n:"Stoichkov",r:["PC"],pw:8.8},
+  {n:"Jairzinho",r:["AS"],pw:9.0},{n:"Di Maria",r:["AS"],pw:9.0},{n:"Perisic",r:["AS"],pw:8.4},
+  {n:"Sanchez A.",r:["AS"],pw:9.0},{n:"Tostao",r:["AS"],pw:8.8},{n:"Vargas",r:["AS"],pw:8.0},
+  {n:"Garrincha",r:["AD"],pw:9.7},{n:"Donovan",r:["AD"],pw:8.2},{n:"Boufal",r:["AD"],pw:8.2},
+  {n:"Rep",r:["AD"],pw:8.6},{n:"Rensenbrink",r:["AD"],pw:8.8}
+];
+function pG(r0){if(r0==="P")return"P";if(["DC","TD","TS"].includes(r0))return"def";if(["CC","CS","CD","MD","TQ"].includes(r0))return"mid";return"att";}
+function sG(r){if(r==="P")return"P";if(["DC","TD","TS"].includes(r))return"def";if(["CC","CS","CD","MD","TQ"].includes(r))return"mid";return"att";}
+
+const HIST={
+  "Brasile '70":{pw:9.9,tier:"strong",sq:["Felix","Carlos Alberto","Brito","Piazza","Everaldo","Clodoaldo","Gerson","Jairzinho","Tostao","Pele","Rivellino"]},
+  "Spagna '10":{pw:9.7,tier:"strong",sq:["Casillas","Ramos","Pique","Puyol","Capdevila","Busquets","Alonso","Xavi","Iniesta","Villa","Torres"]},
+  "Germania '14":{pw:9.6,tier:"strong",sq:["Neuer","Lahm","Boateng J.","Hummels","Howedes","Schweinsteiger","Kroos","Muller T.","Ozil","Klose","Gotze"]},
+  "Francia '98":{pw:9.6,tier:"strong",sq:["Barthez","Thuram","Desailly","Blanc","Lizarazu","Deschamps","Petit","Djorkaeff","Zidane","Henry","Guivarc'h"]},
+  "Olanda '74":{pw:9.6,tier:"strong",sq:["Jongbloed","Suurbier","Haan","Rijsbergen","Krol","Jansen","Neeskens","Van Hanegem","Rep","Cruyff","Rensenbrink"]},
+  "Ungheria '54":{pw:9.6,tier:"strong",sq:["Grosics","Buzanszky","Lorant","Lantos","Bozsik","Zakarias","Czibor","Kocsis","Hidegkuti","Puskas","Toth"]},
+  "Argentina '86":{pw:9.5,tier:"strong",sq:["Pumpido","Cuciuffo","Brown","Ruggeri","Olarticoechea","Giusti","Batista","Enrique","Burruchaga","Maradona","Valdano"]},
+  "Italia '06":{pw:9.5,tier:"strong",sq:["Buffon","Zambrotta","Cannavaro","Materazzi","Grosso","Gattuso","Pirlo","Perrotta","Camoranesi","Totti","Toni"]},
+  "Argentina '22":{pw:9.5,tier:"strong",sq:["E. Martinez","Molina","Romero","Otamendi","Tagliafico","De Paul","Mac Allister","Enzo F.","Di Maria","Messi","Alvarez"]},
+  "Croazia '18":{pw:9.1,tier:"med",sq:["Subasic","Vrsaljko","Lovren","Vida","Strinic","Rakitic","Brozovic","Rebic","Modric","Perisic","Mandzukic"]},
+  "Uruguay '30":{pw:9.0,tier:"med",sq:["Ballestrero","Nasazzi","Mascheroni","Andrade","Fernandez","Gestido","Dorado","Scarone","Castro","Cea","Iriarte"]},
+  "Belgio '18":{pw:9.2,tier:"med",sq:["Courtois","Alderweireld","Kompany","Vertonghen","Meunier","Witsel","Fellaini","De Bruyne","Hazard","Lukaku","Carrasco"]},
+  "Turchia '02":{pw:8.9,tier:"med",sq:["Rustu","Fatih","Alpay","Bulent","Ergun","Umit","Tugay","Yildiray","Emre","Hasan","Hakan"]},
+  "Colombia '14":{pw:8.9,tier:"med",sq:["Ospina","Zuniga","Zapata","Yepes","Armero","Sanchez C.","Aguilar","Cuadrado","Rodriguez J.","Ibarbo","Gutierrez"]},
+  "Danimarca '92":{pw:8.9,tier:"med",sq:["Schmeichel","Sivebaek","Nielsen","Olsen","Christof","Jensen","Povlsen","Vilfort","Laudrup B.","Larsen","Elstrup"]},
+  "Cile '14":{pw:8.8,tier:"med",sq:["Bravo","Isla","Medel","Silva","Jara","Mena","Diaz","Aranguiz","Vidal","Sanchez A.","Vargas"]},
+  "Bulgaria '94":{pw:8.8,tier:"med",sq:["Mihaylov","Kremenliev","Ivanov","Houbchev","Tsvetanov","Yankov","Letchkov","Balakov","Kostadinov","Stoichkov","Sirakov"]},
+  "Marocco '22":{pw:8.8,tier:"med",sq:["Bounou","Hakimi","Aguerd","Saiss","Mazraoui","Amrabat","Ounahi","Amallah","Ziyech","Boufal","En-Nesyri"]},
+  "Camerun '90":{pw:8.7,tier:"med",sq:["N'Kono","Tataw","Ndip","Kunde","Ebongue","Kana-Biyik","Mbouh","Makanaky","Omam-Biyik","Milla","Mfede"]},
+  "Nigeria '94":{pw:8.7,tier:"med",sq:["Rufai","Eguavoen","Okechukwu","Nwanu","Emenalo","Oliseh","Finidi","Okocha","Amunike","Amokachi","Yekini"]},
+  "Messico '14":{pw:8.6,tier:"med",sq:["Ochoa","Aguilar","Rodriguez","Marquez","Moreno","Layun","Herrera","Vazquez","Guardado","Giovani","Peralta"]},
+  "Ghana '10":{pw:8.5,tier:"med",sq:["Kingson","Pantsil","Mensah","Vorsah","Sarpei","Annan","Asamoah","Boateng K.","Inkoom","Muntari","Gyan"]},
+  "Russia '18":{pw:8.5,tier:"med",sq:["Akinfeev","Fernandes","Kutepov","Ignashevich","Kudryashov","Zobnin","Kuzyaev","Samedov","Golovin","Cheryshev","Dzyuba"]},
+  "Irlanda '90":{pw:8.5,tier:"med",sq:["Bonner","Morris","McCarthy","Moran","Staunton","Houghton","McGrath","Townsend","Sheedy","Aldridge","Quinn"]},
+  "Grecia '04":{pw:8.5,tier:"med",sq:["Nikopolidis","Seitaridis","Dellas","Kapsis","Fyssas","Zagorakis","Basinas","Katsouranis","Giannakopoulos","Charisteas","Vryzas"]},
+  "USA '02":{pw:8.4,tier:"weak",sq:["Friedel","Sanneh","Pope","Berhalter","Hejduk","Reyna","O'Brien","Mastroeni","Lewis","Donovan","McBride"]},
+  "Ecuador '06":{pw:8.4,tier:"weak",sq:["Mora","De la Cruz","Hurtado","Espinoza","Reasco","Valencia","Castillo","Tenorio E.","Mendez","Delgado","Tenorio C."]},
+  "Svizzera '54":{pw:8.4,tier:"weak",sq:["Parlier","Neury","Casali","Kern","Bocquet","Vonlanden","Fatton","Meier","Hugi","Ballaman","Antenen"]},
+  "Bolivia '94":{pw:7.7,tier:"weak",sq:["Trucco","Rimba","Pena","Quinteros","Sandy","Borja","Melgar","Soria","Baldivieso","Sanchez","Ramallo"]},
+  "Canada '86":{pw:7.5,tier:"weak",sq:["Lettieri","Lenarduzzi","Wilson","Moore","Bridge","James","Sweeney","Ragan","Norman","Vrablic","Mitchell"]}
+};
+
+const GOAL_TYPES=[
+  (s,m)=>`GOL! (${m}') ${s} - SINISTRO A GIRO!`,
+  (s,m)=>`GOL! (${m}') ${s} - TESTA DA ANGOLO!`,
+  (s,m)=>`GOL! (${m}') ${s} - BOTTA CENTRALE!`,
+  (s,m)=>`GOL! (${m}') ${s} - PUNIZIONE!`,
+  (s,m)=>`GOL! (${m}') ${s} - IN PROFONDITA'!`,
+  (s,m)=>`GOL! (${m}') ${s} - TAP-IN!`,
+  (s,m)=>`GOL! (${m}') ${s} - DESTRO CHIRURGICO!`,
+  (s,m)=>`GOL! (${m}') ${s} - UNO-DUE IN AREA!`,
+  (s,m)=>`GOL! (${m}') ${s} - DI TACCO!`,
+  (s,m)=>`GOL! (${m}') ${s} - DRIBBLING E RETE!`,
+  (s,m)=>`GOL! (${m}') ${s} - CROSS E TESTA!`,
+  (s,m)=>`GOL! (${m}') ${s} - DA 30 METRI!`,
+  (s,m)=>`GOL! (${m}') ${s} - PALLONETTO!`,
+  (s,m)=>`GOL! (${m}') ${s} - SPONDA E TIRO!`,
+  (s,m)=>`GOL! (${m}') ${s} - CONTROPIEDE!`,
+  (s,m)=>`GOL! (${m}') ${s} - SCHEMA SU CORNER!`,
+  (s,m)=>`GOL! (${m}') ${s} - ROVESCIATA!`,
+  (s,m)=>`GOL! (${m}') ${s} - SECONDO PALO!`,
+  (s,m)=>`GOL! (${m}') ${s} - ASSIST E RETE!`,
+  (s,m)=>`GOL! (${m}') ${s} - COLPO DI TESTA!`,
+  (s,m)=>`GOL! (${m}') ${s} - DEVIAZIONE!`,
+  (s,m)=>`GOL! (${m}') ${s} - GIOCATA IMPOSSIBILE!`,
+  (s,m)=>`GOL! (${m}') ${s} - FINTA E RETE!`,
+  (s,m)=>`GOL! (${m}') ${s} - SECONDO PALO DI TESTA!`,
+  (s,m)=>`GOL! (${m}') ${s} - TUNNEL E RETE!`,
+  (s,m)=>`GOL! (${m}') ${s} - DA POSIZIONE IMPOSSIBILE!`,
+  (s,m)=>`GOL! (${m}') ${s} - RIPARTENZA LAMPO!`,
+  (s,m)=>`GOL! (${m}') ${s} - ACROBAZIA AL VOLO!`,
+  (s,m)=>`GOL! (${m}') ${s} - PALO E DENTRO!`,
+  (s,m)=>`GOL! (${m}') ${s} - GRAN GALOPPATA!`
+];
+const ATK=["MANOVRA AVVOLGENTE, DIFESA REGGE.","INCURSIONE IN AREA, TIRO DEVIATO.","PRESSING ALTO, PALLA SUL FONDO.","TRAVERSONE, DIFENSORE ANTICIPA.","TRIANGOLO AL LIMITE, CONCLUSIONE ALTA.","RIPARTENZA FERMATA CON FALLO.","TIRO DALLA DISTANZA, PARA IL PORTIERE.","SCHEMA SU PUNIZIONE, MURO AVVERSARIO.","AZIONE SULLA FASCIA, CROSS MANCATO.","TIRO A GIRO, PALLA SUL PALO ESTERNO.","COLPO DI TESTA, PARA IL PORTIERE.","CONCLUSIONE MURATA DALLA DIFESA.","ACCELERAZIONE FERMATA FALLOSA.","LANCIO IN PROFONDITA', FUORIGIOCO.","PALLA DENTRO, ANTICIPATO."];
+const DEF=["GIRO PALLA DIFENSIVO, RITMI GIU'.","CONTROPIEDE SPEZZATO IN MEDIANA.","LETTURA DIFENSIVA, PERICOLO SVENTATO.","PRESSING EFFICACE, PALLA RECUPERATA.","LINEA DIFENSIVA COMPATTA.","RINVIO LUNGO DEL PORTIERE.","BARICENTRO BASSO, RETE IMPERFORABILE.","POSSESSO STERILE, DIFESA NON RISCHIA."];
+
+let primaryCol="#1a3d6e",secondaryCol="#eeeeee";
+let squad=Array(11).fill(null),userTeam="";
+let matchState=null,matchTimer=null;
+let currentPhase="Gironi";
+let groupMatchIdx=0,userGroupMatches=[],groupMatches=[];
+let koPhaseIdx=0;
+const KO_PHASES=["Sedicesimi","Ottavi","Quarti","Semifinali","Finale 3 Posto","Finale"];
+let koPool=[],koMatches=[],koMatchIdx=0;
+let semiFinalLosers=[];
+let userStats={};
+let pendingOverlayCallback=null;
+
+function rnd(a){return a[Math.floor(Math.random()*a.length)];}
+function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+
+function init(){
+  buildPalette("pal-primary","primary",primaryCol);
+  buildPalette("pal-secondary","secondary",secondaryCol);
+  document.getElementById("sel-flag").addEventListener("change",drawFlag);
+  document.getElementById("sel-formation").addEventListener("change",buildPitch);
+  buildPitch();drawFlag();
+}
+function buildPalette(id,type,cur){
+  const el=document.getElementById(id);el.innerHTML="";
+  COLORS.forEach(c=>{
+    const s=document.createElement("div");s.className="swatch"+(c===cur?" on":"");s.style.background=c;
+    s.onclick=()=>{el.querySelectorAll(".swatch").forEach(x=>x.classList.remove("on"));s.classList.add("on");
+      if(type==="primary")primaryCol=c;else secondaryCol=c;drawFlag();refreshDotColors();};
+    el.appendChild(s);
+  });
+}
+function drawFlag(){
+  const box=document.getElementById("flag-preview"),st=document.getElementById("sel-flag").value,p=primaryCol,s=secondaryCol;
+  box.innerHTML="";box.style.cssText="";
+  if(st==="horiz"){box.innerHTML=`<div style="background:${p};width:100%;height:33%"></div><div style="background:${s};width:100%;height:34%"></div><div style="background:${p};width:100%;height:33%"></div>`;}
+  else if(st==="vert"){box.style.display="flex";box.innerHTML=`<div style="background:${p};flex:1;height:100%"></div><div style="background:${s};flex:1;height:100%"></div><div style="background:${p};flex:1;height:100%"></div>`;}
+  else if(st==="cross"){box.style.background=p;box.innerHTML=`<div style="position:absolute;top:40%;left:0;width:100%;height:20%;background:${s}"></div><div style="position:absolute;top:0;left:28%;width:16%;height:100%;background:${s}"></div>`;}
+  else if(st==="swiss"){box.style.cssText=`background:${p};display:flex;align-items:center;justify-content:center`;box.innerHTML=`<div style="position:relative;width:32px;height:32px"><div style="position:absolute;top:10px;left:0;width:32px;height:12px;background:${s}"></div><div style="position:absolute;top:0;left:10px;width:12px;height:32px;background:${s}"></div></div>`;}
+  else if(st==="diag"){box.innerHTML=`<div style="width:100%;height:100%;background:linear-gradient(135deg,${p} 50%,${s} 50%)"></div>`;}
+  else if(st==="circle"){box.style.cssText=`background:${p};display:flex;align-items:center;justify-content:center`;box.innerHTML=`<div style="width:32px;height:32px;background:${s}"></div>`;}
+  else if(st==="checker"){box.style.background=p;box.innerHTML=`<div style="position:absolute;top:0;left:0;width:50%;height:50%;background:${s}"></div><div style="position:absolute;bottom:0;right:0;width:50%;height:50%;background:${s}"></div>`;}
+  else if(st==="half"){box.innerHTML=`<div style="background:${p};width:100%;height:50%"></div><div style="background:${s};width:100%;height:50%"></div>`;}
+}
+function buildPitch(){
+  const pitch=document.getElementById("pitch");
+  const inner=document.createElement("div");inner.className="pitch-inner";inner.innerHTML='<div class="pen-top"></div><div class="pen-bot"></div>';
+  while(pitch.firstChild)pitch.removeChild(pitch.firstChild);pitch.appendChild(inner);
+  squad=Array(11).fill(null);document.getElementById("cand-panel").classList.add("hidden");
+  FORMATIONS[document.getElementById("sel-formation").value].forEach((sl,i)=>{
+    const wrap=document.createElement("div");wrap.className="pslot";wrap.style.left=sl[0]+"%";wrap.style.top=sl[1]+"%";
+    const dot=document.createElement("div");dot.className="pdot";dot.id="dot-"+i;
+    dot.style.background=primaryCol;dot.style.color=secondaryCol;
+    dot.textContent=sl[2];dot.onclick=()=>openDraft(sl[2],i);
+    const pname=document.createElement("div");pname.className="pname";pname.id="pname-"+i;pname.textContent="--";
+    const pstar=document.createElement("div");pstar.className="pstar";pstar.id="pstar-"+i;
+    wrap.appendChild(dot);wrap.appendChild(pname);wrap.appendChild(pstar);pitch.appendChild(wrap);
+  });
+  updateBudget();
+}
+function refreshDotColors(){document.querySelectorAll(".pdot").forEach(d=>{d.style.background=primaryCol;d.style.color=secondaryCol;});}
+function openDraft(role,idx){
+  document.querySelectorAll(".pdot").forEach(d=>d.classList.remove("sel"));
+  document.getElementById("dot-"+idx).classList.add("sel");
+  const sg=sG(role),used=new Set(squad.filter(Boolean).map(p=>p.n));
+  let pool=PLAYERS.filter(p=>!used.has(p.n)&&pG(p.r[0])===sg);pool.sort((a,b)=>b.pw-a.pw);
+  const panel=document.getElementById("cand-panel"),grid=document.getElementById("cand-grid");
+  document.getElementById("cand-title").textContent=`[${role}] - ${pool.length} DISP:`;
+  grid.innerHTML="";
+  pool.forEach(p=>{
+    const card=document.createElement("div");card.className="cand-card";
+    const col=p.pw>=9.5?"#ffff00":p.pw>=9.0?"#00ff41":p.pw>=8.5?"#00bfff":"#666688";
+    card.innerHTML=`<div class="cand-name">${p.n}</div><div class="cand-role">${p.r[0]}</div><div class="cand-power" style="color:${col}">${p.pw.toFixed(1)}★</div>`;
+    card.onclick=()=>selectPlayer(p,idx);grid.appendChild(card);
+  });
+  panel.classList.remove("hidden");
+}
+function selectPlayer(p,idx){
+  squad[idx]=p;
+  document.getElementById("pname-"+idx).textContent=p.n.substring(0,9);
+  document.getElementById("pstar-"+idx).textContent="★"+p.pw.toFixed(1);
+  document.getElementById("dot-"+idx).classList.add("filled");document.getElementById("dot-"+idx).classList.remove("sel");
+  document.getElementById("cand-panel").classList.add("hidden");updateBudget();
+}
+function clearSquad(){
+  squad=Array(11).fill(null);
+  const slots=FORMATIONS[document.getElementById("sel-formation").value];
+  for(let i=0;i<11;i++){
+    const d=document.getElementById("dot-"+i);if(d){d.textContent=slots[i]?slots[i][2]:"?";d.classList.remove("filled","sel");}
+    const pn=document.getElementById("pname-"+i);if(pn)pn.textContent="--";
+    const ps=document.getElementById("pstar-"+i);if(ps)ps.textContent="";
+  }
+  document.getElementById("cand-panel").classList.add("hidden");updateBudget();
+}
+function updateBudget(){
+  const filled=squad.filter(Boolean),total=filled.reduce((s,p)=>s+p.pw,0),over=total>97.0;
+  document.getElementById("budget-txt").textContent=total.toFixed(1)+" / 97.0";
+  document.getElementById("budget-slots").textContent=filled.length+"/11";
+  const pct=Math.min(100,(total/97)*100);
+  const fill=document.getElementById("budget-fill");fill.style.width=pct+"%";fill.style.background=over?"#ff3333":total>85?"#ccaa00":"#00ff41";
+  document.getElementById("budget-warn").textContent=over?"OVER BUDGET!":"";
+  document.getElementById("btn-start").disabled=!(filled.length===11&&!over);
+}
+function generateRandom(){
+  const slots=FORMATIONS[document.getElementById("sel-formation").value];let best=null;
+  for(let a=0;a<800;a++){
+    let loc=Array(11).fill(null),used=new Set(),total=0,ok=true;
+    for(let i=0;i<slots.length;i++){
+      const sg=sG(slots[i][2]),rem=slots.length-i,maxPw=(97.0-total)/rem;
+      let pool=PLAYERS.filter(p=>!used.has(p.n)&&pG(p.r[0])===sg);
+      if(maxPw<9.3)pool=pool.filter(p=>p.pw<=maxPw+0.8);
+      if(!pool.length){ok=false;break;}
+      const chosen=rnd(pool);loc[i]=chosen;used.add(chosen.n);total+=chosen.pw;
+    }
+    if(ok&&loc.filter(Boolean).length===11&&total<=97.0){best=loc;break;}
+  }
+  if(best){squad=best;for(let i=0;i<squad.length;i++){if(!squad[i])continue;document.getElementById("pname-"+i).textContent=squad[i].n.substring(0,9);document.getElementById("pstar-"+i).textContent="★"+squad[i].pw.toFixed(1);document.getElementById("dot-"+i).classList.add("filled");}updateBudget();}
+}
+function getTeamPower(name){
+  if(name===userTeam){const base=squad.reduce((s,p)=>s+(p?.pw||0),0)/11;const style=document.getElementById("sel-style").value;return base*(style==="difesa"?0.95:style==="attacco"?1.05:1.0);}
+  return HIST[name]?.pw??8.5;
+}
+function simMatchFull(h,a,forceDecide){
+  const pH=getTeamPower(h),pA=getTeamPower(a),wH=Math.pow(pH,4),wA=Math.pow(pA,4);
+  let sH=0,sA=0;for(let i=0;i<20;i++){if(Math.random()<0.135){if(Math.random()*(wH+wA)<wH)sH++;else sA++;}}
+  if(sH===sA&&forceDecide){if(Math.random()*(wH+wA)<wH)sH++;else sA++;}
+  return{sH,sA,w:sH>sA?h:sA>sH?a:null};
+}
+function getScorer(team){
+  if(team===userTeam){const nonGk=squad.filter(p=>p&&p.r[0]!=="P");const att=nonGk.filter(p=>["PC","AS","AD","TQ"].includes(p.r[0]));if(att.length&&Math.random()<0.82)return rnd(att).n;return nonGk.length?rnd(nonGk).n:"GIOCATORE";}
+  const sq=HIST[team]?.sq;if(sq){const f=sq.slice(1);if(Math.random()<0.72)return f[Math.floor(Math.random()*Math.min(3,f.length))+(f.length>6?6:0)]||f[0];return rnd(f);}return"CENTRAVANTI";
+}
+
+function startTournament(){
+  userTeam=document.getElementById("inp-name").value.trim().toUpperCase()||"LA MIA NAZIONALE";
+  userStats={m:0,w:0,d:0,l:0,gf:0,gs:0,scorers:{}};
+  document.getElementById("screen-create").classList.add("hidden");
+  document.getElementById("screen-tournament").classList.remove("hidden");
+  const strong=shuffle(Object.keys(HIST).filter(t=>HIST[t].tier==="strong"));
+  const med=shuffle(Object.keys(HIST).filter(t=>HIST[t].tier==="med"));
+  const weak=shuffle(Object.keys(HIST).filter(t=>HIST[t].tier==="weak"));
+  const rivals=[strong[0],rnd(med),rnd(weak)];
+  const[A,B,C,D]=[userTeam,...rivals];
+  const bcR=simMatchFull(B,C,false),bdR=simMatchFull(B,D,false),cdR=simMatchFull(C,D,false);
+  userGroupMatches=[{h:A,a:B,sH:null,sA:null,w:null,played:false},{h:A,a:C,sH:null,sA:null,w:null,played:false},{h:D,a:A,sH:null,sA:null,w:null,played:false}];
+  const gs={};[A,B,C,D].forEach(n=>gs[n]={name:n,pts:0,gf:0,gs:0,m:0,isUser:n===userTeam});
+  function apR(h,a,sH,sA){gs[h].m++;gs[h].gf+=sH;gs[h].gs+=sA;gs[a].m++;gs[a].gf+=sA;gs[a].gs+=sH;if(sH>sA)gs[h].pts+=3;else if(sA>sH)gs[a].pts+=3;else{gs[h].pts++;gs[a].pts++;}}
+  apR(B,C,bcR.sH,bcR.sA);apR(B,D,bdR.sH,bdR.sA);apR(C,D,cdR.sH,cdR.sA);
+  window._gs=gs;groupMatchIdx=0;currentPhase="Gironi";semiFinalLosers=[];
+  document.getElementById("phase-badge").textContent="FASE A GIRONI";
+  document.getElementById("other-results").innerHTML=`<strong style="color:var(--cya)">ALTRI RISULTATI:</strong><br>${B} vs ${C}: ${bcR.sH}-${bcR.sA} | ${B} vs ${D}: ${bdR.sH}-${bdR.sA} | ${C} vs ${D}: ${cdR.sH}-${cdR.sA}`;
+  renderGroupTable();renderMatchPreview();
+}
+function renderGroupTable(){
+  const gs=window._gs;if(!gs)return;
+  const tbody=document.getElementById("group-tbody");tbody.innerHTML="";
+  Object.values(gs).sort((a,b)=>b.pts!==a.pts?b.pts-a.pts:(b.gf-b.gs)-(a.gf-a.gs)).forEach(t=>{
+    const tr=document.createElement("tr");if(t.isUser)tr.className="user-row";
+    tr.innerHTML=`<td>${t.name}</td><td class="num">${t.m}</td><td class="num">${t.pts}</td><td class="num">${t.gf}</td><td class="num">${t.gs}</td>`;
+    tbody.appendChild(tr);
+  });
+}
+function applyGroupResult(h,a,sH,sA){
+  const gs=window._gs;if(!gs||!gs[h]||!gs[a])return;
+  gs[h].m++;gs[h].gf+=sH;gs[h].gs+=sA;gs[a].m++;gs[a].gf+=sA;gs[a].gs+=sH;
+  if(sH>sA)gs[h].pts+=3;else if(sA>sH)gs[a].pts+=3;else{gs[h].pts++;gs[a].pts++;}
+}
+function renderMatchPreview(){
+  const btn=document.getElementById("btn-play"),pT=document.getElementById("preview-teams"),pP=document.getElementById("preview-phase");
+  btn.style.display="block";btn.disabled=false;btn.className="btn btn-primary";
+  if(currentPhase==="Gironi"){
+    if(groupMatchIdx>=userGroupMatches.length){pT.textContent="GIRONI COMPLETATI";pP.textContent="CHI AVANZA?";btn.textContent="▶ FASE ELIMINATORIA";btn.className="btn btn-gold";return;}
+    const m=userGroupMatches[groupMatchIdx];pT.textContent=m.h+"\nVS\n"+m.a;pP.textContent="FASE A GIRONI";btn.textContent="▶ SCENDI IN CAMPO!";btn.className="btn btn-gold";
+  }else{
+    if(koMatchIdx>=koMatches.length){pT.textContent="TURNO COMPLETATO";pP.textContent="";btn.textContent="▶ PROSSIMO TURNO";return;}
+    const m=koMatches[koMatchIdx];pT.textContent=m.h+"\nVS\n"+m.a;pP.textContent=currentPhase;
+    const isUser=m.h===userTeam||m.a===userTeam;btn.textContent=isUser?"▶ SCENDI IN CAMPO!":"▶ SIMULA";
+    if(isUser)btn.className="btn btn-gold";
+  }
+}
+function handlePlayBtn(){
+  if(matchState&&matchState.active)return;
+  if(currentPhase==="Gironi"){
+    if(groupMatchIdx>=userGroupMatches.length){goKnockout();return;}
+    startLiveMatch(userGroupMatches[groupMatchIdx],"group");
+  }else{
+    if(koMatchIdx>=koMatches.length){advanceKO();return;}
+    const m=koMatches[koMatchIdx];
+    if(m.h!==userTeam&&m.a!==userTeam){
+      const r=simMatchFull(m.h,m.a,true);m.sH=r.sH;m.sA=r.sA;m.w=r.w;m.played=true;
+      if(currentPhase==="Semifinali"&&r.w){const loser=r.w===m.h?m.a:m.h;semiFinalLosers.push(loser);}
+      koMatchIdx++;renderKO();renderMatchPreview();
+    }else{startLiveMatch(m,"ko");}
+  }
+}
+function goKnockout(){
+  const gs=window._gs;
+  const sorted=Object.values(gs).sort((a,b)=>b.pts!==a.pts?b.pts-a.pts:(b.gf-b.gs)-(a.gf-a.gs));
+  const qual=[sorted[0].name,sorted[1].name];
+  if(!qual.includes(userTeam)){showReport("ELIMINATO AI GIRONI",null);return;}
+  document.getElementById("view-group").classList.add("hidden");
+  document.getElementById("view-ko").classList.remove("hidden");
+  document.getElementById("live-box").classList.add("hidden");
+  const extra=shuffle(Object.keys(HIST).filter(t=>!qual.includes(t)));
+  koPool=shuffle([...qual,...extra.slice(0,30)]);koPhaseIdx=0;buildKORound();
+}
+function buildKORound(){
+  currentPhase=KO_PHASES[koPhaseIdx];
+  document.getElementById("phase-badge").textContent=currentPhase.toUpperCase();
+  document.getElementById("ko-round-name").textContent="▸ "+currentPhase.toUpperCase();
+  koMatches=[];
+  if(currentPhase==="Finale 3 Posto"){
+    const l1=semiFinalLosers[0]||"TBD",l2=semiFinalLosers[1]||"TBD";
+    koMatches=[{h:l1,a:l2,played:false,sH:0,sA:0,w:null}];
+  }else{
+    for(let i=0;i<koPool.length-1;i+=2)koMatches.push({h:koPool[i],a:koPool[i+1],played:false,sH:0,sA:0,w:null});
+  }
+  koMatchIdx=koMatches.findIndex(m=>m.h===userTeam||m.a===userTeam);
+  if(koMatchIdx===-1){
+    koMatches.forEach(m=>{const r=simMatchFull(m.h,m.a,true);m.sH=r.sH;m.sA=r.sA;m.w=r.w;m.played=true;if(currentPhase==="Semifinali"){const loser=r.w===m.h?m.a:m.h;semiFinalLosers.push(loser);}});
+    koMatchIdx=koMatches.length;renderKO();showReport("ELIMINATO IN "+currentPhase,null);return;
+  }
+  for(let i=0;i<koMatchIdx;i++){const r=simMatchFull(koMatches[i].h,koMatches[i].a,true);koMatches[i].sH=r.sH;koMatches[i].sA=r.sA;koMatches[i].w=r.w;koMatches[i].played=true;if(currentPhase==="Semifinali"){const loser=r.w===koMatches[i].h?koMatches[i].a:koMatches[i].h;semiFinalLosers.push(loser);}}
+  renderKO();renderMatchPreview();
+}
+function advanceKO(){
+  if(currentPhase==="Finale 3 Posto"){
+    koPhaseIdx=KO_PHASES.indexOf("Finale");
+    koPool=window._finalists||[];buildKORound();return;
+  }
+  const winners=koMatches.map(m=>m.w).filter(Boolean);
+  if(currentPhase==="Semifinali"){window._finalists=winners;koPool=winners;koPhaseIdx++;buildKORound();return;}
+  koPool=winners;koPhaseIdx++;if(koPhaseIdx<KO_PHASES.length)buildKORound();
+}
+function renderKO(){
+  const grid=document.getElementById("ko-grid");grid.innerHTML="";
+  koMatches.forEach(m=>{
+    const isU=m.h===userTeam||m.a===userTeam;
+    const d=document.createElement("div");d.className="ko-match"+(m.played?" played":"")+(isU?" user-match":"");
+    if(m.played)d.innerHTML=`<div class="ko-teams">${m.h}<br>VS<br>${m.a}</div><div class="ko-result">${m.sH} - ${m.sA}</div><div class="ko-winner">▶ ${m.w}</div>`;
+    else d.innerHTML=`<div class="ko-teams">${m.h}<br>VS<br>${m.a}</div><div class="ko-pending">DA GIOCARE</div>`;
+    grid.appendChild(d);
+  });
+}
+function getTickMs(){const v=document.getElementById("sel-speed").value;return v==="fast"?25:v==="slow"?400:140;}
+function getEventMs(){const v=document.getElementById("sel-speed").value;return v==="fast"?450:v==="slow"?1800:1100;}
+function getActionPauseMs(){const v=document.getElementById("sel-speed").value;return v==="fast"?0:v==="slow"?1500:1000;}
+// Delay pre-scritta rigori: sempre 2000ms indipendente dalla velocita'
+function getPenDelay(){return 2000;}
+
+function startLiveMatch(m,context){
+  document.getElementById("live-box").classList.remove("hidden");
+  document.getElementById("live-header").textContent=m.h+" VS "+m.a+" | "+currentPhase;
+  document.getElementById("sb-home-name").textContent=m.h;document.getElementById("sb-away-name").textContent=m.a;
+  document.getElementById("sb-score").textContent="0 - 0";document.getElementById("sb-timer").textContent="00'";
+  document.getElementById("sb-sc-home").innerHTML="";document.getElementById("sb-sc-away").innerHTML="";
+  document.getElementById("match-log").innerHTML="";document.getElementById("btn-play").disabled=true;
+  const isUserHome=m.h===userTeam;
+  matchState={active:true,min:1,sH:0,sA:0,extra:false,match:m,context,shList:[],saList:[],isUserHome};
+  clearTimeout(matchTimer);tick();
+}
+function logEl(html,cls){const el=document.getElementById("match-log"),d=document.createElement("div");d.className=cls;d.innerHTML=html;el.appendChild(d);el.scrollTop=el.scrollHeight;}
+function getLogClass(isUserAction,isGoal){if(isGoal)return isUserAction?"log-goal-user":"log-goal-opp";return isUserAction?"log-user":"log-opp";}
+function updateSB(){
+  document.getElementById("sb-score").textContent=matchState.sH+" - "+matchState.sA;
+  document.getElementById("sb-sc-home").innerHTML=matchState.shList.map(s=>`<div>${s}</div>`).join("");
+  document.getElementById("sb-sc-away").innerHTML=matchState.saList.map(s=>`<div>${s}</div>`).join("");
+}
+function flash(isUG,cancel){const f=document.getElementById("flash");f.className="flash-overlay";void f.offsetWidth;f.className="flash-overlay "+(cancel?"fl-red":isUG?"fl-green":"fl-red");setTimeout(()=>f.className="flash-overlay",1800);}
+function showGoalAnnounce(scorer,min,isUserGoal,team){
+  const box=document.getElementById("goal-announce");
+  box.className="goal-announce"+(isUserGoal?"":" opp");
+  box.innerHTML=`⚽ GOL!<br>${scorer}<br><span style="font-size:8px">${min}' — ${team}</span>`;
+  box.style.display="block";setTimeout(()=>box.style.display="none",2100);
+}
+function showResultOverlay(svgContent,title,score,sub,callback){
+  document.getElementById("result-svg").innerHTML=svgContent;
+  document.getElementById("result-title").textContent=title;
+  document.getElementById("result-score").textContent=score;
+  document.getElementById("result-sub").textContent=sub;
+  document.getElementById("result-overlay").classList.add("show");
+  pendingOverlayCallback=callback||null;
+}
+function closeResultOverlay(){document.getElementById("result-overlay").classList.remove("show");if(pendingOverlayCallback){const cb=pendingOverlayCallback;pendingOverlayCallback=null;cb();}}
+
+function tick(){
+  if(!matchState||!matchState.active)return;
+  const ms=matchState,m=ms.match;
+  const pH=getTeamPower(m.h),pA=getTeamPower(m.a),wH=Math.pow(pH,4),wA=Math.pow(pA,4);
+  const speed=document.getElementById("sel-speed").value;
+  document.getElementById("sb-timer").textContent=String(ms.min).padStart(2,"0")+"'";
+  if(ms.min===45&&!ms.extra){logEl("** FINE 1T - INTERVALLO **","log-pause");ms.min=46;setTimeout(()=>tick(),getEventMs()*1.5);return;}
+  if(ms.min===90&&!ms.extra){
+    if(ms.context==="group"||ms.sH!==ms.sA){logEl(`** TRIPLICE FISCHIO - ${ms.sH}-${ms.sA} FT **`,"log-end");ms.active=false;clearTimeout(matchTimer);setTimeout(()=>finishMatch(ms),1000);return;}
+    logEl("** FINE 90' - SUPPLEMENTARI! **","log-pause");ms.extra=true;ms.min=91;setTimeout(()=>tick(),getEventMs()*1.5);return;
+  }
+  if(ms.min===105&&ms.extra){logEl("** FINE 1T SUPPL. - CAMBIO CAMPO **","log-pause");ms.min=106;setTimeout(()=>tick(),getEventMs());return;}
+  if(ms.min===120&&ms.extra){
+    if(ms.sH!==ms.sA){logEl(`** TRIPLICE FISCHIO - ${ms.sH}-${ms.sA} AET **`,"log-end");ms.active=false;clearTimeout(matchTimer);setTimeout(()=>finishMatch(ms),1000);return;}
+    logEl("** FINE SUPPL. - RIGORI! **","log-pause");ms.active=false;clearTimeout(matchTimer);setTimeout(()=>doPenalties(ms),getEventMs());return;
+  }
+  const ev=Math.random();
+  if(ev<0.018){
+    const isH=Math.random()*(wH+wA)<wH,team=isH?m.h:m.a,scorer=getScorer(team),isUserGoal=team===userTeam;
+    const isVar=Math.random()<0.08&&speed!=="fast";
+    if(isH)ms.sH++;else ms.sA++;
+    const txt=GOAL_TYPES[Math.floor(Math.random()*GOAL_TYPES.length)](scorer,ms.min);
+    logEl(txt,getLogClass(isUserGoal,true));flash(isUserGoal,false);updateSB();
+    showGoalAnnounce(scorer,ms.min,isUserGoal,team);
+    if(isVar){
+      setTimeout(()=>{logEl("VAR: CONTROLLO IN CORSO...","log-var");
+        setTimeout(()=>{if(isH)ms.sH--;else ms.sA--;logEl("ANNULLATO! FUORIGIOCO DI "+scorer,"log-var");flash(false,true);updateSB();matchTimer=setTimeout(tick,getTickMs());},getEventMs()*0.8);},1200);
+    }else{
+      if(isH)ms.shList.push("⚽"+scorer+" "+ms.min+"'");else ms.saList.push("⚽"+scorer+" "+ms.min+"'");
+      if(isUserGoal){if(!userStats.scorers[scorer])userStats.scorers[scorer]=0;userStats.scorers[scorer]++;}
+      setTimeout(()=>{updateSB();ms.min++;matchTimer=setTimeout(tick,getTickMs());},2000);
+    }
+    return;
+  }else if(ev<0.12&&speed!=="fast"){
+    const isH=Math.random()*(wH+wA)<wH,isUserAction=(isH?m.h:m.a)===userTeam;
+    logEl(String(ms.min).padStart(2,"0")+"' "+(isH?m.h:m.a)+": "+rnd(isH?ATK:DEF),getLogClass(isUserAction,false));
+    ms.min++;matchTimer=setTimeout(tick,getTickMs()+getActionPauseMs());return;
+  }
+  ms.min++;matchTimer=setTimeout(tick,getTickMs());
+}
+
+// RIGORI — 2 secondi di pausa prima di ogni scritta
+function doPenalties(ms){
+  const m=ms.match;
+  const pH=getTeamPower(m.h),pA=getTeamPower(m.a);
+  const probH=Math.min(0.82,0.60+(pH-7.5)*0.028),probA=Math.min(0.82,0.60+(pA-7.5)*0.028);
+  let rH=0,rA=0;
+
+  // delay() prima di loggare -> 2 secondi fissi
+  function delay(ms){return new Promise(r=>setTimeout(r,ms));}
+
+  async function doKick(team,scorer,prob,isHome){
+    await delay(getPenDelay()); // 2 secondi di attesa prima di annunciare il calciatore
+    const cls=team===userTeam?"log-pen-user":"log-pen-opp";
+    logEl(team+": "+scorer+" AL DISCHETTO...",cls);
+    await delay(getPenDelay()); // 2 secondi di suspense
+    if(Math.random()<prob){
+      if(isHome)rH++;else rA++;
+      logEl("  ⚽ GOL! RETE DI "+scorer,cls);
+      flash(team===userTeam,false);
+    }else{
+      logEl("  ✗ ERRORE! "+scorer+" SBAGLIA.",  "log-miss");
+    }
+    document.getElementById("sb-score").textContent="("+rH+") - ("+rA+")";
+    await delay(800);
+  }
+
+  async function phase1(k){
+    if(k>5){await afterFive();return;}
+    const sH=getScorer(m.h);
+    await doKick(m.h,sH,probH,true);
+    if(rH-rA>(5-k)){await finish();return;}
+    const sA=getScorer(m.a);
+    await doKick(m.a,sA,probA,false);
+    if(rA-rH>(5-k)){await finish();return;}
+    await phase1(k+1);
+  }
+  async function afterFive(){
+    if(rH!==rA){await finish();return;}
+    await delay(getPenDelay());
+    logEl("PARITA'! SUDDEN DEATH!","log-pause");
+    await sd(0);
+  }
+  async function sd(cnt){
+    if(cnt>=20){await finish();return;}
+    const sH=getScorer(m.h),sA=getScorer(m.a);
+    await doKick(m.h,sH,probH,true);
+    await doKick(m.a,sA,probA,false);
+    if(rH>rA||rA>rH){await finish();return;}
+    await sd(cnt+1);
+  }
+  async function finish(){
+    const w=rH>rA?m.h:m.a;
+    await delay(getPenDelay());
+    logEl("RIGORI: "+m.h+"("+rH+")-("+rA+")"+m.a+" PASSA: "+w,"log-pause");
+    await delay(getPenDelay());
+    if(rH>rA)ms.sH++;else ms.sA++;
+    logEl("** TRIPLICE FISCHIO **","log-end");
+    setTimeout(()=>finishMatch(ms),1200);
+  }
+
+  phase1(1);
+}
+
+function finishMatch(ms){
+  clearTimeout(matchTimer);
+  const m=ms.match,fH=ms.sH,fA=ms.sA;
+  const uIsH=m.h===userTeam,uG=uIsH?fH:fA,uC=uIsH?fA:fH;
+  const userWon=(uIsH&&fH>fA)||(!uIsH&&fA>fH),isDraw=fH===fA;
+  userStats.m++;userStats.gf+=uG;userStats.gs+=uC;
+  if(isDraw)userStats.d++;else if(userWon)userStats.w++;else userStats.l++;
+  m.sH=fH;m.sA=fA;m.w=fH>fA?m.h:fA>fH?m.a:null;m.played=true;
+  const scoreStr=fH+" - "+fA;
+  let svg,title,sub;
+  if(userWon){svg=SVG_WIN;title="VITTORIA!";sub=m.h+" VS "+m.a;}
+  else if(isDraw){svg=SVG_DRAW;title="PAREGGIO";sub=m.h+" VS "+m.a;}
+  else{svg=SVG_LOSS;title="SCONFITTA";sub=m.h+" VS "+m.a;}
+  showResultOverlay(svg,title,scoreStr,sub,()=>afterMatchOverlay(ms,m,fH,fA,userWon,isDraw));
+}
+
+function afterMatchOverlay(ms,m,fH,fA,userWon,isDraw){
+  if(ms.context==="group"){
+    applyGroupResult(m.h,m.a,fH,fA);renderGroupTable();groupMatchIdx++;setTimeout(renderMatchPreview,400);
+  }else{
+    if(currentPhase==="Semifinali"){const loser=m.w===m.h?m.a:m.h;semiFinalLosers.push(loser);}
+    const isLastPhase=currentPhase==="Finale",is3rd=currentPhase==="Finale 3 Posto";
+    if(isLastPhase&&userWon){renderKO();koMatchIdx=koMatches.length;showReport("CAMPIONE DEL MONDO!","champion");}
+    else if(is3rd&&userWon){renderKO();koMatchIdx=koMatches.length;showReport("3° POSTO!","third");}
+    else if(is3rd&&!userWon){renderKO();koMatchIdx=koMatches.length;showReport("4° POSTO","fourth");}
+    else if(isLastPhase&&!userWon){renderKO();koMatchIdx=koMatches.length;showReport("VICE CAMPIONE!","second");}
+    else if(!userWon&&!isDraw){
+      if(currentPhase==="Semifinali"){
+        for(let i=koMatchIdx+1;i<koMatches.length;i++){const r=simMatchFull(koMatches[i].h,koMatches[i].a,true);koMatches[i].sH=r.sH;koMatches[i].sA=r.sA;koMatches[i].w=r.w;koMatches[i].played=true;const loser=r.w===koMatches[i].h?koMatches[i].a:koMatches[i].h;if(!semiFinalLosers.includes(loser))semiFinalLosers.push(loser);}
+        window._finalists=koMatches.map(mm=>mm.w).filter(Boolean);
+        renderKO();koMatchIdx=koMatches.length;koPhaseIdx=KO_PHASES.indexOf("Finale 3 Posto");
+        setTimeout(()=>buildKORound(),600);
+      }else{renderKO();koMatchIdx=koMatches.length;setTimeout(()=>showReport("ELIMINATO IN "+currentPhase,null),400);}
+    }else{
+      for(let i=koMatchIdx+1;i<koMatches.length;i++){const r=simMatchFull(koMatches[i].h,koMatches[i].a,true);koMatches[i].sH=r.sH;koMatches[i].sA=r.sA;koMatches[i].w=r.w;koMatches[i].played=true;if(currentPhase==="Semifinali"){const loser=r.w===koMatches[i].h?koMatches[i].a:koMatches[i].h;if(!semiFinalLosers.includes(loser))semiFinalLosers.push(loser);}}
+      if(currentPhase==="Semifinali")window._finalists=koMatches.map(mm=>mm.w).filter(Boolean);
+      renderKO();koMatchIdx=koMatches.length;setTimeout(renderMatchPreview,600);
+    }
+  }
+}
+
+function predictChampion(){
+  const all=shuffle(Object.keys(HIST));let pool=all.slice(0,32);
+  for(let r=0;r<5;r++){const w=[];for(let i=0;i<pool.length-1;i+=2){const x=simMatchFull(pool[i],pool[i+1],true);w.push(x.w);}pool=w;if(pool.length===1)break;}
+  return pool[0]||"—";
+}
+
+function showReport(stageText,resultType){
+  document.getElementById("control-panel").classList.add("hidden");
+  document.getElementById("live-box").classList.add("hidden");
+  document.getElementById("view-ko").classList.add("hidden");
+  document.getElementById("view-group").classList.add("hidden");
+  let topScorer="NESSUNO",maxG=0;
+  for(const[k,v]of Object.entries(userStats.scorers)){if(v>maxG){maxG=v;topScorer=k+" ("+v+" GOL)";}}
+  const champion=predictChampion();
+  const rpt=document.getElementById("view-report");rpt.classList.remove("hidden");
+  let medalSvg="",medalTitle="";
+  if(resultType==="champion"){medalSvg=SVG_CUP;medalTitle="★ CAMPIONE ★";}
+  else if(resultType==="second"){medalSvg=SVG_SILVER;medalTitle="MEDAGLIA D'ARGENTO";}
+  else if(resultType==="third"){medalSvg=SVG_BRONZE;medalTitle="MEDAGLIA DI BRONZO";}
+  rpt.innerHTML=`<div class="report-wrap">
+    ${medalSvg?`<div style="margin:0 auto 14px;text-align:center">${medalSvg}</div>`:""}
+    ${medalTitle?`<div style="font-size:9px;color:var(--yel);margin-bottom:10px;line-height:2">${medalTitle}</div>`:""}
+    <div class="report-stage">${stageText}</div>
+    <div class="report-stats">
+      <div class="stat-box"><div class="stat-num">${userStats.m}</div><div class="stat-lbl">PARTITE</div></div>
+      <div class="stat-box"><div class="stat-num" style="color:var(--px)">${userStats.w}</div><div class="stat-lbl">VITTORIE</div></div>
+      <div class="stat-box"><div class="stat-num" style="color:var(--yel)">${userStats.d}</div><div class="stat-lbl">PAREGGI</div></div>
+      <div class="stat-box"><div class="stat-num" style="color:var(--red)">${userStats.l}</div><div class="stat-lbl">SCONFITTE</div></div>
+      <div class="stat-box"><div class="stat-num" style="color:var(--cya)">${userStats.gf}</div><div class="stat-lbl">GOL FATTI</div></div>
+      <div class="stat-box"><div class="stat-num">${userStats.gs}</div><div class="stat-lbl">GOL SUBITI</div></div>
+    </div>
+    <div class="stat-box" style="margin:10px 0;font-size:7px;line-height:2.2"><span style="color:var(--cya)">CAPOCANNONIERE:</span><br><span style="color:var(--yel)">${topScorer}</span></div>
+    ${resultType!=="champion"?`<div class="champion-note"><strong>▸ CAMPIONE MONDIALE (SIM)</strong>NELLA SIMULAZIONE PARALLELA IL TITOLO E' ANDATO A:<br><span style="color:var(--px)">${champion}</span></div>`:""}
+    <button class="btn btn-gold" style="margin-top:14px" onclick="location.reload()">▶ INSERISCI GETTONE</button>
+  </div>`;
+}
+init();
+</script>
+</body>
+</html>
