@@ -13,20 +13,24 @@ body{background:var(--bg);color:var(--wht);font-family:'Press Start 2P',monospac
 .hidden{display:none!important}
 body::before{content:"";position:fixed;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,0.13) 2px,rgba(0,0,0,0.13) 4px);pointer-events:none;z-index:9000}
 .app{padding:14px;max-width:1000px;margin:0 auto}
-.header{text-align:center;padding:20px 0 14px;border-bottom:3px solid var(--yel);margin-bottom:18px;position:relative;overflow:hidden}
+.header{text-align:center;padding:28px 0 20px;border-bottom:3px solid var(--yel);margin-bottom:18px;position:relative;overflow:hidden}
 .header::before{content:"";position:absolute;bottom:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--red),var(--yel),var(--px),var(--cya),var(--red));animation:rbow 2s linear infinite;background-size:200%}
 @keyframes rbow{0%{background-position:0%}100%{background-position:200%}}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.7}}
-.logo-back{font-size:9px;color:var(--red);letter-spacing:4px;margin-bottom:2px}
-.logo-main{font-size:20px;text-shadow:3px 3px 0 var(--red),0 0 20px var(--yel);letter-spacing:3px;line-height:1.4;margin-bottom:4px}
-.logo-world{color:var(--cya);text-shadow:3px 3px 0 #0066aa,0 0 15px var(--cya)}
+.logo-back{font-size:13px;color:var(--red);letter-spacing:6px;margin-bottom:4px}
+.logo-main{font-size:32px;text-shadow:4px 4px 0 var(--red),0 0 28px var(--yel);letter-spacing:5px;line-height:1.4;margin-bottom:6px}
+.logo-world{color:var(--cya);text-shadow:4px 4px 0 #0066aa,0 0 22px var(--cya)}
 .logo-cup{color:var(--yel)}
-.logo-ed{font-size:9px;letter-spacing:4px;margin-top:6px}
+.logo-ed{font-size:13px;letter-spacing:6px;margin-top:8px}
 .card{background:var(--card);border:2px solid var(--border);padding:14px;margin-bottom:12px}
 .slbl{font-size:8px;color:var(--cya);text-transform:uppercase;letter-spacing:2px;margin-bottom:10px;border-bottom:1px solid var(--border);padding-bottom:5px}
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
 @media(max-width:700px){.grid2{grid-template-columns:1fr}}
+@media(max-width:480px){
+  .logo-main{font-size:22px;letter-spacing:3px}
+  .logo-back,.logo-ed{font-size:9px;letter-spacing:4px}
+}
 .fr{margin-bottom:12px}
 .fr label{display:block;font-size:8px;color:var(--cya);margin-bottom:5px;letter-spacing:1px}
 .fr input,.fr select{width:100%;padding:7px 10px;font-size:8px;font-family:'Press Start 2P',monospace;border:2px solid var(--border);background:var(--bg);color:var(--wht);outline:none}
@@ -95,8 +99,8 @@ body::before{content:"";position:fixed;inset:0;background:repeating-linear-gradi
 /* LIVE CONTROLS */
 .lc{background:var(--bg);border:2px solid var(--border);padding:8px 10px;margin-top:8px}
 .lc-lbl{font-size:7px;color:var(--cya);margin-bottom:5px;letter-spacing:1px}
-.lc-btns{display:flex;gap:4px;flex-wrap:wrap}
-.lc-btn{padding:5px 7px;font-size:7px;font-family:'Press Start 2P',monospace;border:1px solid var(--border);background:var(--card);color:var(--dim);cursor:pointer;transition:all .1s}
+.lc-btns{display:flex;gap:4px;flex-wrap:nowrap}
+.lc-btn{flex:1;padding:6px 2px;font-size:6px;font-family:'Press Start 2P',monospace;border:1px solid var(--border);background:var(--card);color:var(--dim);cursor:pointer;transition:all .1s;text-align:center;white-space:nowrap}
 .lc-btn:hover{border-color:var(--cya);color:var(--cya)}
 .lc-btn.on{border-color:var(--yel);color:var(--yel);background:var(--surface)}
 /* LOG */
@@ -236,16 +240,16 @@ body::before{content:"";position:fixed;inset:0;background:repeating-linear-gradi
             <option value="5-3-2">5-3-2</option><option value="3-4-3">3-4-3</option>
             <option value="4-5-1">4-5-1</option><option value="4-1-4-1">4-1-4-1</option>
             <option value="5-4-1">5-4-1</option><option value="4-3-2-1">4-3-2-1 (XMAS)</option>
-            <option value="3-6-1">3-6-1</option><option value="4-2-4">4-2-4</option>
+            <option value="4-2-4">4-2-4</option>
           </select>
         </div>
         <div class="fr"><label>STILE DI GIOCO</label>
           <select id="sel-style">
-            <option value="ultra-d">ULTRA DIFENSIVO</option>
-            <option value="difesa">DIFESA E CONTROPIEDE</option>
+            <option value="ultra-d">DIFESA+ (massima copertura)</option>
+            <option value="difesa">DIFESA (prudente)</option>
             <option value="medio" selected>EQUILIBRATO</option>
-            <option value="attacco">TRAZIONE ANTERIORE</option>
-            <option value="ultra-a">ULTRA OFFENSIVO</option>
+            <option value="attacco">ATTACCO (propositivo)</option>
+            <option value="ultra-a">ATTACCO+ (tutto avanti)</option>
           </select>
         </div>
         <div style="margin-top:12px;padding:10px;background:var(--bg);border:1px solid var(--border)">
@@ -324,13 +328,13 @@ body::before{content:"";position:fixed;inset:0;background:repeating-linear-gradi
             </div>
           </div>
           <div class="lc" style="margin-top:4px">
-            <div class="lc-lbl">🎯 STILE</div>
+            <div class="lc-lbl">🎯 STILE DI GIOCO</div>
             <div class="lc-btns" id="stl-btns">
-              <button class="lc-btn" onclick="setStl('ultra-d')">U-DEF</button>
-              <button class="lc-btn" onclick="setStl('difesa')">DEF</button>
-              <button class="lc-btn on" onclick="setStl('medio')">EQ</button>
-              <button class="lc-btn" onclick="setStl('attacco')">ATT</button>
-              <button class="lc-btn" onclick="setStl('ultra-a')">U-ATT</button>
+              <button class="lc-btn" onclick="setStl('ultra-d')">DIFESA+</button>
+              <button class="lc-btn" onclick="setStl('difesa')">DIFESA</button>
+              <button class="lc-btn on" onclick="setStl('medio')">EQUILIBRATO</button>
+              <button class="lc-btn" onclick="setStl('attacco')">ATTACCO</button>
+              <button class="lc-btn" onclick="setStl('ultra-a')">ATTACCO+</button>
             </div>
           </div>
           <div class="mlog" id="mlog"></div>
@@ -532,7 +536,10 @@ const TEAM_COLORS={
   "Arabia Saudita '94":["#006c35","#ffffff"],"Iran '78":["#239f40","#da0000"],
   "Svezia '58":["#006aa7","#fecc02"],"Argentina '30":["#74acdf","#ffffff"],"Cecoslov. '62":["#d7141a","#ffffff"],
   "Jamaica '98":["#000000","#ffd700"],"Messico '86":["#006847","#ffffff"],"Togo '06":["#006a4e","#ffce00"],
-  "Zaire '74":["#007fff","#ffcd00"],"Honduras '14":["#0073cf","#ffffff"]
+  "Zaire '74":["#007fff","#ffcd00"],"Honduras '14":["#0073cf","#ffffff"],
+  "Svizzera '18":["#ff0000","#ffffff"],"Olanda '14":["#ff6600","#ffffff"],"Bosnia '14":["#002395","#fecb00"],
+  "Germania '90":["#000000","#dd0000"],"Jugoslavia '90":["#0c4076","#ff0000"],"Belgio '86":["#000000","#ed1c24"],
+  "Danimarca '86":["#c60c30","#ffffff"]
 };
 function getTColors(name){return TEAM_COLORS[name]||[primaryCol,secondaryCol];}
 const FORMATIONS={
@@ -546,7 +553,6 @@ const FORMATIONS={
   "4-1-4-1":[[50,92,"P"],[14,74,"TS"],[37,76,"DC"],[63,76,"DC"],[86,74,"TD"],[50,62,"MD"],[18,46,"CS"],[38,48,"CC"],[62,48,"CC"],[82,46,"CD"],[50,17,"PC"]],
   "5-4-1":[[50,92,"P"],[10,70,"TS"],[30,76,"DC"],[50,79,"DC"],[70,76,"DC"],[90,70,"TD"],[14,48,"CS"],[36,50,"CC"],[64,50,"CC"],[86,48,"CD"],[50,17,"PC"]],
   "4-3-2-1":[[50,92,"P"],[14,74,"TS"],[37,76,"DC"],[63,76,"DC"],[86,74,"TD"],[28,55,"CC"],[50,58,"CC"],[72,55,"CC"],[34,36,"AS"],[66,36,"AD"],[50,18,"PC"]],
-  "3-6-1":[[50,92,"P"],[24,76,"DC"],[50,79,"DC"],[76,76,"DC"],[10,50,"CS"],[28,52,"CC"],[42,54,"CC"],[58,54,"CC"],[72,52,"CC"],[90,50,"CD"],[50,18,"PC"]],
   "4-2-4":[[50,92,"P"],[14,74,"TS"],[37,76,"DC"],[63,76,"DC"],[86,74,"TD"],[35,58,"MD"],[65,58,"MD"],[14,24,"AS"],[38,20,"PC"],[62,20,"PC"],[86,24,"AD"]]
 };
 // GIOCATORI
@@ -611,12 +617,16 @@ const PLAYERS=[
   {n:"Neeskens",r:["MD"],pw:9.0,from:"Olanda 74"},{n:"Gerson",r:["MD"],pw:8.6,from:"Brasile 70"},{n:"Cambiasso",r:["MD"],pw:8.5,from:"Argentina 06"},
   {n:"Dacourt",r:["MD"],pw:7.9,from:"Francia 02"},{n:"Boateng K.",r:["MD"],pw:8.3,from:"Ghana 10"},
   {n:"Vieira",r:["MD"],pw:9.0,from:"Francia 98"},{n:"Essien",r:["MD"],pw:8.4,from:"Ghana 06"},{n:"Petit",r:["MD"],pw:8.5,from:"Francia 98"},{n:"Vogts",r:["MD"],pw:8.3,from:"Germania 74"},
-  // CS/CD (12)
+  // CS/CD (18)
   {n:"Vidal",r:["CS"],pw:8.6,from:"Cile 14"},{n:"Aranguiz",r:["CS"],pw:8.3,from:"Cile 14"},{n:"Milner",r:["CS"],pw:7.9,from:"Inghilterra 06"},
   {n:"Mena",r:["CS"],pw:7.7,from:"Cile 14"},{n:"Robson",r:["CS"],pw:8.7,from:"Inghilterra 86"},{n:"Boniek",r:["CS"],pw:8.8,from:"Polonia 82"},
+  {n:"Xhaka",r:["CS"],pw:8.2,from:"Svizzera 18"},{n:"Zuber",r:["CS"],pw:7.8,from:"Svizzera 18"},{n:"Coman",r:["CS"],pw:8.5,from:"Francia 18"},
+  {n:"Wijnaldum",r:["CS"],pw:8.4,from:"Olanda 14"},{n:"Sneijder",r:["CS"],pw:9.1,from:"Olanda 10"},{n:"Davids",r:["CS"],pw:8.6,from:"Olanda 98"},
   {n:"Conti",r:["CD"],pw:8.2,from:"Italia 82"},{n:"Camoranesi",r:["CD"],pw:8.0,from:"Italia 06"},
   {n:"Perrotta",r:["CD"],pw:8.1,from:"Italia 06"},{n:"Zanetti D.",r:["CD"],pw:7.8,from:"Argentina 98"},
   {n:"Cabanas",r:["CD"],pw:7.8,from:"Paraguay 10"},{n:"Fabregas",r:["CD"],pw:8.8,from:"Spagna 10"},
+  {n:"Freuler",r:["CD"],pw:8.0,from:"Svizzera 18"},{n:"Dzemaili",r:["CD"],pw:7.7,from:"Svizzera 18"},{n:"De Jong F.",r:["CD"],pw:8.5,from:"Olanda 14"},
+  {n:"Wesley S.",r:["CD"],pw:8.2,from:"Olanda 10"},{n:"Cocu",r:["CD"],pw:8.1,from:"Olanda 98"},{n:"Pjanic",r:["CD"],pw:8.3,from:"Bosnia 14"},
   // ATTACCANTI CENTRALI (28)
   {n:"Pele",r:["PC"],pw:10.0,from:"Brasile 70"},{n:"Ronaldo R.",r:["PC"],pw:9.9,from:"Brasile 02"},{n:"Cruyff",r:["PC"],pw:9.9,from:"Olanda 74"},
   {n:"C. Ronaldo",r:["PC"],pw:9.7,from:"Portogallo 06"},{n:"Muller G.",r:["PC"],pw:9.7,from:"Germania 74"},{n:"Romario",r:["PC"],pw:9.4,from:"Brasile 94"},
@@ -695,7 +705,14 @@ const HIST={
   "Honduras '14":{pw:7.1,tier:"weak",sq:["Valladares","Beckeles","Bernardez","Figueroa","Chavez","Costly","Espinoza","Garcia","Bengtson","Garrido","Izaguirre"]},
   "Svezia '58":{pw:8.3,tier:"weak",sq:["Svensson","Bergmark","Gustavsson","Axbom","Liedholm","Hamrin","Grahn","Mellberg","Skoglund","Simonsson","Gren"]},
   "Argentina '30":{pw:8.4,tier:"weak",sq:["Botasso","Della Torre","Paternoster","Medici","Zumelzu","Evaristo J.","Zubieta","Ferreira","Evaristo M.","Stabile","Perinetti"]},
-  "Cecoslov. '62":{pw:8.0,tier:"weak",sq:["Schrojf","Lala","Navratil","Pluskal","Novak","Masopust","Kvasznak","Scherer","Adamec","Kadraba","Jelinek"]}
+  "Cecoslov. '62":{pw:8.0,tier:"weak",sq:["Schrojf","Lala","Navratil","Pluskal","Novak","Masopust","Kvasznak","Scherer","Adamec","Kadraba","Jelinek"]},
+  "Svizzera '18":{pw:8.4,tier:"med",sq:["Sommer","Lichtsteiner","Schar","Akanji","Rodriguez","Xhaka","Freuler","Zuber","Shaqiri","Embolo","Dzemaili"]},
+  "Olanda '14":{pw:9.2,tier:"strong",sq:["Cillessen","Janmaat","De Vrij","Vlaar","Martins Indi","De Jong F.","Wijnaldum","Blind","Robben","Van Persie","Sneijder"]},
+  "Bosnia '14":{pw:8.1,tier:"med",sq:["Begovic","Lulic","Spahic","Medunjanin","Bicakcic","Pjanic","Misimovic","Vrsajevic","Ibisevic","Dzeko","Visca"]},
+  "Germania '90":{pw:9.4,tier:"strong",sq:["Illgner","Berthold","Augenthaler","Kohler","Brehme","Matthaus","Hassler","Littbarski","Buchwald","Voller","Klinsmann"]},
+  "Jugoslavia '90":{pw:8.7,tier:"med",sq:["Ivkovic","Stojkovic D.","Spasic","Hadzibegic","Brnovic","Stojkovic D2","Jozic","Prosinecki","Savicevic","Susic","Pancev"]},
+  "Belgio '86":{pw:8.6,tier:"med",sq:["Pfaff","Gerets","Renquin","Demol","De Wolf","Vercauteren","Vandenbergh","Scifo","Ceulemans","Claesen","Veyt"]},
+  "Danimarca '86":{pw:8.5,tier:"med",sq:["Hojer","Busk","Nielsen","Olsen","Sivebaek","Berggreen","Lerby","Bertelsen","Laudrup M.","Elkjaer","Arnesen"]}
 };
 
 
@@ -1113,7 +1130,13 @@ function goKO(){
   const gs=window._gs;
   const sorted=Object.values(gs).sort((a,b)=>b.pts!==a.pts?b.pts-a.pts:(b.gf-b.gs)-(a.gf-a.gs));
   const qual=[sorted[0].n,sorted[1].n];
-  if(!qual.includes(userTeam)){showReport("ELIMINATO AI GIRONI",null);return;}
+  if(!qual.includes(userTeam)){
+    // Costruisci un pool di 16 squadre (senza la nostra) per simulare il vincitore reale
+    const grpAllX=new Set([...grpRivals,userTeam]);
+    const noGroupX=shuf(Object.keys(HIST).filter(t=>!qual.includes(t)&&!grpAllX.has(t)));
+    window._eliminatedPool=shuf([...qual,...noGroupX.slice(0,14)]);
+    showReport("ELIMINATO AI GIRONI",null);return;
+  }
   document.getElementById("v-grp").classList.add("hidden");
   document.getElementById("v-ko").classList.remove("hidden");
   document.getElementById("live-box").classList.add("hidden");
@@ -1454,7 +1477,7 @@ function afterMatch(ms,m,fH,fA,userWon,isDraw){
     if(isLast&&userWon){renderKO();koMIdx=koMs.length;showReport("CAMPIONE DEL MONDO!","champion");}
     else if(is3rd&&userWon){renderKO();koMIdx=koMs.length;showReport("3° POSTO!","third");}
     else if(is3rd&&!userWon){renderKO();koMIdx=koMs.length;showReport("4° POSTO","fourth");}
-    else if(isLast&&!userWon){renderKO();koMIdx=koMs.length;showReport("VICE CAMPIONE!","second");}
+    else if(isLast&&!userWon){window._lastFinalWinner=m.w;renderKO();koMIdx=koMs.length;showReport("VICE CAMPIONE!","second");}
     else if(!userWon&&!isDraw){
       if(phase==="Semifinali"){
         for(let i=koMIdx+1;i<koMs.length;i++){const r=simFull(koMs[i].h,koMs[i].a,true);koMs[i].sH=r.sH;koMs[i].sA=r.sA;koMs[i].w=r.w;koMs[i].played=true;const l=r.w===koMs[i].h?koMs[i].a:koMs[i].h;if(!sfLosers.includes(l))sfLosers.push(l);}
@@ -1497,29 +1520,46 @@ function afterMatch(ms,m,fH,fA,userWon,isDraw){
 }
 
 function predChampion(){
-  // Usa i vincitori reali del bracket corrente per simulare il torneo rimanente
-  // Se abbiamo i finalisti già determinati, simula la finale tra loro
+  // Caso "VICE CAMPIONE": il vincitore reale è già noto (l'avversario che ci ha battuto in finale)
+  if(window._lastFinalWinner)return window._lastFinalWinner;
+
+  // Caso finalisti determinati (nessuno dei due è la nostra squadra, dato che siamo stati eliminati prima)
   if(window._finalists&&window._finalists.length>=2){
-    const[f1,f2]=window._finalists;
-    return simFull(f1,f2,true).w||f1;
+    const cand=window._finalists.filter(t=>t!==userTeam);
+    if(cand.length>=2)return simFull(cand[0],cand[1],true).w||cand[0];
+    if(cand.length===1)return cand[0];
   }
-  // Se abbiamo un pool KO in corso, simula il torneo da lì
-  if(koPool&&koPool.length>=2){
-    let pool=[...koPool];
-    // Aggiungi anche i vincitori delle partite già giocate nel round corrente
-    const roundWinners=koMs.filter(m=>m.played&&m.w&&m.w!==userTeam).map(m=>m.w);
-    const combined=[...new Set([...pool,...roundWinners])].filter(Boolean);
-    let p=combined.length>=2?combined:pool;
-    for(let r=0;r<6;r++){
-      if(p.length<=1)break;
-      const w=[];
-      for(let i=0;i<p.length-1;i+=2){w.push(simFull(p[i],p[i+1],true).w||p[i]);}
-      if(p.length%2===1)w.push(p[p.length-1]);
-      p=w;
+
+  // Caso eliminazione in un turno KO (Ottavi/Quarti/Semifinali):
+  // usa i vincitori REALI del round corrente, escludendo sempre la nostra squadra
+  if(koMs&&koMs.length>0){
+    let pool=koMs.map(m=>m.w).filter(Boolean).filter(t=>t!==userTeam);
+    if(pool.length>=1){
+      for(let r=0;r<6;r++){
+        if(pool.length<=1)break;
+        const w=[];
+        for(let i=0;i<pool.length-1;i+=2)w.push(simFull(pool[i],pool[i+1],true).w||pool[i]);
+        if(pool.length%2===1)w.push(pool[pool.length-1]);
+        pool=w;
+      }
+      return pool[0]||"—";
     }
-    return p[0]||"—";
   }
-  // Fallback: simula da squadre storiche forti
+
+  // Caso eliminazione ai gironi: pool di 16 squadre senza la nostra, costruito in goKO
+  if(window._eliminatedPool&&window._eliminatedPool.length>=2){
+    let pool=window._eliminatedPool.filter(t=>t!==userTeam);
+    for(let r=0;r<6;r++){
+      if(pool.length<=1)break;
+      const w=[];
+      for(let i=0;i<pool.length-1;i+=2)w.push(simFull(pool[i],pool[i+1],true).w||pool[i]);
+      if(pool.length%2===1)w.push(pool[pool.length-1]);
+      pool=w;
+    }
+    return pool[0]||"—";
+  }
+
+  // Fallback estremo: simula da squadre storiche forti (esclude sempre userTeam)
   const top=shuf(Object.keys(HIST).filter(t=>HIST[t].tier==="strong")).slice(0,8);
   let pool=top;
   for(let r=0;r<4;r++){const w=[];for(let i=0;i<pool.length-1;i+=2){w.push(simFull(pool[i],pool[i+1],true).w||pool[i]);}pool=w;if(pool.length<=1)break;}
