@@ -57,6 +57,7 @@ body::before{content:"";position:fixed;inset:0;background:repeating-linear-gradi
 .pdot:hover,.pdot.sel{box-shadow:0 0 0 2px var(--yel),0 0 10px var(--yel)}
 .pdot.filled{box-shadow:0 0 0 2px var(--px)}
 .pname{font-size:8px;color:#fff;text-shadow:1px 1px 0 #000,-1px -1px 0 #000;text-align:center;max-width:56px;line-height:1.3}
+.prole{font-size:6px;color:var(--cya);text-shadow:1px 1px 0 #000;text-align:center;letter-spacing:1px;margin-top:1px}
 .pstars{font-size:8px;text-align:center;line-height:1.2}
 .pval{font-size:7px;color:var(--yel);text-align:center;text-shadow:1px 1px 0 #000}
 /* BUDGET */
@@ -143,6 +144,7 @@ body::before{content:"";position:fixed;inset:0;background:repeating-linear-gradi
 .mprev{background:var(--bg);border:2px solid var(--border);padding:14px;text-align:center;margin-bottom:12px}
 .mprev-t{font-size:10px;color:var(--yel);margin-bottom:6px;line-height:2.2}
 .mprev-p{font-size:8px;color:var(--dim)}
+.mprev-pred{font-size:7px;margin-top:8px;letter-spacing:1px;padding:4px 0;border-top:1px solid var(--border)}
 .pbadge{display:inline-block;font-size:7px;padding:5px 10px;background:var(--surface);border:1px solid var(--border);color:var(--cya);margin-bottom:12px;letter-spacing:1px}
 #other-results{font-size:8px;color:var(--dim);margin-top:10px;border-top:1px solid var(--border);padding-top:8px;line-height:2.5}
 /* REPORT */
@@ -181,6 +183,7 @@ body::before{content:"";position:fixed;inset:0;background:repeating-linear-gradi
   <div id="res-title" class="res-title"></div>
   <div id="res-score" class="res-score"></div>
   <div id="res-sub" class="res-sub"></div>
+  <div id="res-motm" style="display:none;background:var(--surface);border:1px solid var(--border);padding:8px 14px;margin-bottom:16px;text-align:center"></div>
   <button class="res-close" data-i18n="res_continue" onclick="closeOverlay()">▶ CONTINUE</button>
 </div>
 
@@ -353,7 +356,7 @@ body::before{content:"";position:fixed;inset:0;background:repeating-linear-gradi
       <div id="ctrl-panel">
         <div class="card">
           <div class="slbl" data-i18n="lbl_next_match">▸ NEXT MATCH</div>
-          <div class="mprev"><div class="mprev-t" id="prev-teams">—</div><div class="mprev-p" id="prev-phase">—</div></div>
+          <div class="mprev"><div class="mprev-t" id="prev-teams">—</div><div class="mprev-p" id="prev-phase">—</div><div class="mprev-pred" id="prev-pred"></div></div>
           <div id="next-opp-box" style="display:none;text-align:center;font-size:7px;color:var(--dim);padding:4px 0;border-top:1px solid var(--border);margin-bottom:8px"><span data-i18n="lbl_next_opponent">NEXT OPPONENT: </span><span id="next-opp" style="color:var(--cya)"></span></div>
           <button class="btn btn-p" id="btn-play" data-i18n="btn_play" onclick="handlePlay()">▶ PLAY</button>
         </div>
@@ -822,7 +825,13 @@ const I18N={
     // Phase names
     ph_gironi:"GROUP STAGE",ph_ottavi:"ROUND OF 16",ph_quarti:"QUARTER-FINALS",
     ph_semifinali:"SEMI-FINALS",ph_finale3:"THIRD PLACE PLAY-OFF",ph_finale:"FINAL",
-    goal_announce:"⚽ GOAL!"
+    goal_announce:"⚽ GOAL!",
+    pred_favorite:"FAVORITES",
+    pred_balanced:"EVEN MATCH",
+    pred_underdog:"UNDERDOGS",
+    motm:"⭐ PLAYER OF THE MATCH",
+    motm_gk_note:" (clean sheet)",
+    your_path:"▸ YOUR WORLD CUP RUN"
   },
   it:{
     s1_title:"▸ CREA LA TUA NAZIONALE",
@@ -920,7 +929,13 @@ const I18N={
     // Phase names
     ph_gironi:"FASE A GIRONI",ph_ottavi:"OTTAVI",ph_quarti:"QUARTI",
     ph_semifinali:"SEMIFINALI",ph_finale3:"FINALE 3° POSTO",ph_finale:"FINALE",
-    goal_announce:"⚽ GOL!"
+    goal_announce:"⚽ GOL!",
+    pred_favorite:"FAVORITI",
+    pred_balanced:"PARTITA EQUILIBRATA",
+    pred_underdog:"OUTSIDER",
+    motm:"⭐ MIGLIOR GIOCATORE",
+    motm_gk_note:" (porta inviolata)",
+    your_path:"▸ IL TUO PERCORSO MONDIALE"
   }
 };
 function T(key){return (I18N[LANG]&&I18N[LANG][key])!==undefined?I18N[LANG][key]:key;}
@@ -1138,9 +1153,10 @@ function buildPitch(){
     dot.style.background=primaryCol;dot.style.color=secondaryCol;dot.textContent=sl[2];
     dot.onclick=()=>openDraft(sl[2],i);
     const nm=document.createElement("div");nm.className="pname";nm.id="pnm-"+i;nm.textContent="--";
+    const rl=document.createElement("div");rl.className="prole";rl.id="prl-"+i;rl.textContent="";
     const st=document.createElement("div");st.className="pstars";st.id="pst-"+i;
     const vl=document.createElement("div");vl.className="pval";vl.id="pvl-"+i;
-    wrap.appendChild(dot);wrap.appendChild(nm);wrap.appendChild(st);wrap.appendChild(vl);
+    wrap.appendChild(dot);wrap.appendChild(nm);wrap.appendChild(rl);wrap.appendChild(st);wrap.appendChild(vl);
     pitch.appendChild(wrap);
   });
   updateBudget();
@@ -1204,6 +1220,7 @@ function openNextSlot(){
 function pickPlayer(p,idx){
   squad[idx]=p;
   const nm=document.getElementById("pnm-"+idx);if(nm)nm.textContent=p.n.length>10?p.n.substring(0,9)+"…":p.n;
+  const rl=document.getElementById("prl-"+idx);if(rl)rl.textContent=p.r[0];
   const st=document.getElementById("pst-"+idx);if(st)st.innerHTML=stars(p.pw);
   const vl=document.getElementById("pvl-"+idx);if(vl)vl.textContent=p.pw.toFixed(1);
   const dot=document.getElementById("pd-"+idx);if(dot){dot.classList.add("filled");dot.classList.remove("sel");}
@@ -1217,6 +1234,7 @@ function clearAll(){
   for(let i=0;i<11;i++){
     const d=document.getElementById("pd-"+i);if(d){d.textContent=slots[i]?slots[i][2]:"?";d.classList.remove("filled","sel");}
     const n=document.getElementById("pnm-"+i);if(n)n.textContent="--";
+    const r=document.getElementById("prl-"+i);if(r)r.textContent="";
     const s=document.getElementById("pst-"+i);if(s)s.innerHTML="";
     const v=document.getElementById("pvl-"+i);if(v)v.textContent="";
   }
@@ -1322,6 +1340,7 @@ function getActMs(){return curSpd==="fast"?0:curSpd==="slow"?1500:1000;}
 function startTournament(){
   userTeam=(document.getElementById("inp-name").value.trim()||T("default_team_name")).toUpperCase();
   userStats={m:0,w:0,d:0,l:0,gf:0,gs:0,scorers:{}};
+  window._matchHistory=[];
   // Sync stile
   const selSt=document.getElementById("sel-style").value;
   curStl=selSt;setStl(selSt);
@@ -1368,12 +1387,23 @@ function renderGrp(){
   });
 }
 
+function getPrediction(opponent){
+  const pU=teamPow(userTeam),pO=teamPow(opponent);
+  const wU=Math.pow(pU,4),wO=Math.pow(pO,4);
+  const probU=wU/(wU+wO);
+  if(probU>=0.58)return{key:"pred_favorite",col:"var(--px)"};
+  if(probU<=0.42)return{key:"pred_underdog",col:"var(--red)"};
+  return{key:"pred_balanced",col:"var(--yel)"};
+}
+
 function renderPrev(){
   const btn=document.getElementById("btn-play");
   const pT=document.getElementById("prev-teams");
   const pP=document.getElementById("prev-phase");
+  const pPred=document.getElementById("prev-pred");
   if(!btn||!pT||!pP)return;
   btn.style.display="block";btn.disabled=false;btn.className="btn btn-p";
+  if(pPred){pPred.style.display="none";pPred.textContent="";}
   if(phase==="Gironi"){
     if(grpIdx>=ugm.length){
       pT.textContent=T("groups_completed");pP.textContent=T("who_advances");
@@ -1381,6 +1411,11 @@ function renderPrev(){
     }else{
       const m=ugm[grpIdx];pT.textContent=m.h+"\nVS\n"+m.a;pP.textContent=T("phase_groups");
       btn.textContent=T("btn_play_match");btn.className="btn btn-g";
+      if(pPred){
+        const opp=m.h===userTeam?m.a:m.h;
+        const pred=getPrediction(opp);
+        pPred.textContent=T(pred.key);pPred.style.color=pred.col;pPred.style.display="block";
+      }
     }
   }else{
     if(koMIdx>=koMs.length){
@@ -1390,6 +1425,11 @@ function renderPrev(){
       const isU=m.h===userTeam||m.a===userTeam;
       btn.textContent=isU?T("btn_play_match"):T("btn_simulate");
       if(isU)btn.className="btn btn-g";
+      if(isU&&pPred){
+        const opp=m.h===userTeam?m.a:m.h;
+        const pred=getPrediction(opp);
+        pPred.textContent=T(pred.key);pPred.style.color=pred.col;pPred.style.display="block";
+      }
     }
   }
 }
@@ -1731,25 +1771,59 @@ function finishMatch(ms){
   userStats.m++;userStats.gf+=uG;userStats.gs+=uC;
   if(isDraw)userStats.d++;else if(userWon)userStats.w++;else userStats.l++;
   m.sH=fH;m.sA=fA;m.w=fH>fA?m.h:fA>fH?m.a:null;m.played=true;
+  // Calcola il Player of the Match (per la nostra squadra)
+  let motm=null;
+  const ourList=uIsH?ms.hList:ms.aList;
+  if(ourList&&ourList.length>0){
+    const counts={};
+    ourList.forEach(s=>{
+      const nameMatch=s.match(/⚽([^0-9]+?)\s*\d+/);
+      const name=nameMatch?nameMatch[1].trim():null;
+      if(name)counts[name]=(counts[name]||0)+1;
+    });
+    let best=null,bestN=0;
+    for(const[k,v]of Object.entries(counts)){if(v>bestN){bestN=v;best=k;}}
+    if(best)motm={name:best,goals:bestN,gk:false};
+  }
+  if(!motm&&uC===0&&squad[0]){
+    motm={name:squad[0].n,goals:0,gk:true};
+  }
   let svg,title,sub;
   if(userWon){svg=SVG_WIN;title=T("res_win");}
   else if(isDraw){svg="";title=T("res_draw");}
   else{svg="";title=T("res_loss");}
   sub=m.h+" VS "+m.a;
-  showOverlay(svg,title,fH+" - "+fA,sub,()=>afterMatch(ms,m,fH,fA,userWon,isDraw));
+  showOverlay(svg,title,fH+" - "+fA,sub,motm,()=>afterMatch(ms,m,fH,fA,userWon,isDraw));
 }
 
-function showOverlay(svgC,title,score,sub,cb){
+function showOverlay(svgC,title,score,sub,motm,cb){
   document.getElementById("res-svg").innerHTML=svgC;
   document.getElementById("res-title").textContent=title;
   document.getElementById("res-score").textContent=score;
   document.getElementById("res-sub").textContent=sub;
+  const motmBox=document.getElementById("res-motm");
+  if(motmBox){
+    if(motm){
+      const note=motm.gk?T("motm_gk_note"):"";
+      const icon=motm.gk?"🧤":"⚽";
+      motmBox.innerHTML='<div style="font-size:6px;color:var(--cya);letter-spacing:1px;margin-bottom:4px">'+T("motm")+'</div>'
+        +'<div style="font-size:9px;color:var(--yel)">'+icon+' '+motm.name+note+'</div>';
+      motmBox.style.display="block";
+    }else{
+      motmBox.style.display="none";motmBox.innerHTML="";
+    }
+  }
   document.getElementById("res-ov").classList.add("show");
   overlayCallback=cb||null;
 }
 function closeOverlay(){document.getElementById("res-ov").classList.remove("show");if(overlayCallback){const cb=overlayCallback;overlayCallback=null;cb();}}
 
 function afterMatch(ms,m,fH,fA,userWon,isDraw){
+  if(ms.ctx!=="group"){
+    // Registra la partita nel percorso del torneo (per il report finale)
+    const uIsH=m.h===userTeam;
+    window._matchHistory.push({phase:phase,opp:uIsH?m.a:m.h,uG:uIsH?fH:fA,oG:uIsH?fA:fH});
+  }
   if(ms.ctx==="group"){
     applyR(m.h,m.a,fH,fA);
     // Applica i risultati avversari uno alla volta nell'ordine corretto:
@@ -1788,8 +1862,9 @@ function afterMatch(ms,m,fH,fA,userWon,isDraw){
         renderKO();
         // Mostra tabellone aggiornato prima del report; aggiungi bottone per proseguire
         const btn=document.getElementById("btn-play");
+        const elimPhase=phase; // cattura il valore corrente, non per riferimento
         if(btn){btn.textContent=T("btn_view_report");btn.disabled=false;btn.className="btn btn-g";
-          btn.onclick=()=>showReport("phase",null,phase);}
+          btn.onclick=()=>showReport("phase",null,elimPhase);}
       }
     }else{
       // User ha vinto questo round
@@ -1884,13 +1959,31 @@ function showReport(stageKey,resultType,extraPhase){
     const p=squad[i];
     // Nomi più corti per evitare overflow nel campo del report
     const nm=p?p.n:'--';  // nome completo senza troncatura
+    const from=p?(p.from||''):'';
     const st=p?stars(p.pw):'';
     pitchDots+='<div style="position:absolute;transform:translate(-50%,-50%);left:'+sl[0]+'%;top:'+sl[1]+'%;display:flex;flex-direction:column;align-items:center;gap:2px;z-index:5">'
       +'<div style="width:24px;height:24px;display:flex;align-items:center;justify-content:center;font-size:7px;color:#000;background:'+primaryCol+';clip-path:polygon(3px 0,calc(100% - 3px) 0,100% 3px,100% calc(100% - 3px),calc(100% - 3px) 100%,3px 100%,0 calc(100% - 3px),0 3px)">'+sl[2]+'</div>'
       +'<div style="font-size:7px;color:#fff;text-shadow:1px 1px 0 #000,-1px -1px 0 #000;text-align:center;max-width:56px;line-height:1.4;word-break:break-word">'+nm+'</div>'
+      +(from?'<div style="font-size:6px;color:var(--cya);text-shadow:1px 1px 0 #000;text-align:center;line-height:1">'+from+'</div>':'')
       +'<div style="font-size:7px;text-align:center;line-height:1">'+st+'</div>'
       +'</div>';
   });
+  // Percorso del torneo (solo turni eliminatori)
+  let pathHtml="";
+  if(window._matchHistory&&window._matchHistory.length>0){
+    const rows=window._matchHistory.map(h=>{
+      const res=h.uG+"-"+h.oG;
+      const col=h.uG>h.oG?"var(--px)":h.uG<h.oG?"var(--red)":"var(--yel)";
+      return '<div style="display:flex;justify-content:space-between;padding:3px 0;border-bottom:1px solid var(--border);font-size:7px">'
+        +'<span style="color:var(--cya)">'+tPhase(h.phase)+'</span>'
+        +'<span style="color:'+col+'">'+res+'</span>'
+        +'<span style="color:var(--dim)">vs '+h.opp+'</span>'
+        +'</div>';
+    }).join("");
+    pathHtml='<div style="background:var(--surface);border:2px solid var(--border);padding:10px;margin:10px 0;text-align:left">'
+      +'<div style="font-size:8px;color:var(--cya);margin-bottom:6px">'+T("your_path")+'</div>'
+      +rows+'</div>';
+  }
   // Calcola l'etichetta della fase/risultato in base allo stageKey
   let stageLabel;
   if(resultType==="champion")stageLabel=T("world_champions");
@@ -1911,6 +2004,7 @@ function showReport(stageKey,resultType,extraPhase){
     '<div class="stat-box"><div class="stat-num" style="color:var(--yel)">'+userStats.d+'</div><div class="stat-lbl">'+T("rep_draws")+'</div></div>'+
     '<div class="stat-box"><div class="stat-num" style="color:var(--red)">'+userStats.l+'</div><div class="stat-lbl">'+T("rep_losses")+'</div></div>'+
     '</div>'+
+    pathHtml+
     // Capocannoniere con pallone pixel
     '<div style="background:var(--surface);border:2px solid var(--border);padding:10px;margin:10px 0;display:flex;align-items:center;gap:10px">'+
     '<svg width="32" height="32" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"><circle cx="16" cy="16" r="14" fill="#fff" stroke="#222" stroke-width="1.5"/><polygon points="16,4 20,10 14,14 10,10" fill="#222"/><polygon points="26,12 28,18 22,20 18,14" fill="#222"/><polygon points="22,26 16,28 14,22 20,18" fill="#222"/><polygon points="10,26 6,20 10,16 16,20" fill="#222"/><polygon points="6,12 12,10 14,16 8,18" fill="#222"/></svg>'+
