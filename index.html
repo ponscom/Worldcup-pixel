@@ -22,7 +22,7 @@ body::before{content:"";position:fixed;inset:0;background:repeating-linear-gradi
 @keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.7}}
 .logo-back{font-size:13px;color:var(--red);letter-spacing:6px;margin-bottom:4px}
-.logo-main{font-size:32px;text-shadow:4px 4px 0 var(--red),0 0 28px var(--yel);letter-spacing:5px;line-height:1.4;margin-bottom:6px}
+.logo-main{font-size:40px;text-shadow:5px 5px 0 var(--red),0 0 32px var(--yel);letter-spacing:6px;line-height:1.4;margin-bottom:8px}
 .logo-world{color:var(--cya);text-shadow:4px 4px 0 #0066aa,0 0 22px var(--cya)}
 .logo-cup{color:var(--yel)}
 .logo-ed{font-size:13px;letter-spacing:6px;margin-top:8px}
@@ -31,7 +31,7 @@ body::before{content:"";position:fixed;inset:0;background:repeating-linear-gradi
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
 @media(max-width:700px){.grid2{grid-template-columns:1fr}}
 @media(max-width:480px){
-  .logo-main{font-size:22px;letter-spacing:3px}
+  .logo-main{font-size:28px;letter-spacing:4px}
   .logo-back,.logo-ed{font-size:9px;letter-spacing:4px}
 }
 .fr{margin-bottom:12px}
@@ -163,8 +163,16 @@ body::before{content:"";position:fixed;inset:0;background:repeating-linear-gradi
 @keyframes fR{0%,100%{background:rgba(255,51,51,0)}40%,60%{background:rgba(255,51,51,.25)}}
 .fl-g{animation:fG .5s 3;opacity:1}
 .fl-r{animation:fR .5s 3;opacity:1}
+/* MOMENTUM BAR */
+.mom-bar{display:flex;width:100%;height:6px;margin-top:8px;border:1px solid var(--border);overflow:hidden}
+.mom-left{height:100%;width:50%}
+.mom-right{height:100%;width:50%}
+@keyframes momFlash{0%,100%{filter:brightness(1)}40%,60%{filter:brightness(2.5)}}
+.mom-left.flash,.mom-right.flash{animation:momFlash .5s 3}
 .goal-ann{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:#050508;border:3px solid var(--px);padding:16px 24px;color:var(--px);font-size:11px;font-family:'Press Start 2P',monospace;z-index:9020;text-align:center;max-width:300px;display:none;pointer-events:none;line-height:2.2;box-shadow:0 0 24px var(--px);text-shadow:0 0 10px var(--px)}
 .goal-ann.opp{border-color:var(--red);color:var(--red);box-shadow:0 0 24px var(--red);text-shadow:0 0 10px var(--red)}
+.goal-ann.hat-trick{border-color:var(--yel);color:var(--yel);box-shadow:0 0 30px var(--yel);text-shadow:0 0 12px var(--yel)}
+.l-hat{color:var(--yel);background:#1a1400;padding:4px 8px;margin:4px 0;text-align:center;font-size:9px}
 .res-ov{position:fixed;inset:0;background:rgba(0,0,0,.93);z-index:9030;display:none;align-items:center;justify-content:center;flex-direction:column;font-family:'Press Start 2P',monospace;text-align:center}
 .res-ov.show{display:flex}
 .res-svg{margin-bottom:20px}
@@ -315,6 +323,10 @@ body::before{content:"";position:fixed;inset:0;background:repeating-linear-gradi
             <div class="sb-teamrow">
               <div class="sb-tname"><span id="sb-hdot" class="sb-dot"></span><span id="sb-hname"></span></div>
               <div class="sb-tname" style="flex-direction:row-reverse"><span id="sb-aname"></span><span id="sb-adot" class="sb-dot"></span></div>
+            </div>
+            <div class="mom-bar" id="mom-bar">
+              <div class="mom-left" id="mom-left"></div>
+              <div class="mom-right" id="mom-right"></div>
             </div>
             <div class="sb-scorers">
               <div class="sb-col sc-u" id="sb-hsc"></div>
@@ -488,24 +500,17 @@ const SVG_LOSS=`<svg width="100" height="100" viewBox="0 0 100 100" xmlns="http:
 <rect x="54" y="88" width="6" height="4" fill="#ff3333"/>
 </svg>`;
 
-const SVG_CUP=`<svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+const SVG_CUP=`<svg width="100" height="110" viewBox="0 0 100 110" xmlns="http://www.w3.org/2000/svg">
 <style>.sh{animation:sh 2s infinite}.sh2{animation:sh 2s infinite .7s}@keyframes sh{0%,100%{opacity:.3}50%{opacity:1}}</style>
-<rect x="35" y="2" width="30" height="4" fill="#ffff00"/><rect x="31" y="6" width="38" height="4" fill="#ffdd00"/>
-<rect x="27" y="10" width="46" height="6" fill="#ffcc00"/><rect x="23" y="16" width="54" height="10" fill="#ffaa00"/>
-<rect x="8" y="12" width="14" height="4" fill="#cc8800"/><rect x="4" y="16" width="14" height="8" fill="#cc8800"/>
-<rect x="6" y="24" width="14" height="4" fill="#cc8800"/><rect x="78" y="12" width="14" height="4" fill="#cc8800"/>
-<rect x="82" y="16" width="14" height="8" fill="#cc8800"/><rect x="80" y="24" width="14" height="4" fill="#cc8800"/>
-<rect x="25" y="26" width="12" height="4" fill="#cc8800"/><rect x="63" y="26" width="12" height="4" fill="#cc8800"/>
-<rect x="27" y="30" width="46" height="4" fill="#cc8800"/><rect x="29" y="34" width="42" height="4" fill="#bb7700"/>
-<rect x="31" y="38" width="38" height="4" fill="#cc8800"/><rect x="33" y="42" width="34" height="4" fill="#bb7700"/>
-<rect x="35" y="46" width="30" height="4" fill="#cc8800"/><rect x="37" y="50" width="26" height="4" fill="#bb7700"/>
-<rect x="37" y="54" width="26" height="4" fill="#444400"/><rect x="33" y="58" width="34" height="4" fill="#555500"/>
-<rect x="27" y="62" width="46" height="6" fill="#888833"/><rect x="23" y="68" width="54" height="6" fill="#777722"/>
-<rect x="21" y="74" width="58" height="4" fill="#666611"/><rect x="19" y="78" width="62" height="4" fill="#888844"/>
-<rect x="19" y="82" width="62" height="4" fill="#666633"/><rect x="23" y="86" width="54" height="4" fill="#444422"/>
-<rect x="37" y="10" class="sh" width="6" height="14" fill="#ffffcc" opacity=".5"/>
-<rect x="33" y="10" class="sh2" width="3" height="8" fill="#ffffff" opacity=".4"/>
-<rect x="44" y="94" width="4" height="4" fill="#ffff00"/>
+<rect x="25" y="100" width="50" height="8" fill="#1a1a1a"/>
+<rect x="27" y="94" width="46" height="6" fill="#cc8800"/>
+<rect x="28" y="88" width="44" height="6" fill="#0d5c3a"/>
+<rect x="30" y="83" width="40" height="5" fill="#16804f"/>
+<rect x="34.0" y="78" width="6.0" height="6" fill="#e0a800"/><rect x="40.0" y="78" width="8.0" height="6" fill="#fff066"/><rect x="48.0" y="78" width="8.0" height="6" fill="#ffd700"/><rect x="56.0" y="78" width="8.0" height="6" fill="#e0a800"/><rect x="64.0" y="78" width="2.0" height="6" fill="#fff066"/><rect x="31.0" y="72" width="1.0" height="6" fill="#ffd700"/><rect x="32.0" y="72" width="8.0" height="6" fill="#e0a800"/><rect x="40.0" y="72" width="8.0" height="6" fill="#fff066"/><rect x="48.0" y="72" width="8.0" height="6" fill="#ffd700"/><rect x="56.0" y="72" width="8.0" height="6" fill="#e0a800"/><rect x="64.0" y="72" width="5.0" height="6" fill="#fff066"/><rect x="28.0" y="66" width="4.0" height="6" fill="#ffd700"/><rect x="32.0" y="66" width="8.0" height="6" fill="#e0a800"/><rect x="40.0" y="66" width="8.0" height="6" fill="#fff066"/><rect x="48.0" y="66" width="8.0" height="6" fill="#ffd700"/><rect x="56.0" y="66" width="8.0" height="6" fill="#e0a800"/><rect x="64.0" y="66" width="8.0" height="6" fill="#fff066"/><rect x="25.0" y="60" width="7.0" height="6" fill="#ffd700"/><rect x="32.0" y="60" width="8.0" height="6" fill="#e0a800"/><rect x="40.0" y="60" width="8.0" height="6" fill="#fff066"/><rect x="48.0" y="60" width="8.0" height="6" fill="#ffd700"/><rect x="56.0" y="60" width="8.0" height="6" fill="#e0a800"/><rect x="64.0" y="60" width="8.0" height="6" fill="#fff066"/><rect x="72.0" y="60" width="3.0" height="6" fill="#ffd700"/><rect x="22.0" y="54" width="2.0" height="6" fill="#fff066"/><rect x="24.0" y="54" width="8.0" height="6" fill="#ffd700"/><rect x="32.0" y="54" width="8.0" height="6" fill="#e0a800"/><rect x="40.0" y="54" width="8.0" height="6" fill="#fff066"/><rect x="48.0" y="54" width="8.0" height="6" fill="#ffd700"/><rect x="56.0" y="54" width="8.0" height="6" fill="#e0a800"/><rect x="64.0" y="54" width="8.0" height="6" fill="#fff066"/><rect x="72.0" y="54" width="6.0" height="6" fill="#ffd700"/><rect x="19.0" y="48" width="5.0" height="6" fill="#fff066"/><rect x="24.0" y="48" width="8.0" height="6" fill="#ffd700"/><rect x="32.0" y="48" width="8.0" height="6" fill="#e0a800"/><rect x="40.0" y="48" width="8.0" height="6" fill="#fff066"/><rect x="48.0" y="48" width="8.0" height="6" fill="#ffd700"/><rect x="56.0" y="48" width="8.0" height="6" fill="#e0a800"/><rect x="64.0" y="48" width="8.0" height="6" fill="#fff066"/><rect x="72.0" y="48" width="8.0" height="6" fill="#ffd700"/><rect x="80.0" y="48" width="1.0" height="6" fill="#e0a800"/><rect x="17.0" y="42" width="7.0" height="6" fill="#fff066"/><rect x="24.0" y="42" width="8.0" height="6" fill="#ffd700"/><rect x="32.0" y="42" width="8.0" height="6" fill="#e0a800"/><rect x="40.0" y="42" width="8.0" height="6" fill="#fff066"/><rect x="48.0" y="42" width="8.0" height="6" fill="#ffd700"/><rect x="56.0" y="42" width="8.0" height="6" fill="#e0a800"/><rect x="64.0" y="42" width="8.0" height="6" fill="#fff066"/><rect x="72.0" y="42" width="8.0" height="6" fill="#ffd700"/><rect x="80.0" y="42" width="3.0" height="6" fill="#e0a800"/><rect x="16.0" y="36" width="8.0" height="6" fill="#fff066"/><rect x="24.0" y="36" width="8.0" height="6" fill="#ffd700"/><rect x="32.0" y="36" width="8.0" height="6" fill="#e0a800"/><rect x="40.0" y="36" width="8.0" height="6" fill="#fff066"/><rect x="48.0" y="36" width="8.0" height="6" fill="#ffd700"/><rect x="56.0" y="36" width="8.0" height="6" fill="#e0a800"/><rect x="64.0" y="36" width="8.0" height="6" fill="#fff066"/><rect x="72.0" y="36" width="8.0" height="6" fill="#ffd700"/><rect x="80.0" y="36" width="4.0" height="6" fill="#e0a800"/><rect x="17.0" y="30" width="7.0" height="6" fill="#fff066"/><rect x="24.0" y="30" width="8.0" height="6" fill="#ffd700"/><rect x="32.0" y="30" width="8.0" height="6" fill="#e0a800"/><rect x="40.0" y="30" width="8.0" height="6" fill="#fff066"/><rect x="48.0" y="30" width="8.0" height="6" fill="#ffd700"/><rect x="56.0" y="30" width="8.0" height="6" fill="#e0a800"/><rect x="64.0" y="30" width="8.0" height="6" fill="#fff066"/><rect x="72.0" y="30" width="8.0" height="6" fill="#ffd700"/><rect x="80.0" y="30" width="3.0" height="6" fill="#e0a800"/>
+<ellipse class="sh2" cx="38" cy="50" rx="4" ry="22" fill="#ffffff" opacity=".18"/>
+<circle cx="50" cy="17" r="14" fill="#ffd700"/>
+<circle cx="50" cy="17" r="14" fill="none" stroke="#d4a017" stroke-width="1.5"/>
+<ellipse class="sh" cx="45" cy="12" rx="5" ry="3" fill="#ffffff" opacity=".5"/>
 </svg>`;
 const SVG_SILVER=`<svg width="80" height="80" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
 <rect x="28" y="2" width="24" height="4" fill="#ccc"/><rect x="24" y="6" width="32" height="4" fill="#bbb"/>
@@ -551,7 +556,8 @@ const TEAM_COLORS={
   "Germania '90":["#000000","#dd0000"],"Jugoslavia '90":["#0c4076","#ff0000"],"Belgio '86":["#000000","#ed1c24"],
   "Danimarca '86":["#c60c30","#ffffff"],
   "Inghilterra '66":["#ffffff","#cf081f"],"Francia '18":["#002395","#ed2939"],"Brasile '14":["#ffdf00","#009639"],
-  "Polonia '22":["#ffffff","#dc143c"],"Egitto '18":["#ce1126","#000000"],"Galles '22":["#c8102e","#ffffff"]
+  "Polonia '22":["#ffffff","#dc143c"],"Egitto '18":["#ce1126","#000000"],"Galles '22":["#c8102e","#ffffff"],
+  "Spagna '26":["#aa151b","#f1bf00"]
 };
 function getTColors(name){return TEAM_COLORS[name]||[primaryCol,secondaryCol];}
 const FORMATIONS={
@@ -580,7 +586,7 @@ const PLAYERS=[
   {n:"Preud'homme",r:["P"],pw:8.5,from:"Belgio 94"},{n:"Illgner",r:["P"],pw:8.6,from:"Germania 90"},{n:"Contofalsky",r:["P"],pw:7.8,from:"Cecoslov. 90"},
   {n:"Cordoba J.",r:["P"],pw:7.7,from:"Colombia 14"},{n:"Lloris",r:["P"],pw:9.1,from:"Francia 18"},
   // DIFENSORI CENTRALI (36)
-  {n:"Baresi",r:["DC"],pw:9.8,from:"Italia 90"},{n:"Beckenbauer",r:["DC"],pw:9.9,from:"Germania 74"},{n:"Maldini",r:["DC"],pw:9.8,from:"Italia 94"},
+  {n:"Baresi",r:["DC"],pw:9.8,from:"Italia 90"},{n:"Beckenbauer",r:["DC"],pw:9.9,from:"Germania 74"},{n:"P. Maldini",r:["DC","TD"],pw:9.8,from:"Italia 94"},
   {n:"Scirea",r:["DC"],pw:9.6,from:"Italia 82"},{n:"Cannavaro",r:["DC"],pw:9.5,from:"Italia 06"},{n:"Puyol",r:["DC"],pw:9.0,from:"Spagna 10"},
   {n:"Ramos",r:["DC"],pw:9.0,from:"Spagna 10"},{n:"Pique",r:["DC"],pw:8.8,from:"Spagna 10"},{n:"Moore",r:["DC"],pw:8.7,from:"Inghilterra 66"},
   {n:"Thuram",r:["DC"],pw:9.1,from:"Francia 98"},{n:"Desailly",r:["DC"],pw:8.7,from:"Francia 98"},{n:"Blanc",r:["DC"],pw:8.6,from:"Francia 98"},
@@ -593,25 +599,25 @@ const PLAYERS=[
   {n:"Andreoni",r:["DC"],pw:8.2,from:"Italia 82"},{n:"Costacurta",r:["DC"],pw:8.6,from:"Italia 94"},{n:"Sammer",r:["DC"],pw:9.0,from:"Germania 94"},
   {n:"Stam",r:["DC"],pw:8.9,from:"Olanda 98"},{n:"Vidic",r:["DC"],pw:8.5,from:"Serbia 10"},{n:"Varane",r:["DC"],pw:9.1,from:"Francia 18"},
   // TERZINI DX (16)
-  {n:"Cafu",r:["TD"],pw:9.5,from:"Brasile 02"},{n:"Lahm",r:["TD"],pw:9.3,from:"Germania 14"},{n:"Zanetti",r:["TD"],pw:9.0,from:"Argentina 98"},
-  {n:"Hakimi",r:["TD"],pw:8.8,from:"Marocco 22"},{n:"Vrsaljko",r:["TD"],pw:8.1,from:"Croazia 18"},{n:"Molina",r:["TD"],pw:8.4,from:"Argentina 22"},
-  {n:"Zambrotta",r:["TD"],pw:8.5,from:"Italia 06"},{n:"Seitaridis",r:["TD"],pw:7.9,from:"Grecia 04"},{n:"Thuram T.",r:["TD"],pw:8.8,from:"Francia 98"},
-  {n:"Dani Alves",r:["TD"],pw:9.3,from:"Brasile 06"},{n:"Belletti",r:["TD"],pw:7.8,from:"Brasile 06"},{n:"Maicon",r:["TD"],pw:8.6,from:"Brasile 10"},
+  {n:"Cafu",r:["TD","CD"],pw:9.5,from:"Brasile 02"},{n:"Lahm",r:["TD"],pw:9.3,from:"Germania 14"},{n:"Zanetti",r:["TD","CD"],pw:9.0,from:"Argentina 98"},
+  {n:"Hakimi",r:["TD","CD"],pw:8.8,from:"Marocco 22"},{n:"Vrsaljko",r:["TD"],pw:8.1,from:"Croazia 18"},{n:"Molina",r:["TD"],pw:8.4,from:"Argentina 22"},
+  {n:"Zambrotta",r:["TD","CD"],pw:8.5,from:"Italia 06"},{n:"Seitaridis",r:["TD"],pw:7.9,from:"Grecia 04"},{n:"Thuram T.",r:["TD"],pw:8.8,from:"Francia 98"},
+  {n:"Dani Alves",r:["TD","CD"],pw:9.3,from:"Brasile 06"},{n:"Belletti",r:["TD"],pw:7.8,from:"Brasile 06"},{n:"Maicon",r:["TD","CD"],pw:8.6,from:"Brasile 10"},
   {n:"Pirez",r:["TD"],pw:7.7,from:"Uruguay 10"},{n:"Brehme",r:["TD"],pw:8.8,from:"Germania 90"},{n:"Strunz",r:["TD"],pw:7.8,from:"Germania 94"},{n:"Walker",r:["TD"],pw:8.3,from:"Inghilterra 18"},
   // TERZINI SX (16)
-  {n:"R. Carlos",r:["TS"],pw:9.4,from:"Brasile 02"},{n:"Benarrivo",r:["TS"],pw:8.0,from:"Italia 94"},{n:"Lizarazu",r:["TS"],pw:8.6,from:"Francia 98"},
+  {n:"R. Carlos",r:["TS","CS"],pw:9.4,from:"Brasile 02"},{n:"Benarrivo",r:["TS"],pw:8.0,from:"Italia 94"},{n:"Lizarazu",r:["TS"],pw:8.6,from:"Francia 98"},
   {n:"Tagliafico",r:["TS"],pw:8.3,from:"Argentina 22"},{n:"Capdevila",r:["TS"],pw:8.2,from:"Spagna 10"},{n:"Strinic",r:["TS"],pw:7.9,from:"Croazia 18"},
-  {n:"Grosso",r:["TS"],pw:8.3,from:"Italia 06"},{n:"Cabrini",r:["TS"],pw:8.5,from:"Italia 82"},{n:"Bracco",r:["TS"],pw:7.7,from:"Francia 86"},
-  {n:"Evra",r:["TS"],pw:8.6,from:"Francia 06"},{n:"Cole A.",r:["TS"],pw:8.8,from:"Inghilterra 06"},{n:"Nacho",r:["TS"],pw:7.9,from:"Spagna 18"},
-  {n:"Jordi Alba",r:["TS"],pw:8.7,from:"Spagna 14"},{n:"Hernandez L.",r:["TS"],pw:8.3,from:"Francia 18"},{n:"Junior",r:["TS"],pw:8.5,from:"Brasile 82"},{n:"Mannini",r:["TS"],pw:7.6,from:"Italia 90"},
+  {n:"Grosso",r:["TS"],pw:8.3,from:"Italia 06"},{n:"Cabrini",r:["TS","CS"],pw:8.5,from:"Italia 82"},{n:"Bracco",r:["TS"],pw:7.7,from:"Francia 86"},
+  {n:"Evra",r:["TS","CS"],pw:8.6,from:"Francia 06"},{n:"Cole A.",r:["TS"],pw:8.8,from:"Inghilterra 06"},{n:"Nacho",r:["TS"],pw:7.9,from:"Spagna 18"},
+  {n:"Jordi Alba",r:["TS","CS"],pw:8.7,from:"Spagna 14"},{n:"Hernandez L.",r:["TS","CS"],pw:8.3,from:"Francia 18"},{n:"Junior",r:["TS","CS"],pw:8.5,from:"Brasile 82"},{n:"Mannini",r:["TS"],pw:7.6,from:"Italia 90"},
   // TREQUARTISTI (22)
-  {n:"Maradona",r:["TQ"],pw:10.0,from:"Argentina 86"},{n:"Messi",r:["TQ"],pw:10.0,from:"Argentina 22"},{n:"Zidane",r:["TQ"],pw:9.8,from:"Francia 98"},
-  {n:"Platini",r:["TQ"],pw:9.6,from:"Francia 84"},{n:"De Bruyne",r:["TQ"],pw:9.3,from:"Belgio 18"},{n:"Baggio",r:["TQ"],pw:9.5,from:"Italia 94"},
-  {n:"Valderrama",r:["TQ"],pw:8.6,from:"Colombia 90"},{n:"Okocha",r:["TQ"],pw:8.7,from:"Nigeria 98"},{n:"Ozil",r:["TQ"],pw:8.8,from:"Germania 14"},
-  {n:"Rivellino",r:["TQ"],pw:9.0,from:"Brasile 70"},{n:"Antognoni",r:["TQ"],pw:8.6,from:"Italia 82"},{n:"Golovin",r:["TQ"],pw:8.3,from:"Russia 18"},
-  {n:"Muller T.",r:["TQ"],pw:9.0,from:"Germania 14"},{n:"Ziyech",r:["TQ"],pw:8.5,from:"Marocco 22"},{n:"Totti",r:["TQ"],pw:9.2,from:"Italia 06"},
-  {n:"Del Piero",r:["TQ"],pw:9.0,from:"Italia 06"},{n:"Riquelme",r:["TQ"],pw:8.8,from:"Argentina 06"},{n:"Bergkamp",r:["TQ"],pw:9.0,from:"Olanda 98"},
-  {n:"Zola",r:["TQ"],pw:8.4,from:"Italia 94"},{n:"Savicevic",r:["TQ"],pw:8.8,from:"Jugoslavia 90"},{n:"Hristo B.",r:["TQ"],pw:9.2,from:"Bulgaria 94"},{n:"Kaka",r:["TQ"],pw:9.3,from:"Brasile 06"},
+  {n:"Maradona",r:["TQ","PC"],pw:10.0,from:"Argentina 86"},{n:"Messi",r:["TQ","PC"],pw:10.0,from:"Argentina 22"},{n:"Zidane",r:["TQ","CC"],pw:9.8,from:"Francia 98"},
+  {n:"Platini",r:["TQ","CC"],pw:9.6,from:"Francia 84"},{n:"De Bruyne",r:["TQ","CC"],pw:9.3,from:"Belgio 18"},{n:"R. Baggio",r:["TQ","PC"],pw:9.5,from:"Italia 94"},
+  {n:"Valderrama",r:["TQ","CC"],pw:8.6,from:"Colombia 90"},{n:"Okocha",r:["TQ","CC"],pw:8.7,from:"Nigeria 98"},{n:"Ozil",r:["TQ","CC"],pw:8.8,from:"Germania 14"},
+  {n:"Rivellino",r:["TQ","CC"],pw:9.0,from:"Brasile 70"},{n:"Antognoni",r:["TQ","CC"],pw:8.6,from:"Italia 82"},{n:"Golovin",r:["TQ","CC"],pw:8.3,from:"Russia 18"},
+  {n:"Muller T.",r:["TQ","CC"],pw:9.0,from:"Germania 14"},{n:"Ziyech",r:["TQ","CC"],pw:8.5,from:"Marocco 22"},{n:"Totti",r:["TQ","CC"],pw:9.2,from:"Italia 06"},
+  {n:"Del Piero",r:["TQ","PC"],pw:9.0,from:"Italia 06"},{n:"Riquelme",r:["TQ","CC"],pw:8.8,from:"Argentina 06"},{n:"Bergkamp",r:["TQ","PC"],pw:9.0,from:"Olanda 98"},
+  {n:"Zola",r:["TQ","PC"],pw:8.4,from:"Italia 94"},{n:"Savicevic",r:["TQ","CC"],pw:8.8,from:"Jugoslavia 90"},{n:"Stoichkov",r:["TQ","CC"],pw:9.2,from:"Bulgaria 94"},{n:"Kaka",r:["TQ","CC"],pw:9.3,from:"Brasile 06"},
   // CENTROCAMPISTI (26)
   {n:"Matthaus",r:["CC"],pw:9.6,from:"Germania 90"},{n:"Iniesta",r:["CC"],pw:9.6,from:"Spagna 10"},{n:"Xavi",r:["CC"],pw:9.5,from:"Spagna 10"},
   {n:"Modric",r:["CC"],pw:9.4,from:"Croazia 18"},{n:"Pirlo",r:["CC"],pw:9.4,from:"Italia 06"},{n:"Kroos",r:["CC"],pw:9.1,from:"Germania 14"},
@@ -646,7 +652,7 @@ const PLAYERS=[
   {n:"Torres",r:["PC"],pw:8.5,from:"Spagna 10"},{n:"Villa",r:["PC"],pw:8.8,from:"Spagna 10"},{n:"Schillaci",r:["PC"],pw:8.6,from:"Italia 90"},
   {n:"Milla",r:["PC"],pw:8.4,from:"Camerun 90"},{n:"Chicharito",r:["PC"],pw:8.3,from:"Messico 14"},{n:"Gyan",r:["PC"],pw:8.2,from:"Ghana 10"},
   {n:"Tevez",r:["PC"],pw:8.7,from:"Argentina 10"},{n:"Alvarez",r:["PC"],pw:8.5,from:"Argentina 22"},{n:"Hurst",r:["PC"],pw:8.5,from:"Inghilterra 66"},
-  {n:"Stoichkov",r:["PC"],pw:8.8,from:"Bulgaria 94"},{n:"Kempes",r:["PC"],pw:9.0,from:"Argentina 78"},{n:"Rahn",r:["PC"],pw:8.7,from:"Germania 54"},
+  {n:"Kostadinov",r:["PC","AS"],pw:8.8,from:"Bulgaria 94"},{n:"Kempes",r:["PC"],pw:9.0,from:"Argentina 78"},{n:"Rahn",r:["PC"],pw:8.7,from:"Germania 54"},
   {n:"Salenko",r:["PC"],pw:7.8,from:"Russia 94"},{n:"Odemba",r:["PC"],pw:7.7,from:"Nigeria 94"},{n:"En-Nesyri",r:["PC"],pw:8.0,from:"Marocco 22"},
   {n:"Giroud",r:["PC"],pw:8.6,from:"Francia 18"},{n:"Benzema",r:["PC"],pw:9.3,from:"Francia 22"},{n:"Suarez",r:["PC"],pw:9.1,from:"Uruguay 14"},{n:"Lewandowski",r:["PC"],pw:9.2,from:"Polonia 22"},
   // ALA SINISTRA (16)
@@ -660,7 +666,14 @@ const PLAYERS=[
   {n:"Rep",r:["AD"],pw:8.6,from:"Olanda 74"},{n:"Rensenbrink",r:["AD"],pw:8.8,from:"Olanda 78"},{n:"Cuadrado",r:["AD"],pw:8.3,from:"Colombia 14"},
   {n:"Hazard",r:["AD"],pw:9.2,from:"Belgio 18"},{n:"Arjen",r:["AD"],pw:8.0,from:"Olanda 14"},{n:"Bale",r:["AD"],pw:8.7,from:"Galles 22"},
   {n:"Dembele",r:["AD"],pw:8.5,from:"Francia 18"},{n:"Sane",r:["AD"],pw:8.6,from:"Germania 18"},{n:"Gnabry",r:["AD"],pw:8.3,from:"Germania 18"},
-  {n:"Klinsmann",r:["AD"],pw:9.1,from:"Germania 90"},{n:"Simonsen",r:["AD"],pw:8.2,from:"Danimarca 86"},{n:"Muller T2.",r:["AD"],pw:8.7,from:"Germania 18"},{n:"Berba",r:["AD"],pw:8.5,from:"Bulgaria 94"}
+  {n:"Klinsmann",r:["AD"],pw:9.1,from:"Germania 90"},{n:"Simonsen",r:["AD"],pw:8.2,from:"Danimarca 86"},{n:"Muller T2.",r:["AD"],pw:8.7,from:"Germania 18"},{n:"Letchkov",r:["AD"],pw:8.5,from:"Bulgaria 94"},
+  // SPAGNA '26 (11 nuovi)
+  {n:"Unai Simon",r:["P"],pw:8.6,from:"Spagna 26"},{n:"Llorente",r:["TD","CD"],pw:8.7,from:"Spagna 26"},
+  {n:"Cubarsi",r:["DC"],pw:8.4,from:"Spagna 26"},{n:"Laporte",r:["DC"],pw:8.5,from:"Spagna 26"},
+  {n:"Cucurella",r:["TS"],pw:8.4,from:"Spagna 26"},{n:"Fabian Ruiz",r:["CC"],pw:8.7,from:"Spagna 26"},
+  {n:"Rodri",r:["MD"],pw:9.2,from:"Spagna 26"},{n:"Pedri",r:["TQ","CC"],pw:9.0,from:"Spagna 26"},
+  {n:"L. Yamal",r:["AD"],pw:9.3,from:"Spagna 26"},{n:"Oyarzabal",r:["PC"],pw:8.5,from:"Spagna 26"},
+  {n:"Nico Williams",r:["AS"],pw:8.6,from:"Spagna 26"}
 ];
 function pG(r0){if(r0==="P")return"P";if(["DC","TD","TS"].includes(r0))return"def";if(["CC","CS","CD","MD","TQ"].includes(r0))return"mid";return"att";}
 function sG(r){if(r==="P")return"P";if(["DC","TD","TS"].includes(r))return"def";if(["CC","CS","CD","MD","TQ"].includes(r))return"mid";return"att";}
@@ -730,7 +743,8 @@ const HIST={
   "Brasile '14":{pw:8.7,tier:"med",sq:["Cesar","Dani Alves","D.Silva","T.Silva","Marcelo","Fernandinho","L.Gustavo","Oscar","Neymar","Hulk","Fred"]},
   "Polonia '22":{pw:8.6,tier:"med",sq:["Szczesny","Bereszynski","Kiwior","Glik","Cash","Zielinski","Krychowiak","Bielik","Lewandowski","Zalewski","Milik"]},
   "Egitto '18":{pw:8.0,tier:"weak",sq:["El Shenawy","Fathy","Hegazi","Ashraf","Abdelmonem","Elneny","Hamed","Trezeguet","Salah","Mohsen","Warda"]},
-  "Galles '22":{pw:7.9,tier:"weak",sq:["Hennessey","Mepham","Rodon","B.Davies","N.Williams","Ramsey","Allen","Wilson","Bale","Moore","James"]}
+  "Galles '22":{pw:7.9,tier:"weak",sq:["Hennessey","Mepham","Rodon","B.Davies","N.Williams","Ramsey","Allen","Wilson","Bale","Moore","James"]},
+  "Spagna '26":{pw:9.4,tier:"strong",sq:["Unai Simon","Llorente","Cubarsi","Laporte","Cucurella","Fabian Ruiz","Rodri","Pedri","L. Yamal","Oyarzabal","Nico Williams"]}
 };
 
 
@@ -834,14 +848,15 @@ const I18N={
     ph_gironi:"GROUP STAGE",ph_ottavi:"ROUND OF 16",ph_quarti:"QUARTER-FINALS",
     ph_semifinali:"SEMI-FINALS",ph_finale3:"THIRD PLACE PLAY-OFF",ph_finale:"FINAL",
     goal_announce:"⚽ GOAL!",
+    hat_trick:"🎩 HAT TRICK!",
+    hat_trick_log:"🎩 HAT TRICK! %S% scores their third goal of the match!",
     pred_favorite:"FAVORITES",
     pred_balanced:"EVEN MATCH",
     pred_underdog:"UNDERDOGS",
     motm:"⭐ PLAYER OF THE MATCH",
     motm_gk_note:" (clean sheet)",
     motm_opp_note:"(opposing team)",
-    your_path:"▸ YOUR WORLD CUP RUN",
-    flex_note:"OUT OF POSITION → %V%"
+    your_path:"▸ YOUR WORLD CUP RUN"
   },
   it:{
     s1_title:"▸ CREA LA TUA NAZIONALE",
@@ -940,14 +955,15 @@ const I18N={
     ph_gironi:"FASE A GIRONI",ph_ottavi:"OTTAVI",ph_quarti:"QUARTI",
     ph_semifinali:"SEMIFINALI",ph_finale3:"FINALE 3° POSTO",ph_finale:"FINALE",
     goal_announce:"⚽ GOL!",
+    hat_trick:"🎩 TRIPLETTA!",
+    hat_trick_log:"🎩 TRIPLETTA! %S% segna il suo terzo gol della partita!",
     pred_favorite:"FAVORITI",
     pred_balanced:"PARTITA EQUILIBRATA",
     pred_underdog:"OUTSIDER",
     motm:"⭐ MIGLIOR GIOCATORE",
     motm_gk_note:" (porta inviolata)",
     motm_opp_note:"(squadra avversaria)",
-    your_path:"▸ IL TUO PERCORSO MONDIALE",
-    flex_note:"FUORI RUOLO → %V%"
+    your_path:"▸ IL TUO PERCORSO MONDIALE"
   }
 };
 function T(key){return (I18N[LANG]&&I18N[LANG][key])!==undefined?I18N[LANG][key]:key;}
@@ -1027,16 +1043,6 @@ function DEFT(){return LANG==="it"?DEF_IT:DEF_EN;}
 // ═══ STATE ═══
 let primaryCol="#1a3d6e",secondaryCol="#eeeeee";
 let squad=Array(11).fill(null);
-let squadFlex=Array(11).fill(false); // true se il giocatore nello slot i è fuori ruolo (-10% effettivo)
-// Ruoli "donatori" che possono essere schierati fuori ruolo in un certo slot, con malus -10%
-const ROLE_FLEX={
-  CC:["TQ"],
-  AS:["PC","CS","CD"],
-  AD:["PC","CS","CD"],
-  TS:["CS","CD"],
-  TD:["CS","CD"]
-};
-const FLEX_MALUS=0.9;
 let userTeam="",budgetCap=100,curSpd="normal",curStl="medio";
 let matchState=null,matchTmr=null;
 let phase="Gironi",grpIdx=0,ugm=[],grpRivals=[];
@@ -1148,7 +1154,7 @@ function drawFlagTo(id,small){
   else if(st==="cross"){box.style.background=p;box.innerHTML=`<div style="position:absolute;top:40%;left:0;width:100%;height:20%;background:${s}"></div><div style="position:absolute;top:0;left:28%;width:16%;height:100%;background:${s}"></div>`;}
   else if(st==="swiss"){if(small)box.style.cssText="width:72px;height:46px;border:2px solid var(--border);position:relative;overflow:hidden;";box.style.background=p;box.style.display="flex";box.style.alignItems="center";box.style.justifyContent="center";box.innerHTML=`<div style="position:relative;width:32px;height:32px"><div style="position:absolute;top:10px;left:0;width:32px;height:12px;background:${s}"></div><div style="position:absolute;top:0;left:10px;width:12px;height:32px;background:${s}"></div></div>`;}
   else if(st==="diag"){box.innerHTML=`<div style="width:100%;height:100%;background:linear-gradient(135deg,${p} 50%,${s} 50%)"></div>`;}
-  else if(st==="circle"){if(small)box.style.cssText="width:72px;height:46px;border:2px solid var(--border);position:relative;overflow:hidden;";box.style.background=p;box.style.display="flex";box.style.alignItems="center";box.style.justifyContent="center";box.innerHTML=`<div style="width:32px;height:32px;background:${s}"></div>`;}
+  else if(st==="circle"){if(small)box.style.cssText="width:72px;height:46px;border:2px solid var(--border);position:relative;overflow:hidden;";box.style.background=p;box.style.display="flex";box.style.alignItems="center";box.style.justifyContent="center";box.innerHTML=`<div style="width:32px;height:32px;background:${s};border-radius:50%"></div>`;}
   else if(st==="checker"){box.style.background=p;box.innerHTML=`<div style="position:absolute;top:0;left:0;width:50%;height:50%;background:${s}"></div><div style="position:absolute;bottom:0;right:0;width:50%;height:50%;background:${s}"></div>`;}
   else if(st==="half"){box.innerHTML=`<div style="background:${p};width:100%;height:50%"></div><div style="background:${s};width:100%;height:50%"></div>`;}
 }
@@ -1193,7 +1199,6 @@ function buildPitch(){
   while(pitch.firstChild)pitch.removeChild(pitch.firstChild);
   pitch.appendChild(inner);
   squad=Array(11).fill(null);
-  squadFlex=Array(11).fill(false);
   const cp=document.getElementById("cand-panel");if(cp)cp.classList.add("hidden");
   const slots=FORMATIONS[document.getElementById("sel-fm").value];
   slots.forEach((sl,i)=>{
@@ -1221,13 +1226,8 @@ function openDraft(role,idx){
   document.querySelectorAll(".pdot").forEach(d=>d.classList.remove("sel"));
   const dot=document.getElementById("pd-"+idx);if(dot)dot.classList.add("sel");
   const sg=sG(role),used=new Set(squad.filter(Boolean).map(p=>p.n));
-  // Pool nativo: ruolo SPECIFICO richiesto dallo slot
-  let pool=PLAYERS.filter(p=>!used.has(p.n)&&p.r[0]===role);
-  // Aggiungi i "donatori" fuori ruolo previsti per questo slot (es. TQ può giocare CC)
-  const flexRoles=ROLE_FLEX[role]||[];
-  if(flexRoles.length){
-    pool=pool.concat(PLAYERS.filter(p=>!used.has(p.n)&&flexRoles.includes(p.r[0])));
-  }
+  // Includi chi ha questo ruolo tra i suoi ruoli (anche come secondo ruolo)
+  let pool=PLAYERS.filter(p=>!used.has(p.n)&&p.r.includes(role));
   // Se non abbastanza, allarga al gruppo (fallback raro)
   if(pool.length<6)pool=pool.concat(PLAYERS.filter(p=>!used.has(p.n)&&pG(p.r[0])===sg&&!pool.includes(p)));
   pool.sort((a,b)=>b.pw-a.pw);
@@ -1252,9 +1252,7 @@ function openDraft(role,idx){
     sel.forEach(p=>{
       const card=document.createElement("div");card.className="cand-card";
       const col=p.pw>=9.5?"var(--red)":p.pw>=9?"var(--yel)":p.pw>=8?"var(--px)":"var(--cya)";
-      const isFlex=p.r[0]!==role;
-      const flexNote=isFlex?'<div style="font-size:6px;color:var(--yel)">'+TF("flex_note",{V:(p.pw*FLEX_MALUS).toFixed(1)})+'</div>':'';
-      card.innerHTML=`<div class="cname">${p.n}</div><div class="crole">${p.r[0]}</div><div style="font-size:6px;color:var(--cya);margin-bottom:2px">${p.from||''}</div><div class="cpow" style="color:${col}">${p.pw.toFixed(1)}</div><div class="cstars">${stars(p.pw)}</div>${flexNote}`;
+      card.innerHTML=`<div class="cname">${p.n}</div><div class="crole">${p.r.join("/")}</div><div style="font-size:6px;color:var(--cya);margin-bottom:2px">${p.from||''}</div><div class="cpow" style="color:${col}">${p.pw.toFixed(1)}</div><div class="cstars">${stars(p.pw)}</div>`;
       card.onclick=()=>pickPlayer(p,idx);
       grid.appendChild(card);
     });
@@ -1275,23 +1273,11 @@ function openNextSlot(){
 
 function pickPlayer(p,idx){
   squad[idx]=p;
-  const slots=FORMATIONS[document.getElementById("sel-fm").value];
-  const slotRole=slots[idx]?slots[idx][2]:p.r[0];
-  const isFlex=p.r[0]!==slotRole;
-  squadFlex[idx]=isFlex;
   const nm=document.getElementById("pnm-"+idx);if(nm)nm.textContent=p.n.length>10?p.n.substring(0,9)+"…":p.n;
   const rl=document.getElementById("prl-"+idx);
-  if(rl){
-    rl.textContent=p.r[0]+(isFlex?" ⚠":"");
-    rl.style.color=isFlex?"var(--yel)":"var(--cya)";
-    rl.title=isFlex?TF("flex_note",{V:(p.pw*FLEX_MALUS).toFixed(1)}):"";
-  }
+  if(rl){rl.textContent=p.r.join("/");rl.style.color="var(--cya)";rl.title="";}
   const st=document.getElementById("pst-"+idx);if(st)st.innerHTML=stars(p.pw);
-  const vl=document.getElementById("pvl-"+idx);
-  if(vl){
-    vl.textContent=isFlex?(p.pw*FLEX_MALUS).toFixed(1):p.pw.toFixed(1);
-    vl.style.color=isFlex?"var(--yel)":"var(--yel)";
-  }
+  const vl=document.getElementById("pvl-"+idx);if(vl)vl.textContent=p.pw.toFixed(1);
   const dot=document.getElementById("pd-"+idx);if(dot){dot.classList.add("filled");dot.classList.remove("sel");}
   const cp=document.getElementById("cand-panel");if(cp)cp.classList.add("hidden");
   updateBudget();
@@ -1299,7 +1285,6 @@ function pickPlayer(p,idx){
 
 function clearAll(){
   squad=Array(11).fill(null);
-  squadFlex=Array(11).fill(false);
   const slots=FORMATIONS[document.getElementById("sel-fm").value];
   for(let i=0;i<11;i++){
     const d=document.getElementById("pd-"+i);if(d){d.textContent=slots[i]?slots[i][2]:"?";d.classList.remove("filled","sel");}
@@ -1340,7 +1325,7 @@ function doRandom(){
       const idealPw=remaining/remSlots;
       const maxPw=remaining-(remSlots-1)*FLOOR;
       // SOLO ruolo specifico richiesto dallo slot (rispetto al 100% del ruolo)
-      let pool=PLAYERS.filter(p=>!used.has(p.n)&&p.r[0]===role&&p.pw<=maxPw+0.001);
+      let pool=PLAYERS.filter(p=>!used.has(p.n)&&p.r.includes(role)&&p.pw<=maxPw+0.001);
       if(!pool.length){ok=false;break;}
       // Ordina per vicinanza al target ideale e prendi tra i più vicini (con un po' di randomicità)
       pool.sort((x,y)=>Math.abs(x.pw-idealPw)-Math.abs(y.pw-idealPw));
@@ -1354,7 +1339,7 @@ function doRandom(){
     }
   }
   if(best){
-    squad=best;squadFlex=Array(11).fill(false);
+    squad=best;
     for(let i=0;i<11;i++){if(squad[i])pickPlayer(squad[i],i);}
     updateBudget();
   }
@@ -1363,7 +1348,7 @@ function doRandom(){
 // ═══ POWER & SIM ═══
 function teamPow(name){
   if(name===userTeam){
-    const base=squad.reduce((s,p,i)=>s+(p?(p.pw*(squadFlex[i]?FLEX_MALUS:1)):0),0)/11;
+    const base=squad.reduce((s,p)=>s+(p?p.pw:0),0)/11;
     return base*styleMods(curStl).pm;
   }
   return HIST[name]?HIST[name].pw:8.5;
@@ -1648,9 +1633,44 @@ function startLive(m,ctx){
   const selSt=document.getElementById("sel-style").value;
   curStl=selSt;setStl(selSt);
   // Stato match
-  matchState={active:true,min:1,sH:0,sA:0,extra:false,m,ctx,hList:[],aList:[],mH:0,mA:0};
+  matchState={active:true,min:1,sH:0,sA:0,extra:false,m,ctx,hList:[],aList:[],mH:0,mA:0,momentum:50};
+  const momBar=document.getElementById("mom-bar");if(momBar)momBar.style.display="flex";
+  initMomentumColors();
+  resetMomentum();
   clearTimeout(matchTmr);
   tick();
+}
+
+// ═══ BARRA MOMENTUM ═══
+// momentum: 0-100, riferito alla squadra di CASA (sinistra nel tabellone). 100=tutto a sinistra, 0=tutto a destra, 50=equilibrio.
+// I colori (verde=utente, rosso=avversario) sono fissati all'inizio della partita in base a chi è "casa".
+function initMomentumColors(){
+  if(!matchState)return;
+  const homeIsUser=matchState.m.h===userTeam;
+  const left=document.getElementById("mom-left"),right=document.getElementById("mom-right");
+  if(left)left.style.background=homeIsUser?"var(--px)":"var(--red)";
+  if(right)right.style.background=homeIsUser?"var(--red)":"var(--px)";
+}
+function renderMomentum(){
+  if(!matchState)return;
+  const l=document.getElementById("mom-left"),r=document.getElementById("mom-right");
+  if(!l||!r)return;
+  const v=Math.max(0,Math.min(100,matchState.momentum));
+  l.style.width=v+"%";r.style.width=(100-v)+"%";
+}
+function resetMomentum(){
+  if(matchState)matchState.momentum=50;
+  const l=document.getElementById("mom-left"),r=document.getElementById("mom-right");
+  if(l)l.classList.remove("flash");if(r)r.classList.remove("flash");
+  renderMomentum();
+}
+// homeScored: true se ha segnato la squadra di casa (sinistra) -> barra tutta a sinistra
+function flashMomentum(homeScored){
+  if(matchState)matchState.momentum=homeScored?100:0;
+  renderMomentum();
+  const el=document.getElementById(homeScored?"mom-left":"mom-right");
+  if(el){el.classList.remove("flash");void el.offsetWidth;el.classList.add("flash");}
+  setTimeout(()=>{if(el)el.classList.remove("flash");resetMomentum();},1800);
 }
 
 function log(txt,cls){
@@ -1687,6 +1707,13 @@ function showGoalAnn(scorer,min,isU,team){
   box.style.display="block";setTimeout(()=>{box.style.display="none";},2100);
 }
 
+function showHatTrick(scorer,isU){
+  const box=document.getElementById("goal-ann");if(!box)return;
+  box.className="goal-ann hat-trick"+(isU?"":" opp");
+  box.innerHTML=T("hat_trick")+"<br>"+scorer;
+  box.style.display="block";setTimeout(()=>{box.style.display="none";},2300);
+}
+
 function tick(){
   if(!matchState||!matchState.active)return;
   const ms=matchState,m=ms.m;
@@ -1694,7 +1721,7 @@ function tick(){
   document.getElementById("sb-timer").textContent=String(ms.min).padStart(2,"0")+"'";
 
   if(ms.min===45&&!ms.extra){
-    log(T("halftime"),"l-p");ms.min=46;
+    log(T("halftime"),"l-p");ms.min=46;resetMomentum();
     matchTmr=setTimeout(tick,getEvMs()*1.5);return;
   }
   if(ms.min===90&&!ms.extra){
@@ -1703,11 +1730,11 @@ function tick(){
       ms.active=false;clearTimeout(matchTmr);
       setTimeout(()=>finishMatch(ms),1000);return;
     }
-    log(T("extratime_start"),"l-p");ms.extra=true;ms.min=91;
+    log(T("extratime_start"),"l-p");ms.extra=true;ms.min=91;resetMomentum();
     matchTmr=setTimeout(tick,getEvMs()*1.5);return;
   }
   if(ms.min===105&&ms.extra){
-    log(T("extratime_half"),"l-p");ms.min=106;
+    log(T("extratime_half"),"l-p");ms.min=106;resetMomentum();
     matchTmr=setTimeout(tick,getEvMs());return;
   }
   if(ms.min===120&&ms.extra){
@@ -1717,16 +1744,25 @@ function tick(){
       setTimeout(()=>finishMatch(ms),1000);return;
     }
     log(T("penalties_start"),"l-p");ms.active=false;clearTimeout(matchTmr);
+    const momBar=document.getElementById("mom-bar");if(momBar)momBar.style.display="none";
     setTimeout(()=>doPens(ms),getEvMs());return;
   }
 
   ms.mH=(ms.mH||0)*.95;ms.mA=(ms.mA||0)*.95;
   const ev=Math.random();
   const mods=styleMods(curStl);
+  const isUH=m.h===userTeam;
+  const adjH=wH*(1+(ms.mH||0)*.05),adjA=wA*(1+(ms.mA||0)*.05);
+  // Aggiorna la barra momentum "a scatti": trend di base + componente casuale per dare avanti/indietro
+  const pHome=adjH/(adjH+adjA);
+  ms.momentum=Math.max(5,Math.min(95,(ms.momentum??50)+(pHome-0.5)*30+(Math.random()-0.5)*16));
+  renderMomentum();
   if(ev<0.03){
-    const isUH=m.h===userTeam;
-    const adjH=wH*(1+(ms.mH||0)*.05),adjA=wA*(1+(ms.mA||0)*.05);
-    let isH=Math.random()*(adjH+adjA)<adjH;
+    // La probabilità di segnare è influenzata anche dal momentum accumulato:
+    // se la barra è spostata da un lato, quel lato ha più chance di concretizzare,
+    // ma resta sempre possibile il gol "a sorpresa" dal lato opposto.
+    const pGoalHome=pHome*0.55+(ms.momentum/100)*0.45;
+    let isH=Math.random()<pGoalHome;
     if(isUH&&mods.ab>0&&Math.random()<mods.ab)isH=true;
     if(!isUH&&mods.ab>0&&Math.random()<mods.ab)isH=false;
     if(isUH&&mods.ab<0&&Math.random()<Math.abs(mods.ab))isH=false;
@@ -1736,12 +1772,20 @@ function tick(){
     if(isH){ms.sH++;ms.mA=(ms.mA||0)+.3;}else{ms.sA++;ms.mH=(ms.mH||0)+.3;}
     const gt=GT();const txt=gt[Math.floor(Math.random()*gt.length)](scorer,ms.min);
     log(txt,logCls(isU,true));doFlash(isU,false);updSB();showGoalAnn(scorer,ms.min,isU,team);
+    flashMomentum(isH);
     if(isVar){
       setTimeout(()=>{log(T("var_check"),"l-var");
-        setTimeout(()=>{if(isH)ms.sH--;else ms.sA--;log(T("var_disallowed")+scorer,"l-var");doFlash(false,true);updSB();matchTmr=setTimeout(tick,getTickMs());},getEvMs()*.8);},1200);
+        setTimeout(()=>{if(isH)ms.sH--;else ms.sA--;log(T("var_disallowed")+scorer,"l-var");doFlash(false,true);resetMomentum();updSB();matchTmr=setTimeout(tick,getTickMs());},getEvMs()*.8);},1200);
     }else{
       if(isH)ms.hList.push("⚽"+scorer+" "+ms.min+"'");else ms.aList.push("⚽"+scorer+" "+ms.min+"'");
       if(isU){if(!userStats.scorers[scorer])userStats.scorers[scorer]=0;userStats.scorers[scorer]++;}
+      // Tripletta: terzo gol dello stesso giocatore in questa partita
+      const goalList=isH?ms.hList:ms.aList;
+      const goalCount=goalList.filter(s=>s.indexOf("⚽"+scorer+" ")===0).length;
+      if(goalCount===3){
+        log(TF("hat_trick_log",{S:scorer}),"l-hat");
+        setTimeout(()=>showHatTrick(scorer,isU),2200);
+      }
       setTimeout(()=>{updSB();ms.min++;matchTmr=setTimeout(tick,getTickMs());},2000);
     }
     return;
@@ -1756,7 +1800,7 @@ function tick(){
       if(isH)ms.sH++;else ms.sA++;
       if(isH)ms.hList.push("⚽"+penScorer+" "+ms.min+"' (R)");else ms.aList.push("⚽"+penScorer+" "+ms.min+"' (R)");
       if(penIsU){if(!userStats.scorers[penScorer])userStats.scorers[penScorer]=0;userStats.scorers[penScorer]++;}
-      doFlash(penIsU,false);updSB();
+      doFlash(penIsU,false);flashMomentum(isH);updSB();
       ms.min++;matchTmr=setTimeout(tick,getTickMs()+1500);return;
     }
     log(String(ms.min).padStart(2,"0")+"' "+(isH?m.h:m.a)+": "+rnd(isH?ATKT():DEFT()),logCls(isU,false));
@@ -2054,10 +2098,10 @@ function showReport(stageKey,resultType,extraPhase){
     const rows=window._matchHistory.map(h=>{
       const res=h.uG+"-"+h.oG;
       const col=h.uG>h.oG?"var(--px)":h.uG<h.oG?"var(--red)":"var(--yel)";
-      return '<div style="display:flex;justify-content:space-between;padding:3px 0;border-bottom:1px solid var(--border);font-size:7px">'
-        +'<span style="color:var(--cya)">'+tPhase(h.phase)+'</span>'
-        +'<span style="color:'+col+'">'+res+'</span>'
-        +'<span style="color:var(--dim)">vs '+tTeam(h.opp)+'</span>'
+      return '<div style="display:grid;grid-template-columns:1fr 44px 1fr;align-items:center;padding:3px 0;border-bottom:1px solid var(--border);font-size:7px">'
+        +'<span style="color:var(--cya);text-align:left">'+tPhase(h.phase)+'</span>'
+        +'<span style="color:'+col+';text-align:center">'+res+'</span>'
+        +'<span style="color:var(--dim);text-align:right">vs '+tTeam(h.opp)+'</span>'
         +'</div>';
     }).join("");
     pathHtml='<div style="background:var(--surface);border:2px solid var(--border);padding:10px;margin:10px 0;text-align:left">'
