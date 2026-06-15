@@ -14,6 +14,9 @@ body{background:var(--bg);color:var(--wht);font-family:'Press Start 2P',monospac
 body::before{content:"";position:fixed;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,0.13) 2px,rgba(0,0,0,0.13) 4px);pointer-events:none;z-index:9000}
 .app{padding:14px;max-width:1000px;margin:0 auto}
 .header{text-align:center;padding:28px 0 20px;border-bottom:3px solid var(--yel);margin-bottom:18px;position:relative;overflow:hidden}
+.lang-switch{position:absolute;top:8px;right:8px;display:flex;gap:4px;z-index:10}
+.lang-btn{padding:5px 9px;font-size:8px;font-family:'Press Start 2P',monospace;border:1px solid var(--border);background:var(--card);color:var(--dim);cursor:pointer;transition:all .1s}
+.lang-btn.on{background:var(--px);color:#000;border-color:var(--px)}
 .header::before{content:"";position:absolute;bottom:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--red),var(--yel),var(--px),var(--cya),var(--red));animation:rbow 2s linear infinite;background-size:200%}
 @keyframes rbow{0%{background-position:0%}100%{background-position:200%}}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
@@ -178,11 +181,15 @@ body::before{content:"";position:fixed;inset:0;background:repeating-linear-gradi
   <div id="res-title" class="res-title"></div>
   <div id="res-score" class="res-score"></div>
   <div id="res-sub" class="res-sub"></div>
-  <button class="res-close" onclick="closeOverlay()">▶ CONTINUA</button>
+  <button class="res-close" data-i18n="res_continue" onclick="closeOverlay()">▶ CONTINUE</button>
 </div>
 
 <div class="app">
   <div class="header">
+    <div class="lang-switch" id="lang-switch">
+      <button class="lang-btn on" id="lang-en" onclick="setLang('en')">EN</button>
+      <button class="lang-btn" id="lang-it" onclick="setLang('it')">IT</button>
+    </div>
     <div class="logo-back">BACK TO</div>
     <div class="logo-main"><span class="logo-world">WORLD</span> <span class="logo-cup">CUP</span></div>
     <div class="logo-ed"><span style="color:var(--red)">L</span><span style="color:var(--yel)">E</span><span style="color:var(--px)">G</span><span style="color:var(--cya)">E</span><span style="color:var(--wht)">N</span><span style="color:var(--red)">D</span><span style="color:var(--yel)">S</span> <span style="color:var(--px)">E</span><span style="color:var(--cya)">D</span><span style="color:var(--wht)">I</span><span style="color:var(--red)">T</span><span style="color:var(--yel)">I</span><span style="color:var(--px)">O</span><span style="color:var(--cya)">N</span></div>
@@ -192,38 +199,38 @@ body::before{content:"";position:fixed;inset:0;background:repeating-linear-gradi
   <div id="s1">
     <div style="max-width:520px;margin:0 auto">
       <div class="card">
-        <div class="slbl">▸ CREA LA TUA NAZIONALE</div>
-        <div class="fr"><label>NOME NAZIONALE</label><input id="inp-name" type="text" value="LA MIA NAZIONALE" maxlength="18"></div>
-        <div class="fr"><label>COLORE PRIMARIO</label><div class="palette" id="pal-p"></div></div>
-        <div class="fr"><label>COLORE SECONDARIO</label><div class="palette" id="pal-s"></div></div>
+        <div class="slbl" data-i18n="s1_title">▸ CREATE YOUR NATIONAL TEAM</div>
+        <div class="fr"><label data-i18n="lbl_team_name">TEAM NAME</label><input id="inp-name" type="text" value="MY NATIONAL TEAM" maxlength="18"></div>
+        <div class="fr"><label data-i18n="lbl_primary_color">PRIMARY COLOR</label><div class="palette" id="pal-p"></div></div>
+        <div class="fr"><label data-i18n="lbl_secondary_color">SECONDARY COLOR</label><div class="palette" id="pal-s"></div></div>
         <div class="fr">
-          <label>BANDIERA</label>
+          <label data-i18n="lbl_flag">FLAG</label>
           <select id="sel-flag">
-            <option value="horiz">3 BANDE ORIZZONTALI</option><option value="vert">3 BANDE VERTICALI</option>
-            <option value="cross">CROCE NORDICA</option><option value="swiss">CROCE SVIZZERA</option>
-            <option value="diag">DIAGONALE</option><option value="circle">CERCHIO</option>
-            <option value="checker">SCACCHIERA</option><option value="half">META E META</option>
+            <option value="horiz" data-i18n="flag_horiz">3 HORIZONTAL STRIPES</option><option value="vert" data-i18n="flag_vert">3 VERTICAL STRIPES</option>
+            <option value="cross" data-i18n="flag_cross">NORDIC CROSS</option><option value="swiss" data-i18n="flag_swiss">SWISS CROSS</option>
+            <option value="diag" data-i18n="flag_diag">DIAGONAL</option><option value="circle" data-i18n="flag_circle">CIRCLE</option>
+            <option value="checker" data-i18n="flag_checker">CHECKERBOARD</option><option value="half" data-i18n="flag_half">HALF AND HALF</option>
           </select>
           <div class="flag-box" id="flag-preview"></div>
         </div>
         <div class="fr">
-          <label>DIFFICOLTA</label>
+          <label data-i18n="lbl_difficulty">DIFFICULTY</label>
           <select id="sel-diff" onchange="onDiffChange()">
-            <option value="easy">FACILE — budget 105.0</option>
-            <option value="medium" selected>MEDIO — budget 100.0</option>
-            <option value="hard">DIFFICILE — budget 95.0</option>
-            <option value="random">RANDOM — 95 a 105</option>
+            <option value="easy" data-i18n="diff_easy">EASY — budget 105.0</option>
+            <option value="medium" selected data-i18n="diff_medium">MEDIUM — budget 100.0</option>
+            <option value="hard" data-i18n="diff_hard">HARD — budget 95.0</option>
+            <option value="random" data-i18n="diff_random">RANDOM — 95 to 105</option>
           </select>
         </div>
         <div class="fr">
-          <label>VELOCITA DI GIOCO</label>
+          <label data-i18n="lbl_speed">GAME SPEED</label>
           <select id="sel-speed-init" onchange="setSpd(this.value)">
-            <option value="fast">VELOCE — solo azioni principali</option>
-            <option value="normal" selected>NORMALE — cronaca standard</option>
-            <option value="slow">ESTESA — cronaca dettagliata</option>
+            <option value="fast" data-i18n="speed_fast_init">FAST — key actions only</option>
+            <option value="normal" selected data-i18n="speed_normal_init">NORMAL — standard commentary</option>
+            <option value="slow" data-i18n="speed_slow_init">EXTENDED — detailed commentary</option>
           </select>
         </div>
-        <div style="margin-top:16px"><button class="btn btn-g" onclick="goPage2()">▶ AVANTI: SCEGLI LA ROSA</button></div>
+        <div style="margin-top:16px"><button class="btn btn-g" data-i18n="btn_next_squad" onclick="goPage2()">▶ NEXT: PICK YOUR SQUAD</button></div>
       </div>
     </div>
   </div>
@@ -232,8 +239,8 @@ body::before{content:"";position:fixed;inset:0;background:repeating-linear-gradi
   <div id="s2" class="hidden">
     <div class="grid2">
       <div class="card">
-        <div class="slbl">▸ TATTICA</div>
-        <div class="fr"><label>MODULO</label>
+        <div class="slbl" data-i18n="s2_tactics">▸ TACTICS</div>
+        <div class="fr"><label data-i18n="lbl_formation">FORMATION</label>
           <select id="sel-fm" onchange="onFormationChange()">
             <option value="4-3-3">4-3-3</option><option value="4-4-2">4-4-2</option>
             <option value="3-5-2">3-5-2</option><option value="4-2-3-1">4-2-3-1</option>
@@ -243,52 +250,52 @@ body::before{content:"";position:fixed;inset:0;background:repeating-linear-gradi
             <option value="4-2-4">4-2-4</option>
           </select>
         </div>
-        <div class="fr"><label>STILE DI GIOCO</label>
+        <div class="fr"><label data-i18n="lbl_style">PLAYING STYLE</label>
           <select id="sel-style">
-            <option value="ultra-d">DIFESA+ (massima copertura)</option>
-            <option value="difesa">DIFESA (prudente)</option>
-            <option value="medio" selected>EQUILIBRATO</option>
-            <option value="attacco">ATTACCO (propositivo)</option>
-            <option value="ultra-a">ATTACCO+ (tutto avanti)</option>
+            <option value="ultra-d" data-i18n="style_ultrad">DEFENSE+ (maximum cover)</option>
+            <option value="difesa" data-i18n="style_difesa">DEFENSE (cautious)</option>
+            <option value="medio" selected data-i18n="style_medio">BALANCED</option>
+            <option value="attacco" data-i18n="style_attacco">ATTACK (proactive)</option>
+            <option value="ultra-a" data-i18n="style_ultraa">ATTACK+ (all out)</option>
           </select>
         </div>
         <div style="margin-top:12px;padding:10px;background:var(--bg);border:1px solid var(--border)">
-          <div style="font-size:7px;color:var(--dim);margin-bottom:6px">ANTEPRIMA</div>
+          <div style="font-size:7px;color:var(--dim);margin-bottom:6px" data-i18n="lbl_preview">PREVIEW</div>
           <div style="display:flex;align-items:center;gap:12px">
             <div class="flag-sm" id="flag-sm"></div>
             <div>
-              <div style="font-size:9px;color:var(--yel)" id="prev-name">LA MIA NAZIONALE</div>
+              <div style="font-size:9px;color:var(--yel)" id="prev-name">MY NATIONAL TEAM</div>
               <div style="font-size:7px;color:var(--dim);margin-top:4px" id="prev-budget">Budget: 100.0</div>
             </div>
           </div>
         </div>
-        <div style="margin-top:12px"><button class="btn btn-sm" style="width:100%" onclick="goPage1()">◀ INDIETRO</button></div>
+        <div style="margin-top:12px"><button class="btn btn-sm" style="width:100%" data-i18n="btn_back" onclick="goPage1()">◀ BACK</button></div>
       </div>
       <div class="card">
-        <div class="slbl">▸ ROSA</div>
+        <div class="slbl" data-i18n="s2_squad">▸ SQUAD</div>
         <div class="bbar-wrap">
           <div style="display:flex;justify-content:space-between;align-items:center">
-            <span style="font-size:8px;color:var(--cya)">FORZA TOTALE</span>
+            <span style="font-size:8px;color:var(--cya)" data-i18n="lbl_total_strength">TOTAL STRENGTH</span>
             <span style="font-size:8px;color:var(--yel)"><span id="bval">0.0</span> / <span id="bcap">100.0</span></span>
           </div>
           <div class="bbar-track"><div class="bbar-fill" id="bfill" style="width:0%;background:var(--px)"></div></div>
           <div class="bnums"><span id="bslots">0/11</span><span id="bwarn" style="color:var(--red)"></span></div>
         </div>
         <div class="btn-row">
-          <button class="btn btn-sm btn-g" onclick="doRandom()">★ RANDOM</button>
-          <button class="btn btn-sm btn-p" onclick="openNextSlot()">MODIFICA ROSA</button>
-          <button class="btn btn-sm" onclick="clearAll()">RESET</button>
+          <button class="btn btn-sm btn-g" data-i18n="btn_random" onclick="doRandom()">★ RANDOM</button>
+          <button class="btn btn-sm btn-p" data-i18n="btn_edit_squad" onclick="openNextSlot()">EDIT SQUAD</button>
+          <button class="btn btn-sm" data-i18n="btn_reset" onclick="clearAll()">RESET</button>
         </div>
         <div class="pitch-wrap" id="pitch">
           <div class="pitch-inner"><div class="pen-top"></div><div class="pen-bot"></div><div class="mid-line"></div></div>
         </div>
         <div class="cand-panel hidden" id="cand-panel">
-          <div class="cand-title" id="cand-title">SELEZIONA:</div>
+          <div class="cand-title" id="cand-title" data-i18n="cand_select_default">SELECT:</div>
           <div class="cand-grid" id="cand-grid"></div>
         </div>
       </div>
     </div>
-    <div style="margin-top:14px"><button class="btn btn-g" id="btn-start" disabled onclick="startTournament()">▶ INIZIA IL MONDIALE</button></div>
+    <div style="margin-top:14px"><button class="btn btn-g" id="btn-start" disabled data-i18n="btn_start_tournament" onclick="startTournament()">▶ START THE WORLD CUP</button></div>
   </div>
 
   <!-- SCREEN 3: TORNEO -->
@@ -296,7 +303,7 @@ body::before{content:"";position:fixed;inset:0;background:repeating-linear-gradi
     <div class="grid2">
     <!-- colonna sinistra: live match + KO board + report -->
     <div>
-        <div id="phase-badge" class="pbadge">FASE A GIRONI</div>
+        <div id="phase-badge" class="pbadge" data-i18n="phase_groups">GROUP STAGE</div>
         <div id="live-box" class="hidden" style="margin-bottom:14px">
           <div style="font-size:8px;color:var(--dim);margin-bottom:8px" id="live-hdr"></div>
           <div class="scoreboard">
@@ -312,7 +319,7 @@ body::before{content:"";position:fixed;inset:0;background:repeating-linear-gradi
             </div>
             <!-- Rigori: lista nomi separata, visibile solo durante i rigori -->
             <div id="sb-pen-box" style="display:none;margin-top:8px;padding-top:8px;border-top:1px solid var(--border)">
-              <div style="font-size:7px;color:var(--cya);margin-bottom:4px;letter-spacing:1px">⚽ SERIE DI RIGORI</div>
+              <div style="font-size:7px;color:var(--cya);margin-bottom:4px;letter-spacing:1px" data-i18n="lbl_penalty_series">⚽ PENALTY SHOOTOUT</div>
               <div style="display:flex;justify-content:space-between;gap:8px">
                 <div id="sb-pen-h" style="flex:1;font-size:7px;line-height:2.2;color:var(--px)"></div>
                 <div id="sb-pen-a" style="flex:1;font-size:7px;line-height:2.2;color:var(--red);text-align:right"></div>
@@ -320,21 +327,21 @@ body::before{content:"";position:fixed;inset:0;background:repeating-linear-gradi
             </div>
           </div>
           <div class="lc">
-            <div class="lc-lbl">⚡ VELOCITA</div>
+            <div class="lc-lbl" data-i18n="lbl_speed_short">⚡ SPEED</div>
             <div class="lc-btns" id="spd-btns">
-              <button class="lc-btn" onclick="setSpd('fast')">VELOCE</button>
-              <button class="lc-btn on" onclick="setSpd('normal')">NORMALE</button>
-              <button class="lc-btn" onclick="setSpd('slow')">ESTESA</button>
+              <button class="lc-btn" data-i18n="spd_fast" onclick="setSpd('fast')">FAST</button>
+              <button class="lc-btn on" data-i18n="spd_normal" onclick="setSpd('normal')">NORMAL</button>
+              <button class="lc-btn" data-i18n="spd_slow" onclick="setSpd('slow')">EXTENDED</button>
             </div>
           </div>
           <div class="lc" style="margin-top:4px">
-            <div class="lc-lbl">🎯 STILE DI GIOCO</div>
+            <div class="lc-lbl" data-i18n="lbl_style_short">🎯 PLAYING STYLE</div>
             <div class="lc-btns" id="stl-btns">
-              <button class="lc-btn" onclick="setStl('ultra-d')">DIFESA+</button>
-              <button class="lc-btn" onclick="setStl('difesa')">DIFESA</button>
-              <button class="lc-btn on" onclick="setStl('medio')">EQUILIBRATO</button>
-              <button class="lc-btn" onclick="setStl('attacco')">ATTACCO</button>
-              <button class="lc-btn" onclick="setStl('ultra-a')">ATTACCO+</button>
+              <button class="lc-btn" data-i18n="stl_ultrad" onclick="setStl('ultra-d')">DEFENSE+</button>
+              <button class="lc-btn" data-i18n="stl_difesa" onclick="setStl('difesa')">DEFENSE</button>
+              <button class="lc-btn on" data-i18n="stl_medio" onclick="setStl('medio')">BALANCED</button>
+              <button class="lc-btn" data-i18n="stl_attacco" onclick="setStl('attacco')">ATTACK</button>
+              <button class="lc-btn" data-i18n="stl_ultraa" onclick="setStl('ultra-a')">ATTACK+</button>
             </div>
           </div>
           <div class="mlog" id="mlog"></div>
@@ -345,21 +352,21 @@ body::before{content:"";position:fixed;inset:0;background:repeating-linear-gradi
     <div>
       <div id="ctrl-panel">
         <div class="card">
-          <div class="slbl">▸ PROSSIMA PARTITA</div>
+          <div class="slbl" data-i18n="lbl_next_match">▸ NEXT MATCH</div>
           <div class="mprev"><div class="mprev-t" id="prev-teams">—</div><div class="mprev-p" id="prev-phase">—</div></div>
-          <div id="next-opp-box" style="display:none;text-align:center;font-size:7px;color:var(--dim);padding:4px 0;border-top:1px solid var(--border);margin-bottom:8px">PROSSIMO AVVERSARIO: <span id="next-opp" style="color:var(--cya)"></span></div>
-          <button class="btn btn-p" id="btn-play" onclick="handlePlay()">▶ GIOCA</button>
+          <div id="next-opp-box" style="display:none;text-align:center;font-size:7px;color:var(--dim);padding:4px 0;border-top:1px solid var(--border);margin-bottom:8px"><span data-i18n="lbl_next_opponent">NEXT OPPONENT: </span><span id="next-opp" style="color:var(--cya)"></span></div>
+          <button class="btn btn-p" id="btn-play" data-i18n="btn_play" onclick="handlePlay()">▶ PLAY</button>
         </div>
       </div>
       <!-- Classifica girone (visibile durante i gironi) -->
       <div id="v-grp" style="margin-top:12px">
-        <div style="font-size:9px;color:var(--yel);margin-bottom:10px">▸ CLASSIFICA GIRONE</div>
-        <table class="st"><thead><tr><th>SQUADRA</th><th class="num">P</th><th class="num">PT</th><th class="num">GF</th><th class="num">GS</th></tr></thead><tbody id="grp-tbody"></tbody></table>
+        <div style="font-size:9px;color:var(--yel);margin-bottom:10px" data-i18n="lbl_group_table">▸ GROUP STANDINGS</div>
+        <table class="st"><thead><tr><th data-i18n="th_team">TEAM</th><th class="num" data-i18n="th_p">P</th><th class="num" data-i18n="th_pt">PT</th><th class="num" data-i18n="th_gf">GF</th><th class="num" data-i18n="th_ga">GA</th></tr></thead><tbody id="grp-tbody"></tbody></table>
         <div id="other-results"></div>
       </div>
       <!-- Tabellone eliminatorie (visibile durante il KO) -->
       <div id="v-ko" class="hidden" style="margin-top:12px">
-        <div id="ko-rnd" style="font-size:9px;color:var(--yel);margin-bottom:8px">TABELLONE</div>
+        <div id="ko-rnd" style="font-size:9px;color:var(--yel);margin-bottom:8px" data-i18n="lbl_bracket">▸ BRACKET</div>
         <div class="ko-list" id="ko-grid"></div>
       </div>
     </div>
@@ -716,7 +723,212 @@ const HIST={
 };
 
 
-const GOAL_TYPES=[
+// ═══ I18N ═══
+let LANG="en";
+const I18N={
+  en:{
+    s1_title:"▸ CREATE YOUR NATIONAL TEAM",
+    lbl_team_name:"TEAM NAME",
+    default_team_name:"MY NATIONAL TEAM",
+    lbl_primary_color:"PRIMARY COLOR",
+    lbl_secondary_color:"SECONDARY COLOR",
+    lbl_flag:"FLAG",
+    flag_horiz:"3 HORIZONTAL STRIPES",flag_vert:"3 VERTICAL STRIPES",flag_cross:"NORDIC CROSS",
+    flag_swiss:"SWISS CROSS",flag_diag:"DIAGONAL",flag_circle:"CIRCLE",flag_checker:"CHECKERBOARD",flag_half:"HALF AND HALF",
+    lbl_difficulty:"DIFFICULTY",
+    diff_easy:"EASY — budget 105.0",diff_medium:"MEDIUM — budget 100.0",diff_hard:"HARD — budget 95.0",diff_random:"RANDOM — 95 to 105",
+    lbl_speed:"GAME SPEED",
+    speed_fast_init:"FAST — key actions only",speed_normal_init:"NORMAL — standard commentary",speed_slow_init:"EXTENDED — detailed commentary",
+    btn_next_squad:"▶ NEXT: PICK YOUR SQUAD",
+    s2_tactics:"▸ TACTICS",
+    lbl_formation:"FORMATION",
+    lbl_style:"PLAYING STYLE",
+    style_ultrad:"DEFENSE+ (maximum cover)",style_difesa:"DEFENSE (cautious)",style_medio:"BALANCED",
+    style_attacco:"ATTACK (proactive)",style_ultraa:"ATTACK+ (all out)",
+    lbl_preview:"PREVIEW",
+    budget_prefix:"Budget: ",
+    btn_back:"◀ BACK",
+    s2_squad:"▸ SQUAD",
+    lbl_total_strength:"TOTAL STRENGTH",
+    btn_random:"★ RANDOM",
+    btn_edit_squad:"EDIT SQUAD",
+    btn_reset:"RESET",
+    cand_select_default:"SELECT:",
+    btn_start_tournament:"▶ START THE WORLD CUP",
+    over_budget:"OVER BUDGET!",
+    phase_groups:"GROUP STAGE",
+    lbl_penalty_series:"⚽ PENALTY SHOOTOUT",
+    lbl_speed_short:"⚡ SPEED",
+    spd_fast:"FAST",spd_normal:"NORMAL",spd_slow:"EXTENDED",
+    lbl_style_short:"🎯 PLAYING STYLE",
+    stl_ultrad:"DEFENSE+",stl_difesa:"DEFENSE",stl_medio:"BALANCED",stl_attacco:"ATTACK",stl_ultraa:"ATTACK+",
+    lbl_next_match:"▸ NEXT MATCH",
+    lbl_next_opponent:"NEXT OPPONENT: ",
+    btn_play:"▶ PLAY",
+    lbl_group_table:"▸ GROUP STANDINGS",
+    th_team:"TEAM",th_p:"P",th_pt:"PT",th_gf:"GF",th_ga:"GA",
+    lbl_bracket:"▸ BRACKET",
+    lbl_your_match:"★ YOURS",
+    // Dynamic
+    groups_completed:"GROUP STAGE COMPLETE",
+    who_advances:"WHO ADVANCES?",
+    btn_knockout_phase:"▶ KNOCKOUT STAGE",
+    btn_play_match:"▶ KICK OFF!",
+    round_completed:"ROUND COMPLETE",
+    btn_next_round:"▶ NEXT ROUND",
+    btn_simulate:"▶ SIMULATE",
+    cand_title:"[%ROLE%] — PICK (%N%):",
+    halftime:"** END OF 1ST HALF - BREAK **",
+    fulltime:"** FULL TIME - %S% FT **",
+    extratime_start:"** END OF 90' - EXTRA TIME! **",
+    extratime_half:"** END OF 1ST ET HALF **",
+    aet_full:"** FULL TIME - %S% AET **",
+    penalties_start:"** END OF ET - PENALTIES! **",
+    var_check:"VAR: CHECKING...",
+    var_disallowed:"DISALLOWED! ",
+    pen_in_match:"PENALTY! %S% STEPS UP... GOAL!",
+    pen_taker:"%T%: %S% STEPS UP TO THE SPOT...",
+    pen_scored:"  ⚽ GOAL! %S%",
+    pen_missed:"  ✗ MISS! %S%",
+    sudden_death:"DRAW! SUDDEN DEATH!",
+    pen_result:"PENALTIES: %H% %RH% - %RA% %A%. THROUGH: %W%",
+    final_whistle:"** FULL TIME **",
+    pen_suffix:" pen",
+    // Overlay
+    res_win:"VICTORY!",
+    res_draw:"DRAW",
+    res_loss:"DEFEAT",
+    res_continue:"▶ CONTINUE",
+    // Report
+    silver_medal:"SILVER MEDAL",
+    bronze_medal:"BRONZE MEDAL",
+    world_champions:"🏆 WORLD CHAMPIONS!",
+    third_place:"3RD PLACE!",
+    fourth_place:"4TH PLACE",
+    runner_up:"RUNNER-UP!",
+    eliminated_groups:"ELIMINATED IN THE GROUP STAGE",
+    eliminated_in:"ELIMINATED IN THE",
+    rep_matches:"MATCHES",
+    rep_wins:"WINS",
+    rep_draws:"DRAWS",
+    rep_losses:"LOSSES",
+    top_scorer:"TOP SCORER",
+    none:"NONE",
+    goals_suffix:" goals)",
+    your_nation:"▸ YOUR NATIONAL TEAM",
+    world_champion_sim:"▸ SIMULATED WORLD CHAMPION:",
+    btn_restart:"▶ RESTART THE WORLD CUP",
+    btn_view_report:"▶ VIEW FINAL REPORT",
+    // Phase names
+    ph_gironi:"GROUP STAGE",ph_ottavi:"ROUND OF 16",ph_quarti:"QUARTER-FINALS",
+    ph_semifinali:"SEMI-FINALS",ph_finale3:"THIRD PLACE PLAY-OFF",ph_finale:"FINAL",
+    goal_announce:"⚽ GOAL!"
+  },
+  it:{
+    s1_title:"▸ CREA LA TUA NAZIONALE",
+    lbl_team_name:"NOME NAZIONALE",
+    default_team_name:"LA MIA NAZIONALE",
+    lbl_primary_color:"COLORE PRIMARIO",
+    lbl_secondary_color:"COLORE SECONDARIO",
+    lbl_flag:"BANDIERA",
+    flag_horiz:"3 BANDE ORIZZONTALI",flag_vert:"3 BANDE VERTICALI",flag_cross:"CROCE NORDICA",
+    flag_swiss:"CROCE SVIZZERA",flag_diag:"DIAGONALE",flag_circle:"CERCHIO",flag_checker:"SCACCHIERA",flag_half:"META E META",
+    lbl_difficulty:"DIFFICOLTA",
+    diff_easy:"FACILE — budget 105.0",diff_medium:"MEDIO — budget 100.0",diff_hard:"DIFFICILE — budget 95.0",diff_random:"RANDOM — 95 a 105",
+    lbl_speed:"VELOCITA DI GIOCO",
+    speed_fast_init:"VELOCE — solo azioni principali",speed_normal_init:"NORMALE — cronaca standard",speed_slow_init:"ESTESA — cronaca dettagliata",
+    btn_next_squad:"▶ AVANTI: SCEGLI LA ROSA",
+    s2_tactics:"▸ TATTICA",
+    lbl_formation:"MODULO",
+    lbl_style:"STILE DI GIOCO",
+    style_ultrad:"DIFESA+ (massima copertura)",style_difesa:"DIFESA (prudente)",style_medio:"EQUILIBRATO",
+    style_attacco:"ATTACCO (propositivo)",style_ultraa:"ATTACCO+ (tutto avanti)",
+    lbl_preview:"ANTEPRIMA",
+    budget_prefix:"Budget: ",
+    btn_back:"◀ INDIETRO",
+    s2_squad:"▸ ROSA",
+    lbl_total_strength:"FORZA TOTALE",
+    btn_random:"★ RANDOM",
+    btn_edit_squad:"MODIFICA ROSA",
+    btn_reset:"RESET",
+    cand_select_default:"SELEZIONA:",
+    btn_start_tournament:"▶ INIZIA IL MONDIALE",
+    over_budget:"OVER BUDGET!",
+    phase_groups:"FASE A GIRONI",
+    lbl_penalty_series:"⚽ SERIE DI RIGORI",
+    lbl_speed_short:"⚡ VELOCITA",
+    spd_fast:"VELOCE",spd_normal:"NORMALE",spd_slow:"ESTESA",
+    lbl_style_short:"🎯 STILE DI GIOCO",
+    stl_ultrad:"DIFESA+",stl_difesa:"DIFESA",stl_medio:"EQUILIBRATO",stl_attacco:"ATTACCO",stl_ultraa:"ATTACCO+",
+    lbl_next_match:"▸ PROSSIMA PARTITA",
+    lbl_next_opponent:"PROSSIMO AVVERSARIO: ",
+    btn_play:"▶ GIOCA",
+    lbl_group_table:"▸ CLASSIFICA GIRONE",
+    th_team:"SQUADRA",th_p:"P",th_pt:"PT",th_gf:"GF",th_ga:"GS",
+    lbl_bracket:"▸ TABELLONE",
+    lbl_your_match:"★ TUA",
+    // Dynamic
+    groups_completed:"GIRONI COMPLETATI",
+    who_advances:"CHI AVANZA?",
+    btn_knockout_phase:"▶ FASE ELIMINATORIA",
+    btn_play_match:"▶ SCENDI IN CAMPO!",
+    round_completed:"TURNO COMPLETATO",
+    btn_next_round:"▶ PROSSIMO TURNO",
+    btn_simulate:"▶ SIMULA",
+    cand_title:"[%ROLE%] — SCEGLI (%N%):",
+    halftime:"** FINE 1T - INTERVALLO **",
+    fulltime:"** TRIPLICE FISCHIO - %S% FT **",
+    extratime_start:"** FINE 90' - SUPPLEMENTARI! **",
+    extratime_half:"** FINE 1T SUPPL. **",
+    aet_full:"** TRIPLICE FISCHIO - %S% AET **",
+    penalties_start:"** FINE SUPPL. - RIGORI! **",
+    var_check:"VAR: CONTROLLO...",
+    var_disallowed:"ANNULLATO! ",
+    pen_in_match:"RIGORE! %S% AL DISCHETTO... GOL!",
+    pen_taker:"%T%: %S% AL DISCHETTO...",
+    pen_scored:"  ⚽ GOL! %S%",
+    pen_missed:"  ✗ ERRORE! %S%",
+    sudden_death:"PARITA'! SUDDEN DEATH!",
+    pen_result:"RIGORI: %H% %RH% - %RA% %A%. PASSA: %W%",
+    final_whistle:"** TRIPLICE FISCHIO **",
+    pen_suffix:" rig",
+    // Overlay
+    res_win:"VITTORIA!",
+    res_draw:"PAREGGIO",
+    res_loss:"SCONFITTA",
+    res_continue:"▶ CONTINUA",
+    // Report
+    silver_medal:"MEDAGLIA D'ARGENTO",
+    bronze_medal:"MEDAGLIA DI BRONZO",
+    world_champions:"🏆 CAMPIONI DEL MONDO!",
+    third_place:"3° POSTO!",
+    fourth_place:"4° POSTO",
+    runner_up:"VICE CAMPIONE!",
+    eliminated_groups:"ELIMINATO AI GIRONI",
+    eliminated_in:"ELIMINATO IN",
+    rep_matches:"PARTITE",
+    rep_wins:"VITTORIE",
+    rep_draws:"PAREGGI",
+    rep_losses:"SCONFITTE",
+    top_scorer:"CAPOCANNONIERE",
+    none:"NESSUNO",
+    goals_suffix:" gol)",
+    your_nation:"▸ LA TUA NAZIONALE",
+    world_champion_sim:"▸ CAMPIONE MONDIALE (SIM):",
+    btn_restart:"▶ RICOMINCIA IL MONDIALE",
+    btn_view_report:"▶ VEDI REPORT FINALE",
+    // Phase names
+    ph_gironi:"FASE A GIRONI",ph_ottavi:"OTTAVI",ph_quarti:"QUARTI",
+    ph_semifinali:"SEMIFINALI",ph_finale3:"FINALE 3° POSTO",ph_finale:"FINALE",
+    goal_announce:"⚽ GOL!"
+  }
+};
+function T(key){return (I18N[LANG]&&I18N[LANG][key])!==undefined?I18N[LANG][key]:key;}
+function TF(key,repl){let s=T(key);for(const[k,v]of Object.entries(repl||{}))s=s.split('%'+k+'%').join(v);return s;}
+const PHASE_KEY={"Gironi":"ph_gironi","Ottavi":"ph_ottavi","Quarti":"ph_quarti","Semifinali":"ph_semifinali","Finale 3 Posto":"ph_finale3","Finale":"ph_finale"};
+function tPhase(p){return T(PHASE_KEY[p]||p);}
+
+const GOAL_TYPES_IT=[
   (s,m)=>`GOL! (${m}') ${s} - SINISTRO A GIRO!`,(s,m)=>`GOL! (${m}') ${s} - TESTA DA ANGOLO!`,
   (s,m)=>`GOL! (${m}') ${s} - BOTTA CENTRALE!`,(s,m)=>`GOL! (${m}') ${s} - PUNIZIONE!`,
   (s,m)=>`GOL! (${m}') ${s} - IN PROFONDITA'!`,(s,m)=>`GOL! (${m}') ${s} - TAP-IN!`,
@@ -733,8 +945,31 @@ const GOAL_TYPES=[
   (s,m)=>`GOL! (${m}') ${s} - ACROBAZIA AL VOLO!`,(s,m)=>`GOL! (${m}') ${s} - PALO E DENTRO!`,
   (s,m)=>`GOL! (${m}') ${s} - GRAN GALOPPATA!`,(s,m)=>`GOL! (${m}') ${s} - PUNIZIONE AD EFFETTO!`
 ];
-const ATK=["MANOVRA AVVOLGENTE, DIFESA REGGE.","INCURSIONE IN AREA, TIRO DEVIATO.","PRESSING ALTO, PALLA SUL FONDO.","TRAVERSONE, DIFENSORE ANTICIPA.","TRIANGOLO AL LIMITE, CONCLUSIONE ALTA.","RIPARTENZA FERMATA CON FALLO.","TIRO DALLA DISTANZA, PARA IL PORTIERE.","SCHEMA SU PUNIZIONE, MURO AVVERSARIO.","AZIONE SULLA FASCIA, CROSS MANCATO.","TIRO A GIRO, PALLA SUL PALO ESTERNO.","COLPO DI TESTA, PARA IL PORTIERE.","CONCLUSIONE MURATA DALLA DIFESA.","ACCELERAZIONE FERMATA FALLOSA.","LANCIO IN PROFONDITA', FUORIGIOCO.","PALLA DENTRO, ANTICIPATO."];
-const DEF=["GIRO PALLA DIFENSIVO, RITMI GIU'.","CONTROPIEDE SPEZZATO IN MEDIANA.","LETTURA DIFENSIVA, PERICOLO SVENTATO.","PRESSING EFFICACE, PALLA RECUPERATA.","LINEA DIFENSIVA COMPATTA.","RINVIO LUNGO DEL PORTIERE.","BARICENTRO BASSO, RETE IMPERFORABILE.","POSSESSO STERILE, DIFESA NON RISCHIA."];
+const GOAL_TYPES_EN=[
+  (s,m)=>`GOAL! (${m}') ${s} - CURLING LEFT-FOOT SHOT!`,(s,m)=>`GOAL! (${m}') ${s} - HEADER FROM A CORNER!`,
+  (s,m)=>`GOAL! (${m}') ${s} - POWERFUL STRIKE DOWN THE MIDDLE!`,(s,m)=>`GOAL! (${m}') ${s} - FREE KICK!`,
+  (s,m)=>`GOAL! (${m}') ${s} - THROUGH ON GOAL!`,(s,m)=>`GOAL! (${m}') ${s} - TAP-IN!`,
+  (s,m)=>`GOAL! (${m}') ${s} - SURGICAL RIGHT-FOOT FINISH!`,(s,m)=>`GOAL! (${m}') ${s} - ONE-TWO IN THE BOX!`,
+  (s,m)=>`GOAL! (${m}') ${s} - BACKHEEL FINISH!`,(s,m)=>`GOAL! (${m}') ${s} - DRIBBLES PAST AND SCORES!`,
+  (s,m)=>`GOAL! (${m}') ${s} - CROSS AND HEADER!`,(s,m)=>`GOAL! (${m}') ${s} - SCREAMER FROM 30 YARDS!`,
+  (s,m)=>`GOAL! (${m}') ${s} - LOBBED FINISH!`,(s,m)=>`GOAL! (${m}') ${s} - LAYOFF AND STRIKE!`,
+  (s,m)=>`GOAL! (${m}') ${s} - LIGHTNING COUNTER-ATTACK!`,(s,m)=>`GOAL! (${m}') ${s} - SET-PIECE FROM A CORNER!`,
+  (s,m)=>`GOAL! (${m}') ${s} - BICYCLE KICK!`,(s,m)=>`GOAL! (${m}') ${s} - FAR POST FINISH!`,
+  (s,m)=>`GOAL! (${m}') ${s} - ASSIST AND GOAL!`,(s,m)=>`GOAL! (${m}') ${s} - HEADED FINISH!`,
+  (s,m)=>`GOAL! (${m}') ${s} - DEFLECTED IN!`,(s,m)=>`GOAL! (${m}') ${s} - UNBELIEVABLE PLAY!`,
+  (s,m)=>`GOAL! (${m}') ${s} - FEINT AND FINISH!`,(s,m)=>`GOAL! (${m}') ${s} - NUTMEG AND GOAL!`,
+  (s,m)=>`GOAL! (${m}') ${s} - FROM AN IMPOSSIBLE ANGLE!`,(s,m)=>`GOAL! (${m}') ${s} - LIGHTNING BREAKAWAY!`,
+  (s,m)=>`GOAL! (${m}') ${s} - ACROBATIC VOLLEY!`,(s,m)=>`GOAL! (${m}') ${s} - OFF THE POST AND IN!`,
+  (s,m)=>`GOAL! (${m}') ${s} - GREAT SOLO RUN!`,(s,m)=>`GOAL! (${m}') ${s} - SWERVING FREE KICK!`
+];
+const ATK_IT=["MANOVRA AVVOLGENTE, DIFESA REGGE.","INCURSIONE IN AREA, TIRO DEVIATO.","PRESSING ALTO, PALLA SUL FONDO.","TRAVERSONE, DIFENSORE ANTICIPA.","TRIANGOLO AL LIMITE, CONCLUSIONE ALTA.","RIPARTENZA FERMATA CON FALLO.","TIRO DALLA DISTANZA, PARA IL PORTIERE.","SCHEMA SU PUNIZIONE, MURO AVVERSARIO.","AZIONE SULLA FASCIA, CROSS MANCATO.","TIRO A GIRO, PALLA SUL PALO ESTERNO.","COLPO DI TESTA, PARA IL PORTIERE.","CONCLUSIONE MURATA DALLA DIFESA.","ACCELERAZIONE FERMATA FALLOSA.","LANCIO IN PROFONDITA', FUORIGIOCO.","PALLA DENTRO, ANTICIPATO."];
+const ATK_EN=["BUILD-UP PLAY, DEFENSE HOLDS FIRM.","RUN INTO THE BOX, SHOT DEFLECTED.","HIGH PRESS, BALL OUT OF PLAY.","CROSS, DEFENDER CLEARS IT.","TRIANGLE AT THE EDGE, SHOT GOES OVER.","COUNTER-ATTACK STOPPED BY A FOUL.","LONG-RANGE SHOT, KEEPER SAVES.","SET-PIECE ROUTINE, WALL BLOCKS IT.","ACTION DOWN THE FLANK, CROSS MISSES.","CURLING SHOT OFF THE OUTSIDE OF THE POST.","HEADER, KEEPER SAVES.","SHOT BLOCKED BY THE DEFENSE.","BURST OF SPEED STOPPED BY A FOUL.","THROUGH BALL, FLAGGED FOR OFFSIDE.","CROSS INTO THE BOX, CLEARED FIRST."];
+const DEF_IT=["GIRO PALLA DIFENSIVO, RITMI GIU'.","CONTROPIEDE SPEZZATO IN MEDIANA.","LETTURA DIFENSIVA, PERICOLO SVENTATO.","PRESSING EFFICACE, PALLA RECUPERATA.","LINEA DIFENSIVA COMPATTA.","RINVIO LUNGO DEL PORTIERE.","BARICENTRO BASSO, RETE IMPERFORABILE.","POSSESSO STERILE, DIFESA NON RISCHIA."];
+const DEF_EN=["SLOW BUILD-UP, PACE DROPS.","COUNTER-ATTACK BROKEN UP IN MIDFIELD.","GOOD DEFENSIVE READ, DANGER CLEARED.","EFFECTIVE PRESSING, BALL WON BACK.","COMPACT DEFENSIVE LINE.","LONG GOAL-KICK FROM THE KEEPER.","LOW BLOCK, DEFENSE LOOKS SOLID.","STERILE POSSESSION, NO REAL THREAT."];
+function GT(){return LANG==="it"?GOAL_TYPES_IT:GOAL_TYPES_EN;}
+function ATKT(){return LANG==="it"?ATK_IT:ATK_EN;}
+function DEFT(){return LANG==="it"?DEF_IT:DEF_EN;}
+
 
 // ═══ STATE ═══
 let primaryCol="#1a3d6e",secondaryCol="#eeeeee";
@@ -765,6 +1000,65 @@ function init(){
   document.getElementById("sel-flag").addEventListener("change",drawFlag);
   drawFlag();
   onDiffChange();
+  applyLang();
+}
+
+function applyLang(){
+  // Aggiorna tutti gli elementi statici con attributo data-i18n
+  document.querySelectorAll("[data-i18n]").forEach(el=>{
+    const key=el.getAttribute("data-i18n");
+    const val=T(key);
+    if(el.tagName==="OPTION"||el.tagName==="LABEL"||el.tagName==="BUTTON"||el.tagName==="SPAN"||el.tagName==="DIV"||el.tagName==="TH"){
+      el.textContent=val;
+    }else{
+      el.textContent=val;
+    }
+  });
+  // Aggiorna il nome predefinito della nazionale se l'utente non l'ha modificato
+  const inp=document.getElementById("inp-name");
+  if(inp){
+    const otherDefault=LANG==="en"?"LA MIA NAZIONALE":"MY NATIONAL TEAM";
+    if(inp.value.trim()===""||inp.value.trim().toUpperCase()===otherDefault){
+      inp.value=T("default_team_name");
+    }
+  }
+  // Aggiorna anteprima nome/budget se in screen2
+  const pn=document.getElementById("prev-name");
+  if(pn&&!document.getElementById("s2").classList.contains("hidden")){
+    const name=(document.getElementById("inp-name").value.trim()||T("default_team_name")).toUpperCase();
+    pn.textContent=name;
+  }
+  const pb=document.getElementById("prev-budget");
+  if(pb)pb.textContent=T("budget_prefix")+budgetCap.toFixed(1);
+  // Se siamo nel torneo, ri-renderizza le parti dinamiche
+  if(!document.getElementById("s3").classList.contains("hidden")){
+    if(typeof phase!=="undefined"&&phase){
+      if(!document.getElementById("v-rep").classList.contains("hidden")&&window._lastReport){
+        showReport(window._lastReport.stageKey,window._lastReport.resultType,window._lastReport.extraPhase);
+      }else{
+        const pb2=document.getElementById("phase-badge");
+        if(pb2)pb2.textContent=phase==="Gironi"?T("phase_groups"):tPhase(phase);
+        const kr=document.getElementById("ko-rnd");
+        if(kr&&phase!=="Gironi")kr.textContent="▸ "+tPhase(phase);
+        if(typeof renderGrp==="function"&&!document.getElementById("v-grp").classList.contains("hidden"))renderGrp();
+        if(typeof renderKO==="function"&&!document.getElementById("v-ko").classList.contains("hidden"))renderKO();
+        if(typeof renderPrev==="function")renderPrev();
+        if(matchState&&matchState.active){
+          const lh=document.getElementById("live-hdr");
+          if(lh)lh.textContent=matchState.m.h+" VS "+matchState.m.a+" | "+tPhase(phase);
+        }
+      }
+    }
+  }
+}
+
+function setLang(lang){
+  if(lang!==LANG){
+    LANG=lang;
+    document.getElementById("lang-en").classList.toggle("on",lang==="en");
+    document.getElementById("lang-it").classList.toggle("on",lang==="it");
+    applyLang();
+  }
 }
 
 function buildPal(id,type,cur){
@@ -819,9 +1113,9 @@ function goPage2(){
   else if(!window._budgetLocked)budgetCap=Math.round((95+Math.random()*10)*10)/10;
   window._budgetLocked=true; // blocca il ricalcolo random nelle visite successive
   budgetCap=Math.round(budgetCap*10)/10;
-  const name=(document.getElementById("inp-name").value.trim()||"LA MIA NAZIONALE").toUpperCase();
+  const name=(document.getElementById("inp-name").value.trim()||T("default_team_name")).toUpperCase();
   const pn=document.getElementById("prev-name");if(pn)pn.textContent=name;
-  const pb=document.getElementById("prev-budget");if(pb)pb.textContent="Budget: "+budgetCap.toFixed(1);
+  const pb=document.getElementById("prev-budget");if(pb)pb.textContent=T("budget_prefix")+budgetCap.toFixed(1);
   drawFlagTo("flag-sm",true);
   document.getElementById("s1").classList.add("hidden");
   document.getElementById("s2").classList.remove("hidden");
@@ -882,7 +1176,7 @@ function openDraft(role,idx){
   sel.sort((a,b)=>b.pw-a.pw);
   const grid=document.getElementById("cand-grid");
   const title=document.getElementById("cand-title");
-  if(title)title.textContent="["+role+"] — SCEGLI ("+sel.length+"):";
+  if(title)title.textContent=TF("cand_title",{ROLE:role,N:sel.length});
   if(grid){
     grid.innerHTML="";
     sel.forEach(p=>{
@@ -1026,7 +1320,7 @@ function getActMs(){return curSpd==="fast"?0:curSpd==="slow"?1500:1000;}
 
 // ═══ TOURNAMENT ═══
 function startTournament(){
-  userTeam=(document.getElementById("inp-name").value.trim()||"LA MIA NAZIONALE").toUpperCase();
+  userTeam=(document.getElementById("inp-name").value.trim()||T("default_team_name")).toUpperCase();
   userStats={m:0,w:0,d:0,l:0,gf:0,gs:0,scorers:{}};
   // Sync stile
   const selSt=document.getElementById("sel-style").value;
@@ -1051,7 +1345,7 @@ function startTournament(){
   window._gs={};
   [A,B,C,D].forEach(n=>{window._gs[n]={n,pts:0,gf:0,gs:0,m:0,isU:n===userTeam};});
   grpIdx=0;phase="Gironi";sfLosers=[];
-  document.getElementById("phase-badge").textContent="FASE A GIRONI";
+  document.getElementById("phase-badge").textContent=T("phase_groups");
   // La classifica si aggiorna progressivamente dopo ogni partita
   document.getElementById("other-results").innerHTML="";
   renderGrp();renderPrev();
@@ -1082,19 +1376,19 @@ function renderPrev(){
   btn.style.display="block";btn.disabled=false;btn.className="btn btn-p";
   if(phase==="Gironi"){
     if(grpIdx>=ugm.length){
-      pT.textContent="GIRONI COMPLETATI";pP.textContent="CHI AVANZA?";
-      btn.textContent="▶ FASE ELIMINATORIA";btn.className="btn btn-g";
+      pT.textContent=T("groups_completed");pP.textContent=T("who_advances");
+      btn.textContent=T("btn_knockout_phase");btn.className="btn btn-g";
     }else{
-      const m=ugm[grpIdx];pT.textContent=m.h+"\nVS\n"+m.a;pP.textContent="FASE A GIRONI";
-      btn.textContent="▶ SCENDI IN CAMPO!";btn.className="btn btn-g";
+      const m=ugm[grpIdx];pT.textContent=m.h+"\nVS\n"+m.a;pP.textContent=T("phase_groups");
+      btn.textContent=T("btn_play_match");btn.className="btn btn-g";
     }
   }else{
     if(koMIdx>=koMs.length){
-      pT.textContent="TURNO COMPLETATO";pP.textContent="";btn.textContent="▶ PROSSIMO TURNO";
+      pT.textContent=T("round_completed");pP.textContent="";btn.textContent=T("btn_next_round");
     }else{
-      const m=koMs[koMIdx];pT.textContent=m.h+"\nVS\n"+m.a;pP.textContent=phase;
+      const m=koMs[koMIdx];pT.textContent=m.h+"\nVS\n"+m.a;pP.textContent=tPhase(phase);
       const isU=m.h===userTeam||m.a===userTeam;
-      btn.textContent=isU?"▶ SCENDI IN CAMPO!":"▶ SIMULA";
+      btn.textContent=isU?T("btn_play_match"):T("btn_simulate");
       if(isU)btn.className="btn btn-g";
     }
   }
@@ -1135,7 +1429,7 @@ function goKO(){
     const grpAllX=new Set([...grpRivals,userTeam]);
     const noGroupX=shuf(Object.keys(HIST).filter(t=>!qual.includes(t)&&!grpAllX.has(t)));
     window._eliminatedPool=shuf([...qual,...noGroupX.slice(0,14)]);
-    showReport("ELIMINATO AI GIRONI",null);return;
+    showReport("groups",null);return;
   }
   document.getElementById("v-grp").classList.add("hidden");
   document.getElementById("v-ko").classList.remove("hidden");
@@ -1150,8 +1444,8 @@ function goKO(){
 
 function buildKO(){
   phase=KO[koPhIdx];
-  document.getElementById("phase-badge").textContent=phase.toUpperCase();
-  document.getElementById("ko-rnd").textContent="▸ "+phase.toUpperCase();
+  document.getElementById("phase-badge").textContent=tPhase(phase);
+  document.getElementById("ko-rnd").textContent="▸ "+tPhase(phase);
   koMs=[];
   if(phase==="Finale 3 Posto"){
     const l1=sfLosers[0]||"TBD",l2=sfLosers[1]||"TBD";
@@ -1162,7 +1456,7 @@ function buildKO(){
   koMIdx=koMs.findIndex(m=>m.h===userTeam||m.a===userTeam);
   if(koMIdx===-1){
     koMs.forEach(m=>{const r=simFull(m.h,m.a,true);m.sH=r.sH;m.sA=r.sA;m.w=r.w;m.played=true;if(phase==="Semifinali"){const l=r.w===m.h?m.a:m.h;sfLosers.push(l);}});
-    koMIdx=koMs.length;renderKO();showReport("ELIMINATO IN "+phase,null);return;
+    koMIdx=koMs.length;renderKO();showReport("phase",null,phase);return;
   }
   for(let i=0;i<koMIdx;i++){const r=simFull(koMs[i].h,koMs[i].a,true);koMs[i].sH=r.sH;koMs[i].sA=r.sA;koMs[i].w=r.w;koMs[i].played=true;if(phase==="Semifinali"){const l=r.w===koMs[i].h?koMs[i].a:koMs[i].h;sfLosers.push(l);}}
   renderKO();renderPrev();
@@ -1214,7 +1508,7 @@ function renderKO(){
 function startLive(m,ctx){
   // Mostra live box
   document.getElementById("live-box").classList.remove("hidden");
-  document.getElementById("live-hdr").textContent=m.h+" VS "+m.a+" | "+phase;
+  document.getElementById("live-hdr").textContent=m.h+" VS "+m.a+" | "+tPhase(phase);
   // Colori dot squadre
   const hC=getTColors(m.h===userTeam?userTeam:m.h);
   const aC=getTColors(m.a===userTeam?userTeam:m.a);
@@ -1272,7 +1566,7 @@ function doFlash(isU,cancel){
 function showGoalAnn(scorer,min,isU,team){
   const box=document.getElementById("goal-ann");if(!box)return;
   box.className="goal-ann"+(isU?"":" opp");
-  box.innerHTML="⚽ GOL!<br>"+scorer+"<br><span style='font-size:8px'>"+min+"' — "+team+"</span>";
+  box.innerHTML=T("goal_announce")+"<br>"+scorer+"<br><span style='font-size:8px'>"+min+"' — "+team+"</span>";
   box.style.display="block";setTimeout(()=>{box.style.display="none";},2100);
 }
 
@@ -1283,29 +1577,29 @@ function tick(){
   document.getElementById("sb-timer").textContent=String(ms.min).padStart(2,"0")+"'";
 
   if(ms.min===45&&!ms.extra){
-    log("** FINE 1T - INTERVALLO **","l-p");ms.min=46;
+    log(T("halftime"),"l-p");ms.min=46;
     matchTmr=setTimeout(tick,getEvMs()*1.5);return;
   }
   if(ms.min===90&&!ms.extra){
     if(ms.ctx==="group"||ms.sH!==ms.sA){
-      log("** TRIPLICE FISCHIO - "+ms.sH+"-"+ms.sA+" FT **","l-end");
+      log(TF("fulltime",{S:ms.sH+"-"+ms.sA}),"l-end");
       ms.active=false;clearTimeout(matchTmr);
       setTimeout(()=>finishMatch(ms),1000);return;
     }
-    log("** FINE 90' - SUPPLEMENTARI! **","l-p");ms.extra=true;ms.min=91;
+    log(T("extratime_start"),"l-p");ms.extra=true;ms.min=91;
     matchTmr=setTimeout(tick,getEvMs()*1.5);return;
   }
   if(ms.min===105&&ms.extra){
-    log("** FINE 1T SUPPL. **","l-p");ms.min=106;
+    log(T("extratime_half"),"l-p");ms.min=106;
     matchTmr=setTimeout(tick,getEvMs());return;
   }
   if(ms.min===120&&ms.extra){
     if(ms.sH!==ms.sA){
-      log("** TRIPLICE FISCHIO - "+ms.sH+"-"+ms.sA+" AET **","l-end");
+      log(TF("aet_full",{S:ms.sH+"-"+ms.sA}),"l-end");
       ms.active=false;clearTimeout(matchTmr);
       setTimeout(()=>finishMatch(ms),1000);return;
     }
-    log("** FINE SUPPL. - RIGORI! **","l-p");ms.active=false;clearTimeout(matchTmr);
+    log(T("penalties_start"),"l-p");ms.active=false;clearTimeout(matchTmr);
     setTimeout(()=>doPens(ms),getEvMs());return;
   }
 
@@ -1323,11 +1617,11 @@ function tick(){
     const team=isH?m.h:m.a,scorer=getScorer(team),isU=team===userTeam;
     const isVar=Math.random()<.08&&curSpd!=="fast";
     if(isH){ms.sH++;ms.mA=(ms.mA||0)+.3;}else{ms.sA++;ms.mH=(ms.mH||0)+.3;}
-    const txt=GOAL_TYPES[Math.floor(Math.random()*GOAL_TYPES.length)](scorer,ms.min);
+    const gt=GT();const txt=gt[Math.floor(Math.random()*gt.length)](scorer,ms.min);
     log(txt,logCls(isU,true));doFlash(isU,false);updSB();showGoalAnn(scorer,ms.min,isU,team);
     if(isVar){
-      setTimeout(()=>{log("VAR: CONTROLLO...","l-var");
-        setTimeout(()=>{if(isH)ms.sH--;else ms.sA--;log("ANNULLATO! "+scorer,"l-var");doFlash(false,true);updSB();matchTmr=setTimeout(tick,getTickMs());},getEvMs()*.8);},1200);
+      setTimeout(()=>{log(T("var_check"),"l-var");
+        setTimeout(()=>{if(isH)ms.sH--;else ms.sA--;log(T("var_disallowed")+scorer,"l-var");doFlash(false,true);updSB();matchTmr=setTimeout(tick,getTickMs());},getEvMs()*.8);},1200);
     }else{
       if(isH)ms.hList.push("⚽"+scorer+" "+ms.min+"'");else ms.aList.push("⚽"+scorer+" "+ms.min+"'");
       if(isU){if(!userStats.scorers[scorer])userStats.scorers[scorer]=0;userStats.scorers[scorer]++;}
@@ -1341,14 +1635,14 @@ function tick(){
     if(ev>=0.03&&ev<0.0322&&ms.min>10&&ms.min<88){
       const penScorer=getScorer(isH?m.h:m.a);
       const penIsU=(isH?m.h:m.a)===userTeam;
-      log(String(ms.min).padStart(2,"0")+"' "+(isH?m.h:m.a)+": RIGORE! "+penScorer+" AL DISCHETTO... GOL!",logCls(penIsU,true));
+      log(String(ms.min).padStart(2,"0")+"' "+(isH?m.h:m.a)+": "+TF("pen_in_match",{S:penScorer}),logCls(penIsU,true));
       if(isH)ms.sH++;else ms.sA++;
       if(isH)ms.hList.push("⚽"+penScorer+" "+ms.min+"' (R)");else ms.aList.push("⚽"+penScorer+" "+ms.min+"' (R)");
       if(penIsU){if(!userStats.scorers[penScorer])userStats.scorers[penScorer]=0;userStats.scorers[penScorer]++;}
       doFlash(penIsU,false);updSB();
       ms.min++;matchTmr=setTimeout(tick,getTickMs()+1500);return;
     }
-    log(String(ms.min).padStart(2,"0")+"' "+(isH?m.h:m.a)+": "+rnd(isH?ATK:DEF),logCls(isU,false));
+    log(String(ms.min).padStart(2,"0")+"' "+(isH?m.h:m.a)+": "+rnd(isH?ATKT():DEFT()),logCls(isU,false));
     ms.min++;matchTmr=setTimeout(tick,getTickMs()+getActMs());return;
   }
   ms.min++;matchTmr=setTimeout(tick,getTickMs());
@@ -1391,13 +1685,13 @@ function doPens(ms){
   async function kick(team,scorer,prob,isH){
     await delay(2000);
     const cls=team===userTeam?"l-pu":"l-po";
-    log(team+": "+scorer+" AL DISCHETTO...",cls);
+    log(TF("pen_taker",{T:team,S:scorer}),cls);
     await delay(2000);
     let scored=Math.random()<prob;
-    if(scored){if(isH)rH++;else rA++;log("  ⚽ GOL! "+scorer,cls);doFlash(team===userTeam,false);}
-    else log("  ✗ ERRORE! "+scorer,"l-miss");
+    if(scored){if(isH)rH++;else rA++;log(TF("pen_scored",{S:scorer}),cls);doFlash(team===userTeam,false);}
+    else log(TF("pen_missed",{S:scorer}),"l-miss");
     addPenRow(isH,scorer,scored);
-    document.getElementById("sb-score").innerHTML=rH+' - '+rA+'<span style="font-size:7px;color:var(--yel)"> rig</span>';
+    document.getElementById("sb-score").innerHTML=rH+' - '+rA+'<span style="font-size:7px;color:var(--yel)">'+T("pen_suffix")+'</span>';
     await delay(800);
   }
   async function p1(k){
@@ -1408,7 +1702,7 @@ function doPens(ms){
     if(rA-rH>(5-k)){await fin();return;}  // H ha ancora (5-k) tiri: solo rounds rimanenti
     await p1(k+1);
   }
-  async function p1end(){if(rH!==rA){await fin();return;}await delay(2000);log("PARITA'! SUDDEN DEATH!","l-p");await sd(0);}
+  async function p1end(){if(rH!==rA){await fin();return;}await delay(2000);log(T("sudden_death"),"l-p");await sd(0);}
   async function sd(c){
     if(c>=20){await fin();return;}
     await kick(m.h,nextH(),probH,true);await kick(m.a,nextA(),probA,false);
@@ -1416,10 +1710,10 @@ function doPens(ms){
   }
   async function fin(){
     const w=rH>rA?m.h:m.a;await delay(2000);
-    log("RIGORI: "+m.h+" "+rH+" - "+rA+" "+m.a+". PASSA: "+w,"l-p");
+    log(TF("pen_result",{H:m.h,RH:rH,RA:rA,A:m.a,W:w}),"l-p");
     await delay(2000);if(rH>rA)ms.sH++;else ms.sA++;
     ms.fromPens=true;ms.pensGoals={sH:ms.sH-goalsBeforePens.sH,sA:ms.sA-goalsBeforePens.sA};
-    log("** TRIPLICE FISCHIO **","l-end");
+    log(T("final_whistle"),"l-end");
     setTimeout(()=>finishMatch(ms),1200);
   }
   p1(1);
@@ -1438,9 +1732,9 @@ function finishMatch(ms){
   if(isDraw)userStats.d++;else if(userWon)userStats.w++;else userStats.l++;
   m.sH=fH;m.sA=fA;m.w=fH>fA?m.h:fA>fH?m.a:null;m.played=true;
   let svg,title,sub;
-  if(userWon){svg=SVG_WIN;title="VITTORIA!";}
-  else if(isDraw){svg="";title="PAREGGIO";}
-  else{svg="";title="SCONFITTA";}
+  if(userWon){svg=SVG_WIN;title=T("res_win");}
+  else if(isDraw){svg="";title=T("res_draw");}
+  else{svg="";title=T("res_loss");}
   sub=m.h+" VS "+m.a;
   showOverlay(svg,title,fH+" - "+fA,sub,()=>afterMatch(ms,m,fH,fA,userWon,isDraw));
 }
@@ -1474,10 +1768,10 @@ function afterMatch(ms,m,fH,fA,userWon,isDraw){
   }else{
     if(phase==="Semifinali"){const loser=m.w===m.h?m.a:m.h;sfLosers.push(loser);}
     const isLast=phase==="Finale",is3rd=phase==="Finale 3 Posto";
-    if(isLast&&userWon){renderKO();koMIdx=koMs.length;showReport("CAMPIONE DEL MONDO!","champion");}
-    else if(is3rd&&userWon){renderKO();koMIdx=koMs.length;showReport("3° POSTO!","third");}
-    else if(is3rd&&!userWon){renderKO();koMIdx=koMs.length;showReport("4° POSTO","fourth");}
-    else if(isLast&&!userWon){window._lastFinalWinner=m.w;renderKO();koMIdx=koMs.length;showReport("VICE CAMPIONE!","second");}
+    if(isLast&&userWon){renderKO();koMIdx=koMs.length;showReport("champion","champion");}
+    else if(is3rd&&userWon){renderKO();koMIdx=koMs.length;showReport("third","third");}
+    else if(is3rd&&!userWon){renderKO();koMIdx=koMs.length;showReport("fourth","fourth");}
+    else if(isLast&&!userWon){window._lastFinalWinner=m.w;renderKO();koMIdx=koMs.length;showReport("second","second");}
     else if(!userWon&&!isDraw){
       if(phase==="Semifinali"){
         for(let i=koMIdx+1;i<koMs.length;i++){const r=simFull(koMs[i].h,koMs[i].a,true);koMs[i].sH=r.sH;koMs[i].sA=r.sA;koMs[i].w=r.w;koMs[i].played=true;const l=r.w===koMs[i].h?koMs[i].a:koMs[i].h;if(!sfLosers.includes(l))sfLosers.push(l);}
@@ -1494,8 +1788,8 @@ function afterMatch(ms,m,fH,fA,userWon,isDraw){
         renderKO();
         // Mostra tabellone aggiornato prima del report; aggiungi bottone per proseguire
         const btn=document.getElementById("btn-play");
-        if(btn){btn.textContent="▶ VEDI REPORT FINALE";btn.disabled=false;btn.className="btn btn-g";
-          btn.onclick=()=>showReport("ELIMINATO IN "+phase,null);}
+        if(btn){btn.textContent=T("btn_view_report");btn.disabled=false;btn.className="btn btn-g";
+          btn.onclick=()=>showReport("phase",null,phase);}
       }
     }else{
       // User ha vinto questo round
@@ -1566,21 +1860,23 @@ function predChampion(){
   return pool[0]||"—";
 }
 
-function showReport(stageText,resultType){
+function showReport(stageKey,resultType,extraPhase){
   document.getElementById("ctrl-panel").classList.add("hidden");
   document.getElementById("live-box").classList.add("hidden");
   document.getElementById("v-ko").classList.add("hidden");
   document.getElementById("v-grp").classList.add("hidden");
   const champion=predChampion();
   const rpt=document.getElementById("v-rep");rpt.classList.remove("hidden");
+  // Salva i parametri per poter ri-renderizzare il report al cambio lingua
+  window._lastReport={stageKey,resultType,extraPhase};
   let mSvg="",mTitle="";
   if(resultType==="champion"){mSvg=SVG_CUP;mTitle="";}  // stageLabel già dice Campioni del Mondo
-  else if(resultType==="second"){mSvg=SVG_SILVER;mTitle="MEDAGLIA D'ARGENTO";}
-  else if(resultType==="third"){mSvg=SVG_BRONZE;mTitle="MEDAGLIA DI BRONZO";}
+  else if(resultType==="second"){mSvg=SVG_SILVER;mTitle=T("silver_medal");}
+  else if(resultType==="third"){mSvg=SVG_BRONZE;mTitle=T("bronze_medal");}
   // Capocannoniere
-  let topScorer="NESSUNO",maxG=0;
+  let topScorer=T("none"),maxG=0;
   for(const[k,v]of Object.entries(userStats.scorers)){if(v>maxG){maxG=v;topScorer=k;}}
-  const topScorerStr=maxG>0?topScorer+" ("+maxG+" gol)":"NESSUNO";
+  const topScorerStr=maxG>0?topScorer+" ("+maxG+T("goals_suffix"):T("none");
   // Build pitch for report
   const slots=FORMATIONS[document.getElementById("sel-fm").value];
   let pitchDots="";
@@ -1595,27 +1891,33 @@ function showReport(stageText,resultType){
       +'<div style="font-size:7px;text-align:center;line-height:1">'+st+'</div>'
       +'</div>';
   });
-  // Titolo report: non mostrare stageText se è uguale a mTitle (evita doppione campione)
-  const showStage=resultType!=="champion"; // per il campione basta mTitle con la coppa
-  const stageLabel=resultType==="champion"?"🏆 CAMPIONI DEL MONDO!":stageText;
+  // Calcola l'etichetta della fase/risultato in base allo stageKey
+  let stageLabel;
+  if(resultType==="champion")stageLabel=T("world_champions");
+  else if(resultType==="second")stageLabel=T("runner_up");
+  else if(resultType==="third")stageLabel=T("third_place");
+  else if(resultType==="fourth")stageLabel=T("fourth_place");
+  else if(stageKey==="groups")stageLabel=T("eliminated_groups");
+  else if(stageKey==="phase")stageLabel=T("eliminated_in")+" "+tPhase(extraPhase);
+  else stageLabel=stageKey;
   rpt.innerHTML=
     '<div style="text-align:center;padding:14px 0">'+
     (mSvg?'<div style="margin:0 auto 12px;text-align:center">'+mSvg+'</div>':'')+
     (mTitle?'<div style="font-size:9px;color:var(--yel);margin-bottom:8px;line-height:2">'+mTitle+'</div>':'')+
     '<div class="rep-stage">'+stageLabel+'</div>'+
     '<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:12px 0">'+
-    '<div class="stat-box"><div class="stat-num">'+userStats.m+'</div><div class="stat-lbl">PARTITE</div></div>'+
-    '<div class="stat-box"><div class="stat-num" style="color:var(--px)">'+userStats.w+'</div><div class="stat-lbl">VITTORIE</div></div>'+
-    '<div class="stat-box"><div class="stat-num" style="color:var(--yel)">'+userStats.d+'</div><div class="stat-lbl">PAREGGI</div></div>'+
-    '<div class="stat-box"><div class="stat-num" style="color:var(--red)">'+userStats.l+'</div><div class="stat-lbl">SCONFITTE</div></div>'+
+    '<div class="stat-box"><div class="stat-num">'+userStats.m+'</div><div class="stat-lbl">'+T("rep_matches")+'</div></div>'+
+    '<div class="stat-box"><div class="stat-num" style="color:var(--px)">'+userStats.w+'</div><div class="stat-lbl">'+T("rep_wins")+'</div></div>'+
+    '<div class="stat-box"><div class="stat-num" style="color:var(--yel)">'+userStats.d+'</div><div class="stat-lbl">'+T("rep_draws")+'</div></div>'+
+    '<div class="stat-box"><div class="stat-num" style="color:var(--red)">'+userStats.l+'</div><div class="stat-lbl">'+T("rep_losses")+'</div></div>'+
     '</div>'+
     // Capocannoniere con pallone pixel
     '<div style="background:var(--surface);border:2px solid var(--border);padding:10px;margin:10px 0;display:flex;align-items:center;gap:10px">'+
     '<svg width="32" height="32" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"><circle cx="16" cy="16" r="14" fill="#fff" stroke="#222" stroke-width="1.5"/><polygon points="16,4 20,10 14,14 10,10" fill="#222"/><polygon points="26,12 28,18 22,20 18,14" fill="#222"/><polygon points="22,26 16,28 14,22 20,18" fill="#222"/><polygon points="10,26 6,20 10,16 16,20" fill="#222"/><polygon points="6,12 12,10 14,16 8,18" fill="#222"/></svg>'+
-    '<div style="text-align:left"><div style="font-size:7px;color:var(--dim);margin-bottom:3px">CAPOCANNONIERE</div><div style="font-size:8px;color:var(--yel)">'+topScorerStr+'</div></div>'+
+    '<div style="text-align:left"><div style="font-size:7px;color:var(--dim);margin-bottom:3px">'+T("top_scorer")+'</div><div style="font-size:8px;color:var(--yel)">'+topScorerStr+'</div></div>'+
     '</div>'+
     // Campo con formazione
-    '<div style="font-size:8px;color:var(--cya);margin:12px 0 6px">▸ LA TUA NAZIONALE</div>'+
+    '<div style="font-size:8px;color:var(--cya);margin:12px 0 6px">'+T("your_nation")+'</div>'+
     '<div style="position:relative;width:100%;padding-top:124%;background:#0a3d0a;border:2px solid #00aa00;overflow:hidden;max-width:480px;margin:0 auto">'+
     '<div style="position:absolute;inset:0">'+
     '<div style="position:absolute;top:0;left:30%;width:40%;height:12%;border:1px solid rgba(0,170,0,.4);border-top:none"></div>'+
@@ -1624,8 +1926,8 @@ function showReport(stageText,resultType){
     '<div style="position:absolute;top:50%;left:50%;width:20%;padding-top:20%;border:1px solid rgba(0,170,0,.4);border-radius:50%;transform:translate(-50%,-50%)"></div>'+
     pitchDots+
     '</div></div>'+
-    (resultType!=="champion"?'<div class="champ-note" style="margin-top:12px"><span class="cn-l">▸ CAMPIONE MONDIALE (SIM):</span><span class="cn-n">'+champion+'</span></div>':'')+
-    '<button class="btn btn-g" style="margin-top:14px" onclick="location.reload()">▶ RICOMINCIA IL MONDIALE</button>'+
+    (resultType!=="champion"?'<div class="champ-note" style="margin-top:12px"><span class="cn-l">'+T("world_champion_sim")+'</span><span class="cn-n">'+champion+'</span></div>':'')+
+    '<button class="btn btn-g" style="margin-top:14px" onclick="location.reload()">'+T("btn_restart")+'</button>'+
     '</div>';
 }
 
