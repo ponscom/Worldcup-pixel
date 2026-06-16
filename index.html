@@ -25,6 +25,18 @@ body::before{content:"";position:fixed;inset:0;background:repeating-linear-gradi
 .logo-main{font-size:40px;text-shadow:5px 5px 0 var(--red),0 0 32px var(--yel);letter-spacing:6px;line-height:1.4;margin-bottom:8px}
 .logo-world{color:var(--cya);text-shadow:4px 4px 0 #0066aa,0 0 22px var(--cya)}
 .logo-cup{color:var(--yel)}
+/* ═══ SPONSOR (fittizi, stile anni '80) ═══ */
+.sponsor-strip{display:flex;justify-content:center;align-items:center;gap:14px;margin-top:8px;flex-wrap:wrap;opacity:.85}
+.sponsor-chip{font-size:6px;letter-spacing:1px;padding:3px 7px;border:1px solid var(--border);background:var(--surface);white-space:nowrap}
+.pitch-ad-strip{position:absolute;left:0;right:0;bottom:0;height:20px;overflow:hidden;border-top:1px solid rgba(0,0,0,.4);z-index:6;background:#0a2a0a}
+.pitch-ad-strip-top{bottom:auto;top:0;border-top:none;border-bottom:1px solid rgba(0,0,0,.4)}
+.ad-track{display:flex;width:max-content;height:100%;will-change:transform}
+.ad-track span{flex-shrink:0;display:flex;align-items:center;justify-content:center;padding:0 16px;font-size:6px;letter-spacing:1px;color:#fff;text-shadow:1px 1px 0 #000;white-space:nowrap}
+@keyframes adScrollL{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+@keyframes adScrollR{from{transform:translateX(-50%)}to{transform:translateX(0)}}
+.ann-sponsor{margin-top:8px;font-size:6px;letter-spacing:1px;color:#fff;padding:4px 8px;text-shadow:1px 1px 0 #000}
+.report-sponsor{text-align:center;font-size:6px;color:var(--dim);letter-spacing:1px;margin-top:10px;opacity:.7}
+.app-footer{text-align:center;font-size:6px;color:var(--dim);letter-spacing:.5px;padding:18px 0 10px;opacity:.55}
 .logo-ed{font-size:13px;letter-spacing:6px;margin-top:8px}
 .card{background:var(--card);border:2px solid var(--border);padding:14px;margin-bottom:12px}
 .slbl{font-size:8px;color:var(--cya);text-transform:uppercase;letter-spacing:2px;margin-bottom:10px;border-bottom:1px solid var(--border);padding-bottom:5px}
@@ -58,7 +70,6 @@ body::before{content:"";position:fixed;inset:0;background:repeating-linear-gradi
 .pdot.filled{box-shadow:0 0 0 2px var(--px)}
 .pname{font-size:8px;color:#fff;text-shadow:1px 1px 0 #000,-1px -1px 0 #000;text-align:center;max-width:56px;line-height:1.3}
 .prole{font-size:6px;color:var(--cya);text-shadow:1px 1px 0 #000;text-align:center;letter-spacing:1px;margin-top:1px}
-.pstars{font-size:8px;text-align:center;line-height:1.2}
 .pval{font-size:7px;color:var(--yel);text-align:center;text-shadow:1px 1px 0 #000}
 /* BUDGET */
 .bbar-wrap{background:var(--bg);border:2px solid var(--border);padding:10px;margin-bottom:12px}
@@ -74,7 +85,6 @@ body::before{content:"";position:fixed;inset:0;background:repeating-linear-gradi
 .cname{font-size:8px;color:var(--wht);margin-bottom:4px}
 .crole{font-size:7px;color:var(--dim);margin-bottom:3px}
 .cpow{font-size:8px;margin-bottom:2px}
-.cstars{font-size:9px}
 /* BTN */
 .btn{display:block;width:100%;padding:11px 10px;font-size:8px;font-family:'Press Start 2P',monospace;border:2px solid var(--border);background:var(--card);color:var(--wht);cursor:pointer;text-align:center;letter-spacing:1px;text-transform:uppercase;position:relative;transition:all .1s}
 .btn::after{content:"▶";position:absolute;right:10px;top:50%;transform:translateY(-50%);font-size:7px;opacity:.5}
@@ -192,6 +202,7 @@ body::before{content:"";position:fixed;inset:0;background:repeating-linear-gradi
   <div id="res-score" class="res-score"></div>
   <div id="res-sub" class="res-sub"></div>
   <div id="res-motm" style="display:none;background:var(--surface);border:1px solid var(--border);padding:8px 14px;margin-bottom:16px;text-align:center"></div>
+  <div id="res-sponsor" class="ann-sponsor" style="display:inline-block;margin-bottom:14px"></div>
   <button class="res-close" data-i18n="res_continue" onclick="closeOverlay()">▶ CONTINUE</button>
 </div>
 
@@ -204,6 +215,7 @@ body::before{content:"";position:fixed;inset:0;background:repeating-linear-gradi
     <div class="logo-back">BACK TO</div>
     <div class="logo-main"><span class="logo-world">WORLD</span> <span class="logo-cup">CUP</span></div>
     <div class="logo-ed"><span style="color:var(--red)">L</span><span style="color:var(--yel)">E</span><span style="color:var(--px)">G</span><span style="color:var(--cya)">E</span><span style="color:var(--wht)">N</span><span style="color:var(--red)">D</span><span style="color:var(--yel)">S</span> <span style="color:var(--px)">E</span><span style="color:var(--cya)">D</span><span style="color:var(--wht)">I</span><span style="color:var(--red)">T</span><span style="color:var(--yel)">I</span><span style="color:var(--px)">O</span><span style="color:var(--cya)">N</span></div>
+    <div class="sponsor-strip"><span class="sponsor-chip" style="background:#cc0000;color:#fff;border-color:#cc0000">KOSMOS COLA</span><span class="sponsor-chip" style="background:#0044aa;color:#fff;border-color:#0044aa">TURBO SPORT</span><span class="sponsor-chip" style="background:#006622;color:#fff;border-color:#006622">KARMA DREAM</span></div>
   </div>
 
   <!-- SCREEN 1: IDENTITA -->
@@ -226,20 +238,20 @@ body::before{content:"";position:fixed;inset:0;background:repeating-linear-gradi
         </div>
         <div class="fr">
           <label data-i18n="lbl_difficulty">DIFFICULTY</label>
-          <select id="sel-diff" onchange="onDiffChange()">
-            <option value="easy" data-i18n="diff_easy">EASY — budget 105.0</option>
-            <option value="medium" selected data-i18n="diff_medium">MEDIUM — budget 100.0</option>
-            <option value="hard" data-i18n="diff_hard">HARD — budget 95.0</option>
-            <option value="random" data-i18n="diff_random">RANDOM — 95 to 105</option>
-          </select>
+          <div class="lc-btns" id="diff-btns">
+            <button class="lc-btn" data-i18n="diff_easy_sh" onclick="setDiff('easy')">EASY</button>
+            <button class="lc-btn on" data-i18n="diff_medium_sh" onclick="setDiff('medium')">MEDIUM</button>
+            <button class="lc-btn" data-i18n="diff_hard_sh" onclick="setDiff('hard')">HARD</button>
+            <button class="lc-btn" data-i18n="diff_random_sh" onclick="setDiff('random')">RANDOM</button>
+          </div>
         </div>
         <div class="fr">
           <label data-i18n="lbl_speed">GAME SPEED</label>
-          <select id="sel-speed-init" onchange="setSpd(this.value)">
-            <option value="fast" data-i18n="speed_fast_init">FAST — key actions only</option>
-            <option value="normal" selected data-i18n="speed_normal_init">NORMAL — standard commentary</option>
-            <option value="slow" data-i18n="speed_slow_init">EXTENDED — detailed commentary</option>
-          </select>
+          <div class="lc-btns" id="spd-init-btns">
+            <button class="lc-btn" data-i18n="speed_fast_sh" onclick="setSpd('fast')">FAST</button>
+            <button class="lc-btn on" data-i18n="speed_normal_sh" onclick="setSpd('normal')">NORMAL</button>
+            <button class="lc-btn" data-i18n="speed_slow_sh" onclick="setSpd('slow')">EXTENDED</button>
+          </div>
         </div>
         <div style="margin-top:16px"><button class="btn btn-g" data-i18n="btn_next_squad" onclick="goPage2()">▶ NEXT: PICK YOUR SQUAD</button></div>
       </div>
@@ -252,14 +264,27 @@ body::before{content:"";position:fixed;inset:0;background:repeating-linear-gradi
       <div class="card">
         <div class="slbl" data-i18n="s2_tactics">▸ TACTICS</div>
         <div class="fr"><label data-i18n="lbl_formation">FORMATION</label>
-          <select id="sel-fm" onchange="onFormationChange()">
+          <select id="sel-fm" style="display:none">
             <option value="4-3-3">4-3-3</option><option value="4-4-2">4-4-2</option>
             <option value="3-5-2">3-5-2</option><option value="4-2-3-1">4-2-3-1</option>
             <option value="5-3-2">5-3-2</option><option value="3-4-3">3-4-3</option>
             <option value="4-5-1">4-5-1</option><option value="4-1-4-1">4-1-4-1</option>
-            <option value="5-4-1">5-4-1</option><option value="4-3-2-1">4-3-2-1 (XMAS)</option>
-            <option value="4-2-4">4-2-4</option>
+            <option value="4-3-2-1">4-3-2-1</option><option value="4-2-4">4-2-4</option>
           </select>
+          <div class="lc-btns" id="fm-btns-row1">
+            <button class="lc-btn on" onclick="setFormation('4-3-3')">4-3-3</button>
+            <button class="lc-btn" onclick="setFormation('4-4-2')">4-4-2</button>
+            <button class="lc-btn" onclick="setFormation('3-5-2')">3-5-2</button>
+            <button class="lc-btn" onclick="setFormation('4-2-3-1')">4-2-3-1</button>
+            <button class="lc-btn" onclick="setFormation('5-3-2')">5-3-2</button>
+          </div>
+          <div class="lc-btns" id="fm-btns-row2" style="margin-top:4px">
+            <button class="lc-btn" onclick="setFormation('3-4-3')">3-4-3</button>
+            <button class="lc-btn" onclick="setFormation('4-5-1')">4-5-1</button>
+            <button class="lc-btn" onclick="setFormation('4-1-4-1')">4-1-4-1</button>
+            <button class="lc-btn" onclick="setFormation('4-3-2-1')">4-3-2-1</button>
+            <button class="lc-btn" onclick="setFormation('4-2-4')">4-2-4</button>
+          </div>
         </div>
         <div class="fr"><label data-i18n="lbl_style">PLAYING STYLE</label>
           <select id="sel-style">
@@ -370,7 +395,7 @@ body::before{content:"";position:fixed;inset:0;background:repeating-linear-gradi
           <div class="slbl" data-i18n="lbl_next_match">▸ NEXT MATCH</div>
           <div class="mprev"><div class="mprev-t" id="prev-teams">—</div><div class="mprev-p" id="prev-phase">—</div><div class="mprev-pred" id="prev-pred"></div></div>
           <div id="next-opp-box" style="display:none;text-align:center;font-size:7px;color:var(--dim);padding:4px 0;border-top:1px solid var(--border);margin-bottom:8px"><span data-i18n="lbl_next_opponent">NEXT OPPONENT: </span><span id="next-opp" style="color:var(--cya)"></span></div>
-          <button class="btn btn-p" id="btn-play" data-i18n="btn_play" onclick="handlePlay()">▶ PLAY</button>
+          <button class="btn btn-g" id="btn-play" data-i18n="btn_play" onclick="handlePlay()">▶ PLAY</button>
         </div>
       </div>
       <!-- Classifica girone (visibile durante i gironi) -->
@@ -387,6 +412,7 @@ body::before{content:"";position:fixed;inset:0;background:repeating-linear-gradi
     </div>
     </div>
   </div>
+  <div class="app-footer">© ImagikStudio 2026 — v1.3.1</div>
 </div>
 
 <script>
@@ -532,7 +558,9 @@ const SVG_BRONZE=`<svg width="80" height="80" viewBox="0 0 80 80" xmlns="http://
 <rect x="28" y="12" width="6" height="12" fill="#ffcc88" opacity=".6"/></svg>`;
 
 // ══════════ DATI ══════════
-const COLORS=["#1a3d6e","#d50000","#eeeeee","#111111","#006600","#ccaa00","#cc4400","#550088","#004488","#663300","#006655","#888888","#ff6699","#44ddff","#ff9900","#336600"];
+// ═══ SPONSOR FITTIZI (stile anni '80, nessun marchio reale) ═══
+const SPONSORS=["BACK TO WORLD CUP","KOSMOS COLA","TURBO SPORT","KARMA DREAM","STAR ARCADE","ELECTRO CHIPS"];
+const COLORS=["#1a3d6e","#d50000","#eeeeee","#111111","#006600","#ccaa00","#cc4400","#550088","#006655","#ff6699","#44ddff","#ff9900"];
 const TEAM_COLORS={
   "Brasile '70":["#009c3b","#ffdf00"],"Spagna '10":["#c60b1e","#f1bf00"],"Germania '14":["#000000","#dd0000"],
   "Francia '98":["#002395","#ed2939"],"Olanda '74":["#ff6600","#ffffff"],"Ungheria '54":["#009b77","#ce2939"],
@@ -561,17 +589,16 @@ const TEAM_COLORS={
 };
 function getTColors(name){return TEAM_COLORS[name]||[primaryCol,secondaryCol];}
 const FORMATIONS={
-  "4-3-3":[[50,92,"P"],[14,74,"TS"],[37,76,"DC"],[63,76,"DC"],[86,74,"TD"],[30,52,"CC"],[50,57,"CC"],[70,52,"CC"],[18,25,"AS"],[50,18,"PC"],[82,25,"AD"]],
-  "4-4-2":[[50,92,"P"],[14,74,"TS"],[37,76,"DC"],[63,76,"DC"],[86,74,"TD"],[14,48,"CS"],[38,50,"CC"],[62,50,"CC"],[86,48,"CD"],[35,20,"PC"],[65,20,"PC"]],
-  "3-5-2":[[50,92,"P"],[24,76,"DC"],[50,79,"DC"],[76,76,"DC"],[14,46,"CS"],[36,49,"CC"],[50,55,"CC"],[64,49,"CC"],[86,46,"CD"],[35,20,"PC"],[65,20,"PC"]],
-  "4-2-3-1":[[50,92,"P"],[14,74,"TS"],[37,76,"DC"],[63,76,"DC"],[86,74,"TD"],[34,57,"MD"],[66,57,"MD"],[18,38,"CS"],[50,36,"TQ"],[82,38,"CD"],[50,16,"PC"]],
-  "5-3-2":[[50,92,"P"],[10,70,"TS"],[30,76,"DC"],[50,79,"DC"],[70,76,"DC"],[90,70,"TD"],[28,49,"CC"],[50,54,"CC"],[72,49,"CC"],[35,20,"PC"],[65,20,"PC"]],
-  "3-4-3":[[50,92,"P"],[24,76,"DC"],[50,79,"DC"],[76,76,"DC"],[14,48,"CS"],[38,51,"CC"],[62,51,"CC"],[86,48,"CD"],[20,22,"AS"],[50,17,"PC"],[80,22,"AD"]],
-  "4-5-1":[[50,92,"P"],[14,74,"TS"],[37,76,"DC"],[63,76,"DC"],[86,74,"TD"],[10,48,"CS"],[30,50,"CC"],[50,53,"CC"],[70,50,"CC"],[90,48,"CD"],[50,17,"PC"]],
-  "4-1-4-1":[[50,92,"P"],[14,74,"TS"],[37,76,"DC"],[63,76,"DC"],[86,74,"TD"],[50,62,"MD"],[18,46,"CS"],[38,48,"CC"],[62,48,"CC"],[82,46,"CD"],[50,17,"PC"]],
-  "5-4-1":[[50,92,"P"],[10,70,"TS"],[30,76,"DC"],[50,79,"DC"],[70,76,"DC"],[90,70,"TD"],[14,48,"CS"],[36,50,"CC"],[64,50,"CC"],[86,48,"CD"],[50,17,"PC"]],
-  "4-3-2-1":[[50,92,"P"],[14,74,"TS"],[37,76,"DC"],[63,76,"DC"],[86,74,"TD"],[28,55,"CC"],[50,58,"CC"],[72,55,"CC"],[34,36,"AS"],[66,36,"AD"],[50,18,"PC"]],
-  "4-2-4":[[50,92,"P"],[14,74,"TS"],[37,76,"DC"],[63,76,"DC"],[86,74,"TD"],[35,58,"MD"],[65,58,"MD"],[14,24,"AS"],[38,20,"PC"],[62,20,"PC"],[86,24,"AD"]]
+  "4-3-3":[[50,85,"P"],[14,68,"TS"],[37,70,"DC"],[63,70,"DC"],[86,68,"TD"],[30,48,"CC"],[50,53,"CC"],[70,48,"CC"],[18,25,"AS"],[50,18,"PC"],[82,25,"AD"]],
+  "4-4-2":[[50,85,"P"],[14,68,"TS"],[37,70,"DC"],[63,70,"DC"],[86,68,"TD"],[14,44,"CS"],[38,46,"CC"],[62,46,"CC"],[86,44,"CD"],[35,20,"PC"],[65,20,"PC"]],
+  "3-5-2":[[50,85,"P"],[24,70,"DC"],[50,73,"DC"],[76,70,"DC"],[14,42,"CS"],[36,45,"CC"],[50,51,"CC"],[64,45,"CC"],[86,42,"CD"],[35,20,"PC"],[65,20,"PC"]],
+  "4-2-3-1":[[50,85,"P"],[14,68,"TS"],[37,70,"DC"],[63,70,"DC"],[86,68,"TD"],[34,53,"MD"],[66,53,"MD"],[18,34,"CS"],[50,36,"TQ"],[82,34,"CD"],[50,16,"PC"]],
+  "5-3-2":[[50,85,"P"],[10,64,"TS"],[30,70,"DC"],[50,73,"DC"],[70,70,"DC"],[90,64,"TD"],[28,45,"CC"],[50,50,"CC"],[72,45,"CC"],[35,20,"PC"],[65,20,"PC"]],
+  "3-4-3":[[50,85,"P"],[24,70,"DC"],[50,73,"DC"],[76,70,"DC"],[14,44,"CS"],[38,47,"CC"],[62,47,"CC"],[86,44,"CD"],[20,22,"AS"],[50,17,"PC"],[80,22,"AD"]],
+  "4-5-1":[[50,85,"P"],[14,68,"TS"],[37,70,"DC"],[63,70,"DC"],[86,68,"TD"],[10,44,"CS"],[30,46,"CC"],[50,49,"CC"],[70,46,"CC"],[90,44,"CD"],[50,17,"PC"]],
+  "4-1-4-1":[[50,85,"P"],[14,68,"TS"],[37,70,"DC"],[63,70,"DC"],[86,68,"TD"],[50,58,"MD"],[18,42,"CS"],[38,44,"CC"],[62,44,"CC"],[82,42,"CD"],[50,17,"PC"]],
+  "4-3-2-1":[[50,85,"P"],[14,68,"TS"],[37,70,"DC"],[63,70,"DC"],[86,68,"TD"],[28,51,"CC"],[50,54,"CC"],[72,51,"CC"],[34,36,"AS"],[66,36,"AD"],[50,18,"PC"]],
+  "4-2-4":[[50,85,"P"],[14,68,"TS"],[37,70,"DC"],[63,70,"DC"],[86,68,"TD"],[35,54,"MD"],[65,54,"MD"],[14,24,"AS"],[38,20,"PC"],[62,20,"PC"],[86,24,"AD"]]
 };
 // GIOCATORI
 const PLAYERS=[
@@ -762,8 +789,10 @@ const I18N={
     flag_swiss:"SWISS CROSS",flag_diag:"DIAGONAL",flag_circle:"CIRCLE",flag_checker:"CHECKERBOARD",flag_half:"HALF AND HALF",
     lbl_difficulty:"DIFFICULTY",
     diff_easy:"EASY — budget 105.0",diff_medium:"MEDIUM — budget 100.0",diff_hard:"HARD — budget 95.0",diff_random:"RANDOM — 95 to 105",
+    diff_easy_sh:"EASY",diff_medium_sh:"MEDIUM",diff_hard_sh:"HARD",diff_random_sh:"RANDOM",
     lbl_speed:"GAME SPEED",
     speed_fast_init:"FAST — key actions only",speed_normal_init:"NORMAL — standard commentary",speed_slow_init:"EXTENDED — detailed commentary",
+    speed_fast_sh:"FAST",speed_normal_sh:"NORMAL",speed_slow_sh:"EXTENDED",
     btn_next_squad:"▶ NEXT: PICK YOUR SQUAD",
     s2_tactics:"▸ TACTICS",
     lbl_formation:"FORMATION",
@@ -856,7 +885,7 @@ const I18N={
     motm:"⭐ PLAYER OF THE MATCH",
     motm_gk_note:" (clean sheet)",
     motm_opp_note:"(opposing team)",
-    your_path:"▸ YOUR WORLD CUP RUN"
+    your_path:"▸ YOUR WORLD CUP RUN",
   },
   it:{
     s1_title:"▸ CREA LA TUA NAZIONALE",
@@ -869,8 +898,10 @@ const I18N={
     flag_swiss:"CROCE SVIZZERA",flag_diag:"DIAGONALE",flag_circle:"CERCHIO",flag_checker:"SCACCHIERA",flag_half:"META E META",
     lbl_difficulty:"DIFFICOLTA",
     diff_easy:"FACILE — budget 105.0",diff_medium:"MEDIO — budget 100.0",diff_hard:"DIFFICILE — budget 95.0",diff_random:"RANDOM — 95 a 105",
+    diff_easy_sh:"FACILE",diff_medium_sh:"MEDIO",diff_hard_sh:"DIFFICILE",diff_random_sh:"RANDOM",
     lbl_speed:"VELOCITA DI GIOCO",
     speed_fast_init:"VELOCE — solo azioni principali",speed_normal_init:"NORMALE — cronaca standard",speed_slow_init:"ESTESA — cronaca dettagliata",
+    speed_fast_sh:"VELOCE",speed_normal_sh:"NORMALE",speed_slow_sh:"ESTESA",
     btn_next_squad:"▶ AVANTI: SCEGLI LA ROSA",
     s2_tactics:"▸ TATTICA",
     lbl_formation:"MODULO",
@@ -963,7 +994,7 @@ const I18N={
     motm:"⭐ MIGLIOR GIOCATORE",
     motm_gk_note:" (porta inviolata)",
     motm_opp_note:"(squadra avversaria)",
-    your_path:"▸ IL TUO PERCORSO MONDIALE"
+    your_path:"▸ IL TUO PERCORSO MONDIALE",
   }
 };
 function T(key){return (I18N[LANG]&&I18N[LANG][key])!==undefined?I18N[LANG][key]:key;}
@@ -1043,7 +1074,7 @@ function DEFT(){return LANG==="it"?DEF_IT:DEF_EN;}
 // ═══ STATE ═══
 let primaryCol="#1a3d6e",secondaryCol="#eeeeee";
 let squad=Array(11).fill(null);
-let userTeam="",budgetCap=100,curSpd="normal",curStl="medio";
+let userTeam="",budgetCap=100,curSpd="normal",curStl="medio",curDiff="medium";
 let matchState=null,matchTmr=null;
 let phase="Gironi",grpIdx=0,ugm=[],grpRivals=[];
 let koPhIdx=0,koPool=[],koMs=[],koMIdx=0,sfLosers=[];
@@ -1068,7 +1099,7 @@ function init(){
   buildPal("pal-s","secondary",secondaryCol);
   document.getElementById("sel-flag").addEventListener("change",drawFlag);
   drawFlag();
-  onDiffChange();
+  setDiff("medium");
   applyLang();
 }
 
@@ -1144,29 +1175,20 @@ function drawFlag(){
   drawFlagTo("flag-preview",false);
   drawFlagTo("flag-sm",true);
 }
-function drawFlagTo(id,small){
+function drawFlagTo(id,small,customSize){
   const box=document.getElementById(id);if(!box)return;
   const st=document.getElementById("sel-flag").value,p=primaryCol,s=secondaryCol;
   box.innerHTML="";box.style.cssText="";
-  if(small){box.style.cssText="width:72px;height:46px;border:2px solid var(--border);position:relative;overflow:hidden";}
+  const sizeCss=customSize||"width:72px;height:46px;border:2px solid var(--border);position:relative;overflow:hidden";
+  if(small){box.style.cssText=sizeCss;}
   if(st==="horiz"){box.innerHTML=`<div style="background:${p};width:100%;height:33%"></div><div style="background:${s};width:100%;height:34%"></div><div style="background:${p};width:100%;height:33%"></div>`;}
   else if(st==="vert"){box.style.display="flex";box.innerHTML=`<div style="background:${p};flex:1;height:100%"></div><div style="background:${s};flex:1;height:100%"></div><div style="background:${p};flex:1;height:100%"></div>`;}
   else if(st==="cross"){box.style.background=p;box.innerHTML=`<div style="position:absolute;top:40%;left:0;width:100%;height:20%;background:${s}"></div><div style="position:absolute;top:0;left:28%;width:16%;height:100%;background:${s}"></div>`;}
-  else if(st==="swiss"){if(small)box.style.cssText="width:72px;height:46px;border:2px solid var(--border);position:relative;overflow:hidden;";box.style.background=p;box.style.display="flex";box.style.alignItems="center";box.style.justifyContent="center";box.innerHTML=`<div style="position:relative;width:32px;height:32px"><div style="position:absolute;top:10px;left:0;width:32px;height:12px;background:${s}"></div><div style="position:absolute;top:0;left:10px;width:12px;height:32px;background:${s}"></div></div>`;}
+  else if(st==="swiss"){if(small)box.style.cssText=sizeCss;box.style.background=p;box.style.display="flex";box.style.alignItems="center";box.style.justifyContent="center";box.innerHTML=`<div style="position:relative;width:32px;height:32px"><div style="position:absolute;top:10px;left:0;width:32px;height:12px;background:${s}"></div><div style="position:absolute;top:0;left:10px;width:12px;height:32px;background:${s}"></div></div>`;}
   else if(st==="diag"){box.innerHTML=`<div style="width:100%;height:100%;background:linear-gradient(135deg,${p} 50%,${s} 50%)"></div>`;}
-  else if(st==="circle"){if(small)box.style.cssText="width:72px;height:46px;border:2px solid var(--border);position:relative;overflow:hidden;";box.style.background=p;box.style.display="flex";box.style.alignItems="center";box.style.justifyContent="center";box.innerHTML=`<div style="width:32px;height:32px;background:${s};border-radius:50%"></div>`;}
+  else if(st==="circle"){if(small)box.style.cssText=sizeCss;box.style.background=p;box.style.display="flex";box.style.alignItems="center";box.style.justifyContent="center";box.innerHTML=`<div style="width:32px;height:32px;background:${s};border-radius:50%"></div>`;}
   else if(st==="checker"){box.style.background=p;box.innerHTML=`<div style="position:absolute;top:0;left:0;width:50%;height:50%;background:${s}"></div><div style="position:absolute;bottom:0;right:0;width:50%;height:50%;background:${s}"></div>`;}
   else if(st==="half"){box.innerHTML=`<div style="background:${p};width:100%;height:50%"></div><div style="background:${s};width:100%;height:50%"></div>`;}
-}
-
-function onDiffChange(){
-  window._budgetLocked=false; // resetta il lock quando l'utente cambia difficoltà manualmente
-  const v=document.getElementById("sel-diff").value;
-  if(v==="easy")budgetCap=105;
-  else if(v==="medium")budgetCap=100;
-  else if(v==="hard")budgetCap=95;
-  else budgetCap=Math.round((95+Math.random()*10)*10)/10;
-  budgetCap=Math.round(budgetCap*10)/10;
 }
 
 function goPage1(){
@@ -1175,7 +1197,7 @@ function goPage1(){
 }
 function goPage2(){
   // Calcola budget solo se non già in screen2 (evita di ricalcolare 'random' ad ogni visita)
-  const diff=document.getElementById("sel-diff").value;
+  const diff=curDiff;
   if(diff==="easy")budgetCap=105;
   else if(diff==="medium")budgetCap=100;
   else if(diff==="hard")budgetCap=95;
@@ -1192,10 +1214,21 @@ function goPage2(){
   doRandom();
 }
 
+// Colori sponsor coerenti in tutto il gioco: Kosmos Cola=rosso, Turbo Sport=blu, Karma Dream=verde
+const SPONSOR_COLORS={"KOSMOS COLA":"#cc0000","TURBO SPORT":"#0044aa","KARMA DREAM":"#006622","BACK TO WORLD CUP":"#7a1fa2","STAR ARCADE":"#cc7a00","ELECTRO CHIPS":"#1a1a8a"};
+function adStripHtml(pos){
+  const names=["KOSMOS COLA","TURBO SPORT","KARMA DREAM","BACK TO WORLD CUP","STAR ARCADE","ELECTRO CHIPS"];
+  const cls=pos==="top"?"pitch-ad-strip pitch-ad-strip-top":"pitch-ad-strip";
+  // Striscia scorrevole: il contenuto è duplicato 2 volte e animato in loop continuo
+  const chip=n=>'<span style="background:'+SPONSOR_COLORS[n]+'">'+n+'</span>';
+  const track=names.map(chip).join('')+names.map(chip).join('');
+  const dir=pos==="top"?"adScrollR":"adScrollL";
+  return '<div class="'+cls+'"><div class="ad-track" style="animation:'+dir+' 14s linear infinite">'+track+'</div></div>';
+}
 function buildPitch(){
   const pitch=document.getElementById("pitch");
   const inner=document.createElement("div");inner.className="pitch-inner";
-  inner.innerHTML='<div class="pen-top"></div><div class="pen-bot"></div><div class="mid-line"></div>';
+  inner.innerHTML='<div class="pen-top"></div><div class="pen-bot"></div><div class="mid-line"></div>'+adStripHtml("top")+adStripHtml("bottom");
   while(pitch.firstChild)pitch.removeChild(pitch.firstChild);
   pitch.appendChild(inner);
   squad=Array(11).fill(null);
@@ -1208,15 +1241,23 @@ function buildPitch(){
     dot.onclick=()=>openDraft(sl[2],i);
     const nm=document.createElement("div");nm.className="pname";nm.id="pnm-"+i;nm.textContent="--";
     const rl=document.createElement("div");rl.className="prole";rl.id="prl-"+i;rl.textContent="";
-    const st=document.createElement("div");st.className="pstars";st.id="pst-"+i;
     const vl=document.createElement("div");vl.className="pval";vl.id="pvl-"+i;
-    wrap.appendChild(dot);wrap.appendChild(nm);wrap.appendChild(rl);wrap.appendChild(st);wrap.appendChild(vl);
+    wrap.appendChild(dot);wrap.appendChild(nm);wrap.appendChild(rl);wrap.appendChild(vl);
     pitch.appendChild(wrap);
   });
   updateBudget();
 }
 
 function onFormationChange(){buildPitch();doRandom();}
+
+const FM_LIST=["4-3-3","4-4-2","3-5-2","4-2-3-1","5-3-2","3-4-3","4-5-1","4-1-4-1","4-3-2-1","4-2-4"];
+function setFormation(v){
+  document.getElementById("sel-fm").value=v;
+  document.querySelectorAll("#fm-btns-row1 .lc-btn,#fm-btns-row2 .lc-btn").forEach((b,i)=>{
+    b.classList.toggle("on",FM_LIST[i]===v);
+  });
+  onFormationChange();
+}
 
 function refreshDots(){
   document.querySelectorAll(".pdot").forEach(d=>{d.style.background=primaryCol;d.style.color=secondaryCol;});
@@ -1252,7 +1293,7 @@ function openDraft(role,idx){
     sel.forEach(p=>{
       const card=document.createElement("div");card.className="cand-card";
       const col=p.pw>=9.5?"var(--red)":p.pw>=9?"var(--yel)":p.pw>=8?"var(--px)":"var(--cya)";
-      card.innerHTML=`<div class="cname">${p.n}</div><div class="crole">${p.r.join("/")}</div><div style="font-size:6px;color:var(--cya);margin-bottom:2px">${p.from||''}</div><div class="cpow" style="color:${col}">${p.pw.toFixed(1)}</div><div class="cstars">${stars(p.pw)}</div>`;
+      card.innerHTML=`<div class="cname">${p.n}</div><div class="crole">${p.r.join("/")}</div><div style="font-size:6px;color:var(--cya);margin-bottom:2px">${p.from||''}</div><div class="cpow" style="color:${col}">${p.pw.toFixed(1)}</div>`;
       card.onclick=()=>pickPlayer(p,idx);
       grid.appendChild(card);
     });
@@ -1276,7 +1317,6 @@ function pickPlayer(p,idx){
   const nm=document.getElementById("pnm-"+idx);if(nm)nm.textContent=p.n.length>10?p.n.substring(0,9)+"…":p.n;
   const rl=document.getElementById("prl-"+idx);
   if(rl){rl.textContent=p.r.join("/");rl.style.color="var(--cya)";rl.title="";}
-  const st=document.getElementById("pst-"+idx);if(st)st.innerHTML=stars(p.pw);
   const vl=document.getElementById("pvl-"+idx);if(vl)vl.textContent=p.pw.toFixed(1);
   const dot=document.getElementById("pd-"+idx);if(dot){dot.classList.add("filled");dot.classList.remove("sel");}
   const cp=document.getElementById("cand-panel");if(cp)cp.classList.add("hidden");
@@ -1290,7 +1330,6 @@ function clearAll(){
     const d=document.getElementById("pd-"+i);if(d){d.textContent=slots[i]?slots[i][2]:"?";d.classList.remove("filled","sel");}
     const n=document.getElementById("pnm-"+i);if(n)n.textContent="--";
     const r=document.getElementById("prl-"+i);if(r){r.textContent="";r.title="";r.style.color="var(--cya)";}
-    const s=document.getElementById("pst-"+i);if(s)s.innerHTML="";
     const v=document.getElementById("pvl-"+i);if(v)v.textContent="";
   }
   const cp=document.getElementById("cand-panel");if(cp)cp.classList.add("hidden");
@@ -1388,6 +1427,17 @@ function getScorer(team){
 function setSpd(v){
   curSpd=v;
   document.querySelectorAll("#spd-btns .lc-btn").forEach((b,i)=>{b.classList.toggle("on",["fast","normal","slow"][i]===v);});
+  document.querySelectorAll("#spd-init-btns .lc-btn").forEach((b,i)=>{b.classList.toggle("on",["fast","normal","slow"][i]===v);});
+}
+function setDiff(v){
+  window._budgetLocked=false; // resetta il lock quando l'utente cambia difficoltà manualmente
+  curDiff=v;
+  document.querySelectorAll("#diff-btns .lc-btn").forEach((b,i)=>{b.classList.toggle("on",["easy","medium","hard","random"][i]===v);});
+  if(v==="easy")budgetCap=105;
+  else if(v==="medium")budgetCap=100;
+  else if(v==="hard")budgetCap=95;
+  else budgetCap=Math.round((95+Math.random()*10)*10)/10;
+  budgetCap=Math.round(budgetCap*10)/10;
 }
 function setStl(v){
   curStl=v;
@@ -1611,6 +1661,11 @@ function startLive(m,ctx){
   // Mostra live box
   document.getElementById("live-box").classList.remove("hidden");
   document.getElementById("live-hdr").textContent=tTeam(m.h)+" VS "+tTeam(m.a)+" | "+tPhase(phase);
+  // Scorri automaticamente verso il tabellone (utile soprattutto da smartphone)
+  setTimeout(()=>{
+    const lb=document.getElementById("live-box");
+    if(lb)lb.scrollIntoView({behavior:"smooth",block:"start"});
+  },50);
   // Colori dot squadre
   const hC=getTColors(m.h===userTeam?userTeam:m.h);
   const aC=getTColors(m.a===userTeam?userTeam:m.a);
@@ -1703,14 +1758,17 @@ function doFlash(isU,cancel){
 function showGoalAnn(scorer,min,isU,team){
   const box=document.getElementById("goal-ann");if(!box)return;
   box.className="goal-ann"+(isU?"":" opp");
-  box.innerHTML=T("goal_announce")+"<br>"+scorer+"<br><span style='font-size:8px'>"+min+"' — "+team+"</span>";
+  const sp=isU?"KARMA DREAM":"KOSMOS COLA";
+  box.innerHTML=T("goal_announce")+"<br>"+scorer+"<br><span style='font-size:8px'>"+min+"' — "+team+"</span>"
+    +'<div class="ann-sponsor" style="background:'+SPONSOR_COLORS[sp]+'">'+sp+'</div>';
   box.style.display="block";setTimeout(()=>{box.style.display="none";},2100);
 }
 
 function showHatTrick(scorer,isU){
   const box=document.getElementById("goal-ann");if(!box)return;
   box.className="goal-ann hat-trick"+(isU?"":" opp");
-  box.innerHTML=T("hat_trick")+"<br>"+scorer;
+  box.innerHTML=T("hat_trick")+"<br>"+scorer
+    +'<div class="ann-sponsor" style="background:'+SPONSOR_COLORS["KARMA DREAM"]+'">KARMA DREAM</div>';
   box.style.display="block";setTimeout(()=>{box.style.display="none";},2300);
 }
 
@@ -1911,19 +1969,24 @@ function finishMatch(ms){
   if(!motm&&uC===0&&squad[0]){
     motm={name:squad[0].n,goals:0,gk:true,isOpponent:false};
   }
-  let svg,title,sub;
-  if(userWon){svg=SVG_WIN;title=T("res_win");}
-  else if(isDraw){svg="";title=T("res_draw");}
-  else{svg="";title=T("res_loss");}
+  let svg,title,sub,resKind;
+  if(userWon){svg=SVG_WIN;title=T("res_win");resKind="win";}
+  else if(isDraw){svg="";title=T("res_draw");resKind="draw";}
+  else{svg="";title=T("res_loss");resKind="loss";}
   sub=m.h+" VS "+m.a;
-  showOverlay(svg,title,fH+" - "+fA,sub,motm,()=>afterMatch(ms,m,fH,fA,userWon,isDraw));
+  showOverlay(svg,title,fH+" - "+fA,sub,motm,()=>afterMatch(ms,m,fH,fA,userWon,isDraw),resKind);
 }
 
-function showOverlay(svgC,title,score,sub,motm,cb){
+function showOverlay(svgC,title,score,sub,motm,cb,resKind){
   document.getElementById("res-svg").innerHTML=svgC;
   document.getElementById("res-title").textContent=title;
   document.getElementById("res-score").textContent=score;
   document.getElementById("res-sub").textContent=sub;
+  const sp=document.getElementById("res-sponsor");
+  if(sp){
+    const spName=resKind==="win"?"TURBO SPORT":resKind==="draw"?"STAR ARCADE":"ELECTRO CHIPS";
+    sp.textContent=spName;sp.style.background=SPONSOR_COLORS[spName];
+  }
   const motmBox=document.getElementById("res-motm");
   if(motmBox){
     if(motm){
@@ -2084,12 +2147,10 @@ function showReport(stageKey,resultType,extraPhase){
     // Nomi più corti per evitare overflow nel campo del report
     const nm=p?p.n:'--';  // nome completo senza troncatura
     const from=p?(p.from||''):'';
-    const st=p?stars(p.pw):'';
     pitchDots+='<div style="position:absolute;transform:translate(-50%,-50%);left:'+sl[0]+'%;top:'+sl[1]+'%;display:flex;flex-direction:column;align-items:center;gap:2px;z-index:5">'
       +'<div style="width:24px;height:24px;display:flex;align-items:center;justify-content:center;font-size:7px;color:#000;background:'+primaryCol+';clip-path:polygon(3px 0,calc(100% - 3px) 0,100% 3px,100% calc(100% - 3px),calc(100% - 3px) 100%,3px 100%,0 calc(100% - 3px),0 3px)">'+sl[2]+'</div>'
       +'<div style="font-size:7px;color:#fff;text-shadow:1px 1px 0 #000,-1px -1px 0 #000;text-align:center;max-width:56px;line-height:1.4;word-break:break-word">'+nm+'</div>'
       +(from?'<div style="font-size:6px;color:var(--cya);text-shadow:1px 1px 0 #000;text-align:center;line-height:1">'+tTeam(from)+'</div>':'')
-      +'<div style="font-size:7px;text-align:center;line-height:1">'+st+'</div>'
       +'</div>';
   });
   // Percorso del torneo (solo turni eliminatori)
@@ -2117,11 +2178,13 @@ function showReport(stageKey,resultType,extraPhase){
   else if(stageKey==="groups")stageLabel=T("eliminated_groups");
   else if(stageKey==="phase")stageLabel=T("eliminated_in")+" "+tPhase(extraPhase);
   else stageLabel=stageKey;
+  const teamName=(document.getElementById("inp-name").value.trim()||T("default_team_name")).toUpperCase();
   rpt.innerHTML=
     '<div style="text-align:center;padding:14px 0">'+
     (mSvg?'<div style="margin:0 auto 12px;text-align:center">'+mSvg+'</div>':'')+
     (mTitle?'<div style="font-size:9px;color:var(--yel);margin-bottom:8px;line-height:2">'+mTitle+'</div>':'')+
     '<div class="rep-stage">'+stageLabel+'</div>'+
+    '<div class="ann-sponsor" style="display:inline-block;background:'+SPONSOR_COLORS["KARMA DREAM"]+';margin-bottom:14px;font-size:8px;padding:6px 12px">KARMA DREAM</div>'+
     '<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:12px 0">'+
     '<div class="stat-box"><div class="stat-num">'+userStats.m+'</div><div class="stat-lbl">'+T("rep_matches")+'</div></div>'+
     '<div class="stat-box"><div class="stat-num" style="color:var(--px)">'+userStats.w+'</div><div class="stat-lbl">'+T("rep_wins")+'</div></div>'+
@@ -2134,19 +2197,23 @@ function showReport(stageKey,resultType,extraPhase){
     '<svg width="32" height="32" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"><circle cx="16" cy="16" r="14" fill="#fff" stroke="#222" stroke-width="1.5"/><polygon points="16,4 20,10 14,14 10,10" fill="#222"/><polygon points="26,12 28,18 22,20 18,14" fill="#222"/><polygon points="22,26 16,28 14,22 20,18" fill="#222"/><polygon points="10,26 6,20 10,16 16,20" fill="#222"/><polygon points="6,12 12,10 14,16 8,18" fill="#222"/></svg>'+
     '<div style="text-align:left"><div style="font-size:7px;color:var(--dim);margin-bottom:3px">'+T("top_scorer")+'</div><div style="font-size:8px;color:var(--yel)">'+topScorerStr+'</div></div>'+
     '</div>'+
-    // Campo con formazione
-    '<div style="font-size:8px;color:var(--cya);margin:12px 0 6px">'+T("your_nation")+'</div>'+
+    // Riquadro squadra: bandiera (proporzioni identiche alla pagina di selezione) e nome
+    '<div style="background:var(--surface);border:2px solid var(--border);padding:10px;margin:12px 0 8px;display:flex;align-items:center;gap:12px">'+
+    '<div id="rep-flag" class="flag-sm"></div>'+
+    '<div style="text-align:left;font-size:9px;color:var(--wht);letter-spacing:1px">'+teamName+'</div>'+
+    '</div>'+
     '<div style="position:relative;width:100%;padding-top:124%;background:#0a3d0a;border:2px solid #00aa00;overflow:hidden;max-width:480px;margin:0 auto">'+
     '<div style="position:absolute;inset:0">'+
     '<div style="position:absolute;top:0;left:30%;width:40%;height:12%;border:1px solid rgba(0,170,0,.4);border-top:none"></div>'+
     '<div style="position:absolute;bottom:0;left:30%;width:40%;height:12%;border:1px solid rgba(0,170,0,.4);border-bottom:none"></div>'+
     '<div style="position:absolute;top:50%;left:0;right:0;height:1px;background:rgba(0,170,0,.5)"></div>'+
     '<div style="position:absolute;top:50%;left:50%;width:20%;padding-top:20%;border:1px solid rgba(0,170,0,.4);border-radius:50%;transform:translate(-50%,-50%)"></div>'+
-    pitchDots+
+    pitchDots+adStripHtml("top")+adStripHtml("bottom")+
     '</div></div>'+
     (resultType!=="champion"?'<div class="champ-note" style="margin-top:12px"><span class="cn-l">'+T("world_champion_sim")+'</span><span class="cn-n">'+tTeam(champion)+'</span></div>':'')+
     '<button class="btn btn-g" style="margin-top:14px" onclick="location.reload()">'+T("btn_restart")+'</button>'+
     '</div>';
+  drawFlagTo("rep-flag",true);
 }
 
 init();
